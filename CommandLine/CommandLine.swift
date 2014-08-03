@@ -84,7 +84,8 @@ public class CommandLine {
           continue
         }
         
-        if _arguments[i].hasPrefix("-") && _arguments[i].toInt() == nil && _arguments[i].toDouble() == nil {
+        if _arguments[i].hasPrefix(ShortOptionPrefix) && _arguments[i].toInt() == nil &&
+          _arguments[i].toDouble() == nil {
           break
         }
       }
