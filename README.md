@@ -7,7 +7,6 @@ Usage
 CommandLine aims to have a simple and self-explanatory API.
 
 ```swift
-import Darwin // for exit() and EX_USAGE
 import CommandLine
 
 let cli = CommandLine()
