@@ -36,7 +36,7 @@ See `Option.swift` for additional Option types.
 
 To use CommandLine in your project, add it to your workspace, then add CommandLine.framework to the __Build Phases / Link Binary With Libraries__ setting of your target.
 
-If you are building a standalone command-line tool, you'll need to add the CommandLine source files directly to your target, because Xcode [can't yet build static libraries that contain Swift code](https://github.com/jatoben/SwiftInFlux#static-libraries).
+If you are building a standalone command-line tool, you'll need to add the CommandLine source files directly to your target, because Xcode [can't yet build static libraries that contain Swift code](https://github.com/ksm/SwiftInFlux#static-libraries).
 
 Features
 --------
