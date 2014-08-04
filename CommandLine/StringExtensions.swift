@@ -24,9 +24,9 @@ internal extension String {
    */
   private func _localDecimalPoint() -> Character {
     let locale = localeconv()
-    if locale {
+    if locale != nil {
       let decimalPoint = locale.memory.decimal_point
-      if decimalPoint {
+      if decimalPoint != nil {
         return Character(UnicodeScalar(UInt32(decimalPoint.memory)))
       }
     }
@@ -57,7 +57,7 @@ internal extension String {
         continue
       }
       
-      if String(c).toInt() {
+      if String(c).toInt() != nil {
         if !inMantissa {
           characteristic += c
         } else {

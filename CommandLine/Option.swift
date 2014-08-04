@@ -88,10 +88,6 @@ public class IntOption: Option {
     return _value != nil
   }
   
-  public init(shortFlag: String, longFlag: String, required: Bool, helpMessage: String) {
-    super.init(shortFlag: shortFlag, longFlag: longFlag, required: required, helpMessage: helpMessage)
-  }
-  
   override func match(values: [String]) -> Bool {
     if values.count == 0 {
       return false
@@ -143,10 +139,6 @@ public class DoubleOption: Option {
     return _value != nil
   }
   
-  public init(shortFlag: String, longFlag: String, required: Bool, helpMessage: String) {
-    super.init(shortFlag: shortFlag, longFlag: longFlag, required: required, helpMessage: helpMessage)
-  }
-  
   override func match(values: [String]) -> Bool {
     if values.count == 0 {
       return false
@@ -173,10 +165,6 @@ public class StringOption: Option {
     return _value != nil
   }
   
-  public init(shortFlag: String, longFlag: String, required: Bool, helpMessage: String) {
-    super.init(shortFlag: shortFlag, longFlag: longFlag, required: required, helpMessage: helpMessage)
-  }
-  
   override func match(values: [String]) -> Bool {
     if values.count == 0 {
       return false
@@ -195,16 +183,8 @@ public class MultiStringOption: Option {
     return _value
   }
   
-  /* Checking arrays against nil is broken in beta 3 & 4; see
-   * https://devforums.apple.com/message/1000092#1000092 for details.
-   * Calling getLogicValue() is a workaround for now.
-   */
   override var isSet: Bool {
-    return _value.getLogicValue()
-  }
-  
-  public init(shortFlag: String, longFlag: String, required: Bool, helpMessage: String) {
-    super.init(shortFlag: shortFlag, longFlag: longFlag, required: required, helpMessage: helpMessage)
+    return _value != nil
   }
   
   override func match(values: [String]) -> Bool {
@@ -232,10 +212,10 @@ public class EnumOption<T:StringConvertible>: Option {
   }
   
   override var isSet: Bool {
-    return _value.getLogicValue()
+    return _value != nil
   }
   
-  public init(shortFlag: String, longFlag: String, required: Bool, helpMessage: String) {
+  override public init(shortFlag: String, longFlag: String, required: Bool, helpMessage: String) {
     super.init(shortFlag: shortFlag, longFlag: longFlag, required: required, helpMessage: helpMessage)
   }
   

@@ -74,7 +74,7 @@ public class CommandLine {
     /* Grab attached arg, if any */
     var attachedArg = _arguments[flagIndex].splitByCharacter(ArgumentAttacher, maxSplits: 1)
     if attachedArg.count > 1 {
-      args += attachedArg[1]
+      args.append(attachedArg[1])
     }
     
     for var i = flagIndex + 1; i < _arguments.count; i++ {
@@ -90,7 +90,7 @@ public class CommandLine {
         }
       }
     
-      args += _arguments[i]
+      args.append(_arguments[i])
     }
     
     return args
@@ -102,7 +102,7 @@ public class CommandLine {
    * :param: option The option to add.
    */
   public func addOption(option: Option) {
-    _options += option
+    _options.append(option)
   }
   
   /**
