@@ -204,7 +204,12 @@ public protocol StringConvertible {
 }
 
 /** An option that represents an enum value. */
-public class EnumOption<T:StringConvertible>: Option {
+public class EnumOption<T:StringConvertible where T.ItemType == T>: Option {
+  /* Note: The where clause in the type specifier above is needed to tell the compiler
+   * that T is equivalent to StringConvertible.ItemType. See
+   * http://stackoverflow.com/a/24845414 for a detailed discussion.
+   */
+  
   private var _value: T?
   
   public var value: T? {
@@ -225,10 +230,7 @@ public class EnumOption<T:StringConvertible>: Option {
     }
     
     if let v = T.fromRaw(values[0]) {
-      /* This conditional cast is needed to make the compiler happy; it's not convinced that
-       * T is equivalent to StringConvertible.ItemType.
-       */
-      _value = v as? T
+      _value = v
       return true
     }
     
