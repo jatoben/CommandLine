@@ -63,7 +63,8 @@ public class BoolOption: Option {
   }
   
   override var isSet: Bool {
-    return _value != nil
+    /* BoolOption is always set; if missing from the command line, it's false */
+    return true
   }
   
   public init(shortFlag: String, longFlag: String, helpMessage: String) {
@@ -114,7 +115,8 @@ public class CounterOption: Option {
   }
   
   override var isSet: Bool {
-    return _value != nil
+    /* CounterOption is always set; if missing from the command line, it's 0 */
+    return true
   }
   
   public init(shortFlag: String, longFlag: String, helpMessage: String) {

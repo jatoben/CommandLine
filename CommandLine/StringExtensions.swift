@@ -59,9 +59,9 @@ internal extension String {
       
       if String(c).toInt() != nil {
         if !inMantissa {
-          characteristic += c
+          characteristic.append(c)
         } else {
-          mantissa += c
+          mantissa.append(c)
         }
       } else {
         /* Non-numeric character found, bail */
@@ -95,7 +95,7 @@ internal extension String {
         continue
       }
       
-      buf += c
+      buf.append(c)
     }
     
     if countElements(buf) > 0 {
@@ -118,7 +118,7 @@ internal extension String {
     var currentLength = countElements(self)
     
     while currentLength++ < width {
-      s += padBy
+      s.append(padBy)
     }
     
     return s
@@ -150,12 +150,13 @@ internal extension String {
           s += word
         }
         
-        s += wrapBy
+        s.append(wrapBy)
         currentLineWidth = 0
       }
       
       currentLineWidth += wordLength + 1
-      s += word + splitBy
+      s += word
+      s.append(splitBy)
     }
     
     return s

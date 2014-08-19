@@ -168,7 +168,7 @@ public class CommandLine {
           continue
         }
         
-        flag += c
+        flag.append(c)
       }
       
       /* Remove attached argument from flag */
