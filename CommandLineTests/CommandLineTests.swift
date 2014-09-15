@@ -325,7 +325,7 @@ internal class CommandLineTests: XCTestCase {
   }
   
   func testEnumOption() {
-    enum Operation: String, StringConvertible {
+    enum Operation: String {
       case Create = "c"
       case Extract = "x"
       case List = "l"

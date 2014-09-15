@@ -88,7 +88,7 @@ $ LC_NUMERIC=sv_SE.UTF-8 ./example2 --float 3,1419
 ### Type-safe Enum options
 
 ```swift
-enum Operation: String, StringConvertible {
+enum Operation: String {
   case Create  = "c"
   case Extract = "x"
   case List    = "l"
@@ -116,7 +116,7 @@ switch op.value {
 }
 ```
 
-Note: Enums must declare conformance to the StringConvertible protocol, because there is [no standard way to range over all enum values as of beta 4](https://github.com/ksm/SwiftInFlux#enumerating-enum-types).
+Note: Enums must be initalizable from a String value.
 
 ### Fully emoji-compliant
 

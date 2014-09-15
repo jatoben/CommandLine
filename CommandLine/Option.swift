@@ -199,21 +199,9 @@ public class MultiStringOption: Option {
   }
 }
 
-/** Enums must conform to this protocol to be used as an EnumOption type. */
-public protocol StringConvertible {
-  typealias ItemType
-  class func fromRaw(String) -> ItemType?
-}
-
 /** An option that represents an enum value. */
-public class EnumOption<T:StringConvertible where T.ItemType == T>: Option {
-  /* Note: The where clause in the type specifier above is needed to tell the compiler
-   * that T is equivalent to StringConvertible.ItemType. See
-   * http://stackoverflow.com/a/24845414 for a detailed discussion.
-   */
-  
+public class EnumOption<T:RawRepresentable where T.RawValue == String>: Option {
   private var _value: T?
-  
   public var value: T? {
     return _value
   }
@@ -231,7 +219,7 @@ public class EnumOption<T:StringConvertible where T.ItemType == T>: Option {
       return false
     }
     
-    if let v = T.fromRaw(values[0]) {
+    if let v = T(rawValue: values[0]) {
       _value = v
       return true
     }
