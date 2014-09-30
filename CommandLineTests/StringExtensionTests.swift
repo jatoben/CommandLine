@@ -108,11 +108,11 @@ class StringExtensionTests: XCTestCase {
     
     let b = a.paddedToWidth(80)
     let lastBCharIndex = advance(b.endIndex, -1)
-    XCTAssertEqual(b[lastBCharIndex], " ", "Failed to pad with default character")
+    XCTAssertEqual(b[lastBCharIndex], " " as Character, "Failed to pad with default character")
     
     let c = a.paddedToWidth(80, padBy: "+")
     let lastCCharIndex = advance(c.endIndex, -1)
-    XCTAssertEqual(c[lastCCharIndex], "+", "Failed to pad with specified character")
+    XCTAssertEqual(c[lastCCharIndex], "+" as Character, "Failed to pad with specified character")
   }
   
   func testWrappedAtWidth() {
