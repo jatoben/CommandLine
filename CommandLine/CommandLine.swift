@@ -44,12 +44,6 @@ let ArgumentAttacher: Character = "="
 public class CommandLine {
   private var _arguments: [String]
   private var _options: [Option] = [Option]()
-  private var _parseError: String? = nil
-  
-  /** Contains a description of the last parse error, if any. */
-  public var parseError: String? {
-    return _parseError
-  }
   
   /**
    * Initializes a CommandLine object.
@@ -147,8 +141,7 @@ public class CommandLine {
    * :returns: True if all arguments were parsed successfully, false if any option had an
    *   invalid value or if a required option was missing.
    */
-  public func parse() -> Bool {
-    _parseError = nil
+  public func parse() -> (Bool, String?) {
     
     for (idx, arg) in enumerate(_arguments) {
       if arg == ArgumentStopper {
@@ -179,8 +172,7 @@ public class CommandLine {
         if flag == option.shortFlag || flag == option.longFlag {
           var vals = self._getFlagValues(flagIndex: idx)
           if !option.match(vals) {
-            _parseError = "Invalid value for \(option.longFlag)"
-            return false
+            return (false, "Invalid value for \(option.longFlag)")
           }
           
           flagMatched = true
@@ -199,8 +191,7 @@ public class CommandLine {
                */
               var vals = (i == flagLength - 1) ? self._getFlagValues(flagIndex: idx) : [String]()
               if !option.match(vals) {
-                _parseError = "Invalid value for \(option.longFlag)"
-                return false
+                return (false, "Invalid value for \(option.longFlag)")
               }
               
               break
@@ -213,12 +204,11 @@ public class CommandLine {
     /* Check to see if any required options were not matched */
     for option in _options {
       if option.required && !option.isSet {
-        _parseError = "\(option.longFlag) is required"
-        return false
+        return (false, "\(option.longFlag) is required")
       }
     }
     
-    return true
+    return (true, nil)
   }
   
   /** Prints a usage message to stdout. */

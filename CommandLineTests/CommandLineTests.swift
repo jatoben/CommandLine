@@ -43,8 +43,9 @@ internal class CommandLineTests: XCTestCase {
     let e = BoolOption(shortFlag: "e", longFlag: "e1", helpMessage: "")
     
     cli.addOptions(a, b, c, d, e)
-    XCTAssertTrue(cli.parse(), "Failed to parse bool options")
-    XCTAssertNil(cli.parseError, "Non-nil parse error after successful parse")
+    let (success, error) = cli.parse()
+    XCTAssertTrue(success, "Failed to parse bool options")
+    XCTAssertNil(error, "Non-nil parse error after successful parse")
     XCTAssertTrue(a.value, "Failed to get true value from short bool")
     XCTAssertTrue(b.value, "Failed to get true value from long bool")
     XCTAssertTrue(c.value, "Failed to get true value from multi-flagged bool")
@@ -68,8 +69,9 @@ internal class CommandLineTests: XCTestCase {
     let c = IntOption(shortFlag: "c", longFlag: "c1", required: false, helpMessage: "")
     
     cli.addOptions(a, b, c)
-    XCTAssertTrue(cli.parse(), "Failed to parse int options")
-    XCTAssertNil(cli.parseError, "Non-nil parse error after successful parse")
+    var (success, error) = cli.parse()
+    XCTAssertTrue(success, "Failed to parse int options")
+    XCTAssertNil(error, "Non-nil parse error after successful parse")
     XCTAssertEqual(a.value!, 1, "Failed to get correct value from short int")
     XCTAssertEqual(b.value!, 2, "Failed to get correct value from long int")
     XCTAssertEqual(c.value!, 4, "Failed to get correct value from multi-flagged int")
@@ -79,30 +81,34 @@ internal class CommandLineTests: XCTestCase {
      */
     let d = IntOption(shortFlag: "d", longFlag: "d1", required: false, helpMessage: "")
     cli.setOptions(d)
-    XCTAssertFalse(cli.parse(), "Parsed invalid concat int option")
-    XCTAssertNotNil(cli.parseError, "No parse error after parsing failed")
+    (success, error) = cli.parse()
+    XCTAssertFalse(success, "Parsed invalid concat int option")
+    XCTAssertNotNil(error, "No parse error after parsing failed")
     XCTAssertNil(d.value, "Got non-nil value from concat multi-flagged int")
     
     /* Non-int value */
     let e = IntOption(shortFlag: "e", longFlag: "e1", required: false, helpMessage: "")
     cli.setOptions(e)
-    XCTAssertFalse(cli.parse(), "Parsed invalid int option")
-    XCTAssertNotNil(cli.parseError, "No parse error after parsing failed")
+    (success, error) = cli.parse()
+    XCTAssertFalse(success, "Parsed invalid int option")
+    XCTAssertNotNil(error, "No parse error after parsing failed")
     XCTAssertNil(e.value, "Got non-nil value from invalid int")
     
     /* No value */
     let f = IntOption(shortFlag: "f", longFlag: "f1", required: false, helpMessage: "")
     cli.setOptions(f)
-    XCTAssertFalse(cli.parse(), "Parsed int option with no value")
-    XCTAssertNotNil(cli.parseError, "No parse error after parsing failed")
+    (success, error) = cli.parse()
+    XCTAssertFalse(success, "Parsed int option with no value")
+    XCTAssertNotNil(error, "No parse error after parsing failed")
     XCTAssertNil(f.value, "Got non-nil value from no value int")
     
     /* Negative int */
     let g = IntOption(shortFlag: "g", longFlag: "g1", required: false, helpMessage: "")
     cli.setOptions(g)
     cli.parse()
-    XCTAssertTrue(cli.parse(), "Failed to parse int option with negative value")
-    XCTAssertNil(cli.parseError, "Non-nil parse error after successful parse")
+    (success, error) = cli.parse()
+    XCTAssertTrue(success, "Failed to parse int option with negative value")
+    XCTAssertNil(error, "Non-nil parse error after successful parse")
     XCTAssertEqual(g.value!, -5, "Failed to get correct value from int option with negative value")
   }
   
@@ -131,8 +137,9 @@ internal class CommandLineTests: XCTestCase {
     let f = CounterOption(shortFlag: "f", longFlag: "f1", helpMessage: "")
     
     cli.addOptions(a, b, c, d, e, f)
-    XCTAssertTrue(cli.parse(), "Failed to parse counter options")
-    XCTAssertNil(cli.parseError, "Non-nil parse error after successful parse")
+    let (success, error) = cli.parse()
+    XCTAssertTrue(success, "Failed to parse counter options")
+    XCTAssertNil(error, "Non-nil parse error after successful parse")
     XCTAssertEqual(a.value, 1, "Failed to get correct value from short counter")
     XCTAssertEqual(b.value, 1, "Failed to get correct value from long counter")
     XCTAssertEqual(c.value, 2, "Failed to get correct value from multi-flagged short counter")
@@ -162,8 +169,9 @@ internal class CommandLineTests: XCTestCase {
     let e = DoubleOption(shortFlag: "e", longFlag: "e1", required: true, helpMessage: "")
     
     cli.addOptions(a, b, c, d, e)
-    XCTAssertTrue(cli.parse(), "Failed to parse double options")
-    XCTAssertNil(cli.parseError, "Non-nil parse error after successful parse")
+    var (success, error) = cli.parse()
+    XCTAssertTrue(success, "Failed to parse double options")
+    XCTAssertNil(error, "Non-nil parse error after successful parse")
     XCTAssertEqual(a.value!, 1.4, "Failed to get correct value from short double")
     XCTAssertEqual(b.value!, 2.5, "Failed to get correct value from long double")
     XCTAssertEqual(c.value!, 5.2, "Failed to get correct value from multi-flagged short double")
@@ -173,22 +181,25 @@ internal class CommandLineTests: XCTestCase {
     /* Non-double value */
     let f = DoubleOption(shortFlag: "f", longFlag: "f1", required: true, helpMessage: "")
     cli.setOptions(f)
-    XCTAssertFalse(cli.parse(), "Parsed invalid double option")
-    XCTAssertNotNil(cli.parseError, "No parse error after parsing failed")
+    (success, error) = cli.parse()
+    XCTAssertFalse(success, "Parsed invalid double option")
+    XCTAssertNotNil(error, "No parse error after parsing failed")
     XCTAssertNil(f.value, "Got non-nil value from invalid double")
     
     /* No value */
     let g = DoubleOption(shortFlag: "g", longFlag: "g1", required: true, helpMessage: "")
     cli.setOptions(g)
-    XCTAssertFalse(cli.parse(), "Parsed double option with no value")
-    XCTAssertNotNil(cli.parseError, "No parse error after parsing failed")
+    (success, error) = cli.parse()
+    XCTAssertFalse(success, "Parsed double option with no value")
+    XCTAssertNotNil(error, "No parse error after parsing failed")
     XCTAssertNil(g.value, "Got non-nil value from no value double")
     
     /* Negative double */
     let h = DoubleOption(shortFlag: "h", longFlag: "h1", required: true, helpMessage: "")
     cli.setOptions(h)
-    XCTAssertTrue(cli.parse(), "Failed to parse double option with negative value")
-    XCTAssertNil(cli.parseError, "Non-nil parse error after successful parse")
+    (success, error) = cli.parse()
+    XCTAssertTrue(success, "Failed to parse double option with negative value")
+    XCTAssertNil(error, "Non-nil parse error after successful parse")
     XCTAssertEqual(h.value!, -3.14159, "Failed to get correct value from double with negative value")
   }
   
@@ -199,8 +210,9 @@ internal class CommandLineTests: XCTestCase {
     cli.addOptions(a)
     
     setlocale(LC_ALL, "sv_SE.UTF-8")
-    XCTAssertTrue(cli.parse(), "Failed to parse double options in alternate locale")
-    XCTAssertNil(cli.parseError, "Non-nil parse error after successful parse")
+    let (success, error) = cli.parse()
+    XCTAssertTrue(success, "Failed to parse double options in alternate locale")
+    XCTAssertNil(error, "Non-nil parse error after successful parse")
     XCTAssertEqual(a.value!, 3.14159, "Failed to get correct value from double in alternate locale")
   }
   
@@ -221,8 +233,9 @@ internal class CommandLineTests: XCTestCase {
     let d = StringOption(shortFlag: "d", longFlag: "d1", required: true, helpMessage: "")
     
     cli.addOptions(a, b, c, d)
-    XCTAssertTrue(cli.parse(), "Failed to parse string options")
-    XCTAssertNil(cli.parseError, "Non-nil parse error after successful parse")
+    var (success, error) = cli.parse()
+    XCTAssertTrue(success, "Failed to parse string options")
+    XCTAssertNil(error, "Non-nil parse error after successful parse")
     XCTAssertEqual(a.value!, "one", "Failed to get correct value from short string")
     XCTAssertEqual(b.value!, "two", "Failed to get correct value from long string")
     XCTAssertEqual(c.value!, "xx", "Failed to get correct value from multi-flagged short string")
@@ -231,8 +244,9 @@ internal class CommandLineTests: XCTestCase {
     /* No value */
     let e = StringOption(shortFlag: "e", longFlag: "e1", required: false, helpMessage: "")
     cli.setOptions(e)
-    XCTAssertFalse(cli.parse(), "Parsed string option with no value")
-    XCTAssertNotNil(cli.parseError, "No parse error after parsing failed")
+    (success, error) = cli.parse()
+    XCTAssertFalse(success, "Parsed string option with no value")
+    XCTAssertNotNil(error, "No parse error after parsing failed")
     XCTAssertNil(e.value, "Got non-nil value from no value string")
   }
   
@@ -249,8 +263,9 @@ internal class CommandLineTests: XCTestCase {
     let d = MultiStringOption(shortFlag: "d", longFlag: "d1", required: true, helpMessage: "")
     
     cli.addOptions(a, b, c, d)
-    XCTAssertTrue(cli.parse(), "Failed to parse multi string options")
-    XCTAssertNil(cli.parseError, "Non-nil parse error after successful parse")
+    var (success, error) = cli.parse()
+    XCTAssertTrue(success, "Failed to parse multi string options")
+    XCTAssertNil(error, "Non-nil parse error after successful parse")
     XCTAssertEqual(a.value!.count, 1, "Failed to get correct number of values from single short multistring")
     XCTAssertEqual(a.value![0], "one", "Filed to get correct value from single short multistring")
     XCTAssertEqual(b.value!.count, 2, "Failed to get correct number of values from multi short multistring")
@@ -265,8 +280,9 @@ internal class CommandLineTests: XCTestCase {
     /* No value */
     let e = MultiStringOption(shortFlag: "e", longFlag: "e1", required: false, helpMessage: "")
     cli.setOptions(e)
-    XCTAssertFalse(cli.parse(), "Parsed multi string option with no value")
-    XCTAssertNotNil(cli.parseError, "No parse error after parsing failed")
+    (success, error) = cli.parse()
+    XCTAssertFalse(success, "Parsed multi string option with no value")
+    XCTAssertNotNil(error, "No parse error after parsing failed")
     XCTAssertNil(e.value, "Got non-nil value from no value multistring")
   }
 
@@ -278,8 +294,9 @@ internal class CommandLineTests: XCTestCase {
     let f = MultiStringOption(shortFlag: "f", longFlag: "file", required: true, helpMessage: "")
     
     cli.addOptions(x, v, f)
-    XCTAssertTrue(cli.parse(), "Failed to parse concat flags with value")
-    XCTAssertNil(cli.parseError, "Non-nil parse error after successful parse")
+    let (success, error) = cli.parse()
+    XCTAssertTrue(success, "Failed to parse concat flags with value")
+    XCTAssertNil(error, "Non-nil parse error after successful parse")
     XCTAssertTrue(x.value as Bool, "Failed to get true value from concat flags with value")
     XCTAssertEqual(v.value, 1, "Failed to get correct value from concat flags with value")
     XCTAssertEqual(f.value!.count, 2, "Failed to get values from concat flags with value")
@@ -292,8 +309,9 @@ internal class CommandLineTests: XCTestCase {
     let c = StringOption(shortFlag: "c", longFlag: "c1", required: true, helpMessage: "")
 
     cli.addOption(c)
-    XCTAssertFalse(cli.parse(), "Parsed missing required option")
-    XCTAssertNotNil(cli.parseError, "No parse error after parsing failed")
+    let (success, error) = cli.parse()
+    XCTAssertFalse(success, "Parsed missing required option")
+    XCTAssertNotNil(error, "No parse error after parsing failed")
     XCTAssertNil(c.value, "Got non-nil value from missing option")
   }
   
@@ -304,8 +322,9 @@ internal class CommandLineTests: XCTestCase {
     let b = StringOption(shortFlag: "b", longFlag: "bb", required: true, helpMessage: "")
     
     cli.addOptions(a, b)
-    XCTAssertTrue(cli.parse(), "Failed to parse attached argument values")
-    XCTAssertNil(cli.parseError, "Non-nil parse error after successful parse")
+    let (success, error) = cli.parse()
+    XCTAssertTrue(success, "Failed to parse attached argument values")
+    XCTAssertNil(error, "Non-nil parse error after successful parse")
     XCTAssertEqual(a.value!, 5, "Failed to get correct int attached value")
     XCTAssertEqual(b.value!, "klaxon", "Failed to get correct string attached value")
   }
@@ -318,8 +337,9 @@ internal class CommandLineTests: XCTestCase {
     
     
     cli.addOptions(a, b)
-    XCTAssertTrue(cli.parse(), "Failed to parse emoji options")
-    XCTAssertNil(cli.parseError, "Non-nil parse error after successful parse")
+    let (success, error) = cli.parse()
+    XCTAssertTrue(success, "Failed to parse emoji options")
+    XCTAssertNil(error, "Non-nil parse error after successful parse")
     XCTAssertEqual(a.value!, 3)
     XCTAssertEqual(b.value!, "☀️")
   }
@@ -336,8 +356,9 @@ internal class CommandLineTests: XCTestCase {
     let op = EnumOption<Operation>(shortFlag: "o", longFlag: "operation", required: true, helpMessage: "")
     
     cli.setOptions(op)
-    XCTAssertTrue(cli.parse(), "Failed to parse enum options")
-    XCTAssertNil(cli.parseError, "Non-nil parse error after successful parse")
+    let (success, error) = cli.parse()
+    XCTAssertTrue(success, "Failed to parse enum options")
+    XCTAssertNil(error, "Non-nil parse error after successful parse")
     XCTAssertEqual(op.value!, Operation.Extract, "Failed to get correct value from enum option")
   }
   
@@ -346,8 +367,9 @@ internal class CommandLineTests: XCTestCase {
     let op = MultiStringOption(shortFlag: "a", longFlag: "a1", required: true, helpMessage: "")
     
     cli.setOptions(op)
-    XCTAssertTrue(cli.parse(), "Failed to parse options with an argument stopper")
-    XCTAssertNil(cli.parseError, "Non-nil parse error after successful parse")
+    let (success, error) = cli.parse()
+    XCTAssertTrue(success, "Failed to parse options with an argument stopper")
+    XCTAssertNil(error, "Non-nil parse error after successful parse")
     XCTAssertEqual(op.value!.count, 3, "Failed to get correct number of options with stopper")
     XCTAssertEqual(op.value![0], "-value", "Failed to get correct value from options with stopper")
     XCTAssertEqual(op.value![1], "--", "Failed to get correct value from options with stopper")
@@ -370,8 +392,9 @@ internal class CommandLineTests: XCTestCase {
       let filePath = StringOption(shortFlag: "f", longFlag: "file", required: true, helpMessage: "")
       
       cli.setOptions(extract, verbosity, filePath)
-      XCTAssertTrue(cli.parse(), "Failed to parse arg line \(args)")
-      XCTAssertNil(cli.parseError, "Non-nil parse error after successful parse")
+      let (success, error) = cli.parse()
+      XCTAssertTrue(success, "Failed to parse arg line \(args)")
+      XCTAssertNil(error, "Non-nil parse error after successful parse")
       XCTAssertEqual(extract.value, true, "Failed to parse extract value from arg line \(args)")
       XCTAssertEqual(verbosity.value, 1, "Failed to parse verbosity value from arg line \(args)")
       XCTAssertEqual(filePath.value!, "/path/to/file", "Failed to parse file path value from arg line \(args)")
@@ -396,8 +419,9 @@ internal class CommandLineTests: XCTestCase {
       helpMessage: "X is for Extra.")
     
     cli.addOptions(boolOpt, counterOpt, stringOpt, intOpt, doubleOpt, extraOpt)
-    XCTAssertTrue(cli.parse(), "Failed to parse mixed command line")
-    XCTAssertNil(cli.parseError, "Non-nil parse error after successful parse")
+    let (success, error) = cli.parse()
+    XCTAssertTrue(success, "Failed to parse mixed command line")
+    XCTAssertNil(error, "Non-nil parse error after successful parse")
     XCTAssertTrue(boolOpt.value, "Failed to get correct bool value from mixed command line")
     XCTAssertEqual(counterOpt.value, 3, "Failed to get correct counter value from mixed command line")
     XCTAssertEqual(stringOpt.value!, "John Q. Public", "Failed to get correct string value from mixed command line")

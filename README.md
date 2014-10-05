@@ -21,8 +21,9 @@ let verbosity = CounterOption(shortFlag: "v", longFlag: "verbose",
   helpMessage: "Print verbose messages. Specify multiple times to increase verbosity.")
 
 cli.addOptions(filePath, compress, help, verbosity)
-if !cli.parse() {
-  println(cli.parseError!)
+let (success, error) = cli.parse()
+if !success {
+  println(error!)
   cli.printUsage()
   exit(EX_USAGE)
 }
