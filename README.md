@@ -100,8 +100,9 @@ let cli = CommandLine()
 let op = EnumOption<Operation>(shortFlag: "o", longFlag: "operation", required: true,
   helpMessage: "File operation - c for create, x for extract, l for list, or v for verify.")
 cli.setOptions(op)
-if !cli.parse() {
-  println(cli.parseError!)
+let (success, error) = cli.parse()
+if !success {
+  println(error!)
   cli.printUsage()
   exit(EX_USAGE)
 }
