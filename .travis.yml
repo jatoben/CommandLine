@@ -1,0 +1,4 @@
+language: objective-c
+xcode_project: CommandLine.xcodeproj
+xcode_scheme: CommandLine
+script: xcodebuild -scheme CommandLine test
