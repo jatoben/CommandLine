@@ -70,7 +70,7 @@ internal extension String {
     }
     
     return (Double(characteristic.toInt()!) +
-      Double(mantissa.toInt()!) / pow(Double(10), Double(countElements(mantissa) - 1))) *
+      Double(mantissa.toInt()!) / pow(Double(10), Double(count(mantissa) - 1))) *
       (isNegative ? -1 : 1)
   }
   
@@ -98,7 +98,7 @@ internal extension String {
       buf.append(c)
     }
     
-    if countElements(buf) > 0 {
+    if count(buf) > 0 {
       s.append(buf)
     }
     
@@ -115,7 +115,7 @@ internal extension String {
    */
   func paddedToWidth(width: Int, padBy: Character = " ") -> String {
     var s = self
-    var currentLength = countElements(self)
+    var currentLength = count(self)
     
     while currentLength++ < width {
       s.append(padBy)
@@ -142,7 +142,7 @@ internal extension String {
     var currentLineWidth = 0
     
     for word in self.splitByCharacter(splitBy) {
-      let wordLength = countElements(word)
+      let wordLength = count(word)
       
       if currentLineWidth + wordLength + 1 > width {
         /* Word length is greater than line length, can't wrap */
