@@ -2,6 +2,8 @@ CommandLine
 ===========
 A pure Swift library for creating command-line interfaces.
 
+*Note: CommandLine `master` requires Xcode 6.3 / Swift 1.2. If you are using Xcode 6.2, please check out [v1.0.0](https://github.com/jatoben/CommandLine/tree/v1.0.0).*
+
 Usage
 -----
 CommandLine aims to have a simple and self-explanatory API.
