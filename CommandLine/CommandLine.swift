@@ -161,7 +161,9 @@ public class CommandLine {
           continue
         }
         
-        flag.append(c)
+        // Swift 1.2: String.append() doesn't like emoji for some reason, seems
+        // like a bug. Same workaround in String extension splitByCharacter()
+        flag = flag + String(c)
       }
       
       /* Remove attached argument from flag */
