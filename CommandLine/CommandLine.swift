@@ -155,13 +155,15 @@ public class CommandLine {
       /* Swift strings don't have substringFromIndex(). Do a little dance instead. */
       var flag = ""
       var skipChars =
-        arg.hasPrefix(LongOptionPrefix) ? countElements(LongOptionPrefix) : countElements(ShortOptionPrefix)
+        arg.hasPrefix(LongOptionPrefix) ? count(LongOptionPrefix) : count(ShortOptionPrefix)
       for c in arg {
         if skipChars-- > 0 {
           continue
         }
         
-        flag.append(c)
+        // Swift 1.2: String.append() doesn't like emoji for some reason, seems
+        // like a bug. Same workaround in String extension splitByCharacter()
+        flag = flag + String(c)
       }
       
       /* Remove attached argument from flag */
@@ -183,7 +185,7 @@ public class CommandLine {
       /* Flags that do not take any arguments can be concatenated */
       if !flagMatched && !arg.hasPrefix(LongOptionPrefix) {
         for (i, c) in enumerate(flag) {
-          var flagLength = countElements(flag)
+          var flagLength = count(flag)
           for option in _options {
             if String(c) == option.shortFlag {
               /* Values are allowed at the end of the concatenated flags, e.g.
@@ -218,7 +220,7 @@ public class CommandLine {
     var flagWidth = 0
     for opt in _options {
       flagWidth = max(flagWidth,
-        countElements("  \(ShortOptionPrefix)\(opt.shortFlag), \(LongOptionPrefix)\(opt.longFlag):"))
+        count("  \(ShortOptionPrefix)\(opt.shortFlag), \(LongOptionPrefix)\(opt.longFlag):"))
     }
     
     println("Usage: \(name) [options]")
