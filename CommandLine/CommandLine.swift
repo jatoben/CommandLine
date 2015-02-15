@@ -17,6 +17,7 @@
 
 /* Required for setlocale(3) */
 @exported import Darwin
+import Foundation
 
 let ShortOptionPrefix = "-"
 let LongOptionPrefix = "--"
@@ -152,22 +153,11 @@ public class CommandLine {
         continue
       }
       
-      /* Swift strings don't have substringFromIndex(). Do a little dance instead. */
-      var flag = ""
-      var skipChars =
-        arg.hasPrefix(LongOptionPrefix) ? count(LongOptionPrefix) : count(ShortOptionPrefix)
-      for c in arg {
-        if skipChars-- > 0 {
-          continue
-        }
-        
-        // Swift 1.2: String.append() doesn't like emoji for some reason, seems
-        // like a bug. Same workaround in String extension splitByCharacter()
-        flag = flag + String(c)
-      }
-      
       /* Remove attached argument from flag */
-      flag = flag.splitByCharacter(ArgumentAttacher, maxSplits: 1)[0]
+      let skipChars =
+        arg.hasPrefix(LongOptionPrefix) ? count(LongOptionPrefix) : count(ShortOptionPrefix)
+      let flag = (arg as NSString).substringFromIndex(skipChars)
+                                  .splitByCharacter(ArgumentAttacher, maxSplits: 1)[0]
       
       var flagMatched = false
       for option in _options {
