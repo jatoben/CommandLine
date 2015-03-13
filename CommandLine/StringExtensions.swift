@@ -95,7 +95,7 @@ internal extension String {
         continue
       }
       
-      buf = buf + String(c)
+      buf.append(c)
     }
     
     if count(buf) > 0 {
