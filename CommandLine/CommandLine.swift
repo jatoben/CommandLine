@@ -164,6 +164,10 @@ public class CommandLine {
         flag.append(c)
       }
       
+      if count(flag) < 1 {
+          continue
+      }
+      
       /* Remove attached argument from flag */
       flag = flag.splitByCharacter(ArgumentAttacher, maxSplits: 1)[0]
       
