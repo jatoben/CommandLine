@@ -401,10 +401,10 @@ internal class CommandLineTests: XCTestCase {
     }
   }
   
-  func testInvalidShortFlag() {
-    let cli = CommandLine(arguments: [ "CommandLineTests", "-"])
+  func testEmptyFlags() {
+    let cli = CommandLine(arguments: [ "CommandLineTests", "-", "--"])
     var (success, error) = cli.parse()
-    XCTAssertTrue(success, "Failed to abort parsing invalid short flag")
+    XCTAssertTrue(success, "Failed to parse empty flags")
     XCTAssertNil(error, "Non-nil parse error after successful parse")
   }
   
