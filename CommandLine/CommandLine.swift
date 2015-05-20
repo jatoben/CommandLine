@@ -164,6 +164,11 @@ public class CommandLine {
         flag.append(c)
       }
       
+      /* The argument contained nothing but ShortOptionPrefix or LongOptionPrefix */
+      if flag.isEmpty {
+        continue
+      }
+      
       /* Remove attached argument from flag */
       flag = flag.splitByCharacter(ArgumentAttacher, maxSplits: 1)[0]
       
