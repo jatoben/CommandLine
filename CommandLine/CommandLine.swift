@@ -164,8 +164,9 @@ public class CommandLine {
         flag.append(c)
       }
       
-      if count(flag) < 1 {
-          continue
+      /* The argument contained nothing but ShortOptionPrefix or LongOptionPrefix */
+      if flag.isEmpty {
+        continue
       }
       
       /* Remove attached argument from flag */
