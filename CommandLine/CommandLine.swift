@@ -138,11 +138,13 @@ public class CommandLine {
   /**
    * Parses command-line arguments into their matching Option values.
    *
-   * :returns: True if all arguments were parsed successfully, false if any option had an
-   *   invalid value or if a required option was missing.
+   * :param: strict Fail if any unrecognized arguments are present (default: false).
+   *
+   * :returns: True if all arguments were parsed successfully; false if any option had an
+   *   invalid value, a required option was missing, or an unrecognized argument was present
+   *   and `strict` was enabled.
    */
   public func parse(strict: Bool = false) -> (Bool, String?) {
-    
     for (idx, arg) in enumerate(_arguments) {
       if arg == ArgumentStopper {
         break
