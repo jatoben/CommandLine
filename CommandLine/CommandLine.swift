@@ -141,7 +141,7 @@ public class CommandLine {
    * :returns: True if all arguments were parsed successfully, false if any option had an
    *   invalid value or if a required option was missing.
    */
-  public func parse() -> (Bool, String?) {
+  public func parse(strict: Bool = false) -> (Bool, String?) {
     
     for (idx, arg) in enumerate(_arguments) {
       if arg == ArgumentStopper {
@@ -199,10 +199,16 @@ public class CommandLine {
                 return (false, "Invalid value for \(option.longFlag)")
               }
               
+              flagMatched = true
               break
             }
           }
         }
+      }
+
+      /* Invalid flag */
+      if strict && !flagMatched {
+        return (false, "Invalid argument: \(arg)")
       }
     }
 

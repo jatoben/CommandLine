@@ -436,4 +436,19 @@ internal class CommandLineTests: XCTestCase {
     XCTAssertEqual(doubleOpt.value!, 0.05, "Failed to get correct double value from mixed command line")
     XCTAssertEqual(extraOpt.value!.count  , 3, "Failed to get correct number of multistring options from mixed command line")
   }
+
+  func testStrictMode() {
+    let cli = CommandLine(arguments: [ "CommandLineTests", "--valid", "--invalid"])
+    let validOpt = BoolOption(shortFlag: "v", longFlag: "valid", helpMessage: "Known flag.")
+    cli.addOptions(validOpt)
+
+    var (success, error) = cli.parse(strict: false)
+    XCTAssertTrue(success, "Failed to parsed invalid flags in non-strict mode")
+    XCTAssertNil(error, "non-nil parse error after successful parse")
+
+    var (successStrict, errorStrict) = cli.parse(strict: true)
+    XCTAssertFalse(successStrict, "Successfully parsed invalid flags in strict mode")
+    XCTAssertNotNil(errorStrict, "nil parse error after failed parse")
+  }
+
 }
