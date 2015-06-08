@@ -48,10 +48,10 @@ public class CommandLine {
   /**
    * Initializes a CommandLine object.
    *
-   * :param: arguments Arguments to parse. If omitted, the arguments passed to the app
+   * - parameter arguments: Arguments to parse. If omitted, the arguments passed to the app
    *   on the command line will automatically be used.
    *
-   * :returns: An initalized CommandLine object.
+   * - returns: An initalized CommandLine object.
    */
   public init(arguments: [String] = Process.arguments) {
     self._arguments = arguments
@@ -61,7 +61,7 @@ public class CommandLine {
   }
   
   /* Returns all argument values from flagIndex to the next flag or the end of the argument array. */
-  private func _getFlagValues(#flagIndex: Int) -> [String] {
+  private func _getFlagValues(flagIndex: Int) -> [String] {
     var args: [String] = [String]()
     var skipFlagChecks = false
     
@@ -78,7 +78,7 @@ public class CommandLine {
           continue
         }
         
-        if _arguments[i].hasPrefix(ShortOptionPrefix) && _arguments[i].toInt() == nil &&
+        if _arguments[i].hasPrefix(ShortOptionPrefix) && Int(_arguments[i]) == nil &&
           _arguments[i].toDouble() == nil {
           break
         }
@@ -93,7 +93,7 @@ public class CommandLine {
   /**
    * Adds an Option to the command line.
    *
-   * :param: option The option to add.
+   * - parameter option: The option to add.
    */
   public func addOption(option: Option) {
     _options.append(option)
@@ -102,7 +102,7 @@ public class CommandLine {
   /**
    * Adds one or more Options to the command line.
    *
-   * :param: options An array containing the options to add.
+   * - parameter options: An array containing the options to add.
    */
   public func addOptions(options: [Option]) {
     _options += options
@@ -111,7 +111,7 @@ public class CommandLine {
   /**
    * Adds one or more Options to the command line.
    *
-   * :param: options The options to add.
+   * - parameter options: The options to add.
    */
   public func addOptions(options: Option...) {
     _options += options
@@ -120,7 +120,7 @@ public class CommandLine {
   /**
    * Sets the command line Options. Any existing options will be overwritten.
    *
-   * :param: options An array containing the options to set.
+   * - parameter options: An array containing the options to set.
    */
   public func setOptions(options: [Option]) {
     _options = options
@@ -129,7 +129,7 @@ public class CommandLine {
   /**
    * Sets the command line Options. Any existing options will be overwritten.
    *
-   * :param: options The options to set.
+   * - parameter options: The options to set.
    */
   public func setOptions(options: Option...) {
     _options = options
@@ -138,14 +138,14 @@ public class CommandLine {
   /**
    * Parses command-line arguments into their matching Option values.
    *
-   * :param: strict Fail if any unrecognized arguments are present (default: false).
+   * - parameter strict: Fail if any unrecognized arguments are present (default: false).
    *
-   * :returns: True if all arguments were parsed successfully; false if any option had an
+   * - returns: True if all arguments were parsed successfully; false if any option had an
    *   invalid value, a required option was missing, or an unrecognized argument was present
    *   and `strict` was enabled.
    */
   public func parse(strict: Bool = false) -> (Bool, String?) {
-    for (idx, arg) in enumerate(_arguments) {
+    for (idx, arg) in _arguments.enumerate() {
       if arg == ArgumentStopper {
         break
       }
@@ -157,8 +157,8 @@ public class CommandLine {
       /* Swift strings don't have substringFromIndex(). Do a little dance instead. */
       var flag = ""
       var skipChars =
-        arg.hasPrefix(LongOptionPrefix) ? count(LongOptionPrefix) : count(ShortOptionPrefix)
-      for c in arg {
+        arg.hasPrefix(LongOptionPrefix) ? LongOptionPrefix.characters.count : ShortOptionPrefix.characters.count
+      for c in arg.characters {
         if skipChars-- > 0 {
           continue
         }
@@ -177,7 +177,7 @@ public class CommandLine {
       var flagMatched = false
       for option in _options {
         if flag == option.shortFlag || flag == option.longFlag {
-          var vals = self._getFlagValues(flagIndex: idx)
+          let vals = self._getFlagValues(idx)
           if !option.match(vals) {
             return (false, "Invalid value for \(option.longFlag)")
           }
@@ -189,14 +189,14 @@ public class CommandLine {
       
       /* Flags that do not take any arguments can be concatenated */
       if !flagMatched && !arg.hasPrefix(LongOptionPrefix) {
-        for (i, c) in enumerate(flag) {
-          var flagLength = count(flag)
+        for (i, c) in flag.characters.enumerate() {
+          let flagLength = flag.characters.count
           for option in _options {
             if String(c) == option.shortFlag {
               /* Values are allowed at the end of the concatenated flags, e.g.
                * -xvf <file1> <file2>
                */
-              var vals = (i == flagLength - 1) ? self._getFlagValues(flagIndex: idx) : [String]()
+              let vals = (i == flagLength - 1) ? self._getFlagValues(idx) : [String]()
               if !option.match(vals) {
                 return (false, "Invalid value for \(option.longFlag)")
               }
@@ -231,14 +231,14 @@ public class CommandLine {
     var flagWidth = 0
     for opt in _options {
       flagWidth = max(flagWidth,
-        count("  \(ShortOptionPrefix)\(opt.shortFlag), \(LongOptionPrefix)\(opt.longFlag):"))
+        "  \(ShortOptionPrefix)\(opt.shortFlag), \(LongOptionPrefix)\(opt.longFlag):".characters.count)
     }
     
-    println("Usage: \(name) [options]")
+    print("Usage: \(name) [options]")
     for opt in _options {
       let flags = "  \(ShortOptionPrefix)\(opt.shortFlag), \(LongOptionPrefix)\(opt.longFlag):".paddedToWidth(flagWidth)
       
-      println("\(flags)\n      \(opt.helpMessage)")
+      print("\(flags)\n      \(opt.helpMessage)")
     }
   }
 }

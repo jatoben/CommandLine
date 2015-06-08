@@ -36,9 +36,9 @@ public class Option {
   }
   
   public init(shortFlag: String, longFlag: String, required: Bool, helpMessage: String) {
-    assert(count(shortFlag) == 1, "Short flag must be a single character")
-    assert(shortFlag.toInt() == nil && shortFlag.toDouble() == nil, "Short flag cannot be a numeric value")
-    assert(longFlag.toInt() == nil && longFlag.toDouble() == nil, "Long flag cannot be a numeric value")
+    assert(shortFlag.characters.count == 1, "Short flag must be a single character")
+    assert(Int(shortFlag) == nil && shortFlag.toDouble() == nil, "Short flag cannot be a numeric value")
+    assert(Int(longFlag) == nil && longFlag.toDouble() == nil, "Long flag cannot be a numeric value")
     
     self.shortFlag = shortFlag
     self.longFlag = longFlag
@@ -94,7 +94,7 @@ public class IntOption: Option {
       return false
     }
     
-    if let val = values[0].toInt() {
+    if let val = Int(values[0]) {
       _value = val
       return true
     }

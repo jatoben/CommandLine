@@ -442,11 +442,11 @@ internal class CommandLineTests: XCTestCase {
     let validOpt = BoolOption(shortFlag: "v", longFlag: "valid", helpMessage: "Known flag.")
     cli.addOptions(validOpt)
 
-    var (success, error) = cli.parse(strict: false)
+    var (success, error) = cli.parse(false)
     XCTAssertTrue(success, "Failed to parsed invalid flags in non-strict mode")
     XCTAssertNil(error, "non-nil parse error after successful parse")
 
-    var (successStrict, errorStrict) = cli.parse(strict: true)
+    var (successStrict, errorStrict) = cli.parse(true)
     XCTAssertFalse(successStrict, "Successfully parsed invalid flags in strict mode")
     XCTAssertNotNil(errorStrict, "nil parse error after failed parse")
   }
