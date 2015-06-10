@@ -35,15 +35,41 @@ let ArgumentAttacher: Character = "="
  * The CommandLine class implements a command-line interface for your app.
  * 
  * To use it, define one or more Options (see Option.swift) and add them to your
- * CommandLine object, then invoke parse(). Each Option object will be populated with
+ * CommandLine object, then invoke `parse()`. Each Option object will be populated with
  * the value given by the user.
  *
- * If any required options are missing or if an invalid value is found, parse() will return
- * false. You can then call printUsage() to output an automatically-generated usage message.
+ * If any required options are missing or if an invalid value is found, `parse()` will throw
+ * a `ParseError`. You can then call `printUsage()` to output an automatically-generated usage
+ * message.
  */
 public class CommandLine {
   private var _arguments: [String]
   private var _options: [Option] = [Option]()
+  
+  /** A ParseError is thrown if the `parse()` method fails. */
+  public enum ParseError: ErrorType, CustomStringConvertible {
+    /** Thrown if an unrecognized argument is passed to `parse()` in strict mode */
+    case InvalidArgument(String)
+
+    /** Thrown if the value for an Option is invalid (e.g. a string is passed to an IntOption) */
+    case InvalidValueForOption(Option, [String])
+    
+    /** Thrown if an Option with required: true is missing */
+    case MissingRequiredOptions([Option])
+    
+    public var description: String {
+      switch self {
+      case let .InvalidArgument(arg):
+        return "Invalid argument: \(arg)"
+      case let .InvalidValueForOption(opt, vals):
+        let vs = ", ".join(vals)
+        return "Invalid value(s) for option \(opt.longFlag): \(vs)"
+      case let .MissingRequiredOptions(opts):
+        return "Missing required options: \(opts.map { return $0.longFlag })"
+
+      }
+    }
+  }
   
   /**
    * Initializes a CommandLine object.
@@ -136,15 +162,12 @@ public class CommandLine {
   }
   
   /**
-   * Parses command-line arguments into their matching Option values.
+   * Parses command-line arguments into their matching Option values. Throws `ParseError` if
+   * argument parsing fails.
    *
    * - parameter strict: Fail if any unrecognized arguments are present (default: false).
-   *
-   * - returns: True if all arguments were parsed successfully; false if any option had an
-   *   invalid value, a required option was missing, or an unrecognized argument was present
-   *   and `strict` was enabled.
    */
-  public func parse(strict: Bool = false) -> (Bool, String?) {
+  public func parse(strict: Bool = false) throws {
     for (idx, arg) in _arguments.enumerate() {
       if arg == ArgumentStopper {
         break
@@ -170,8 +193,8 @@ public class CommandLine {
       for option in _options {
         if flag == option.shortFlag || flag == option.longFlag {
           let vals = self._getFlagValues(idx)
-          if !option.match(vals) {
-            return (false, "Invalid value for \(option.longFlag)")
+          guard option.match(vals) else {
+            throw ParseError.InvalidValueForOption(option, vals)
           }
           
           flagMatched = true
@@ -189,8 +212,8 @@ public class CommandLine {
                * -xvf <file1> <file2>
                */
               let vals = (i == flagLength - 1) ? self._getFlagValues(idx) : [String]()
-              if !option.match(vals) {
-                return (false, "Invalid value for \(option.longFlag)")
+              guard option.match(vals) else {
+                throw ParseError.InvalidValueForOption(option, vals)
               }
               
               flagMatched = true
@@ -201,23 +224,30 @@ public class CommandLine {
       }
 
       /* Invalid flag */
-      if strict && !flagMatched {
-        return (false, "Invalid argument: \(arg)")
+      guard !strict || flagMatched else {
+        throw ParseError.InvalidArgument(arg)
       }
     }
 
     /* Check to see if any required options were not matched */
+    var missingOptions: [Option] = []
     for option in _options {
       if option.required && !option.isSet {
-        return (false, "\(option.longFlag) is required")
+        missingOptions.append(option)
       }
     }
     
-    return (true, nil)
+    guard missingOptions.count == 0 else {
+      throw ParseError.MissingRequiredOptions(missingOptions)
+    }
   }
   
   /** Prints a usage message to stdout. */
-  public func printUsage() {
+  public func printUsage(error: ErrorType? = nil) {
+    if let err = error as? ParseError {
+      print("\(err)\n")
+    }
+    
     let name = _arguments[0]
     
     var flagWidth = 0
