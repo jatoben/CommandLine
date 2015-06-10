@@ -3,3 +3,7 @@ xcode_project: CommandLine.xcodeproj
 xcode_scheme: CommandLine
 script: xcodebuild -scheme CommandLine test
 osx_image: beta-xcode6.3
+
+# Disable all builds until Travis supports Swift 2.0
+branches:
+  only: []

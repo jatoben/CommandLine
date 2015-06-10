@@ -37,7 +37,7 @@ internal extension String {
   /**
    * Attempts to parse the string value into a Double.
    *
-   * :returns: A Double if the string can be parsed, nil otherwise.
+   * - returns: A Double if the string can be parsed, nil otherwise.
    */
   func toDouble() -> Double? {
     var characteristic: String = "0"
@@ -46,7 +46,7 @@ internal extension String {
     var isNegative: Bool = false
     let decimalPoint = self._localDecimalPoint()
     
-    for (i, c) in enumerate(self) {
+    for (i, c) in self.characters.enumerate() {
       if i == 0 && c == "-" {
         isNegative = true
         continue
@@ -57,7 +57,7 @@ internal extension String {
         continue
       }
       
-      if String(c).toInt() != nil {
+      if Int(String(c)) != nil {
         if !inMantissa {
           characteristic.append(c)
         } else {
@@ -69,37 +69,35 @@ internal extension String {
       }
     }
     
-    return (Double(characteristic.toInt()!) +
-      Double(mantissa.toInt()!) / pow(Double(10), Double(count(mantissa) - 1))) *
+    return (Double(Int(characteristic)!) +
+      Double(Int(mantissa)!) / pow(Double(10), Double(mantissa.characters.count - 1))) *
       (isNegative ? -1 : 1)
   }
   
   /**
    * Splits a string into an array of string components.
    *
-   * :param: splitBy  The character to split on.
-   * :param: maxSplit The maximum number of splits to perform. If 0, all possible splits are made.
+   * - parameter splitBy:  The character to split on.
+   * - parameter maxSplit: The maximum number of splits to perform. If 0, all possible splits are made.
    *
-   * :returns: An array of string components.
+   * - returns: An array of string components.
    */
   func splitByCharacter(splitBy: Character, maxSplits: Int = 0) -> [String] {
     var s = [String]()
-    var buf = ""
     var numSplits = 0
     
-    for c in self {
+    var curIdx = self.startIndex
+    for(var i = self.startIndex; i != self.endIndex; i = i.successor()) {
+      let c = self[i]
       if c == splitBy && (maxSplits == 0 || numSplits < maxSplits) {
-        s.append(buf)
-        buf = ""
+        s.append(self[Range(start: curIdx, end: i)])
+        curIdx = i.successor()
         numSplits++
-        continue
       }
-      
-      buf.append(c)
     }
     
-    if count(buf) > 0 {
-      s.append(buf)
+    if curIdx != self.endIndex {
+      s.append(self[Range(start: curIdx, end: self.endIndex)])
     }
     
     return s
@@ -108,14 +106,14 @@ internal extension String {
   /**
    * Pads a string to the specified width.
    * 
-   * :param: width The width to pad the string to.
-   * :param: padBy The character to use for padding.
+   * - parameter width: The width to pad the string to.
+   * - parameter padBy: The character to use for padding.
    *
-   * :returns: A new string, padded to the given width.
+   * - returns: A new string, padded to the given width.
    */
   func paddedToWidth(width: Int, padBy: Character = " ") -> String {
     var s = self
-    var currentLength = count(self)
+    var currentLength = self.characters.count
     
     while currentLength++ < width {
       s.append(padBy)
@@ -131,18 +129,18 @@ internal extension String {
    * If a single word is longer than the line width, it will be placed (unsplit)
    * on a line by itself.
    *
-   * :param: width   The maximum length of a line.
-   * :param: wrapBy  The line break character to use.
-   * :param: splitBy The character to use when splitting the string into words.
+   * - parameter width:   The maximum length of a line.
+   * - parameter wrapBy:  The line break character to use.
+   * - parameter splitBy: The character to use when splitting the string into words.
    *
-   * :returns: A new string, wrapped at the given width.
+   * - returns: A new string, wrapped at the given width.
    */
   func wrappedAtWidth(width: Int, wrapBy: Character = "\n", splitBy: Character = " ") -> String {
     var s = ""
     var currentLineWidth = 0
     
     for word in self.splitByCharacter(splitBy) {
-      let wordLength = count(word)
+      let wordLength = word.characters.count
       
       if currentLineWidth + wordLength + 1 > width {
         /* Word length is greater than line length, can't wrap */

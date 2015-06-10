@@ -2,7 +2,7 @@ CommandLine
 ===========
 A pure Swift library for creating command-line interfaces.
 
-*Note: CommandLine `master` requires Xcode 6.3 / Swift 1.2. If you are using Xcode 6.2, please check out [v1.0.0](https://github.com/jatoben/CommandLine/tree/v1.0.0).*
+*Note: CommandLine `master` requires Xcode 7  / Swift 2.0. If you're using older versions of Swift, please check out the [earlier releases](https://github.com/jatoben/CommandLine/releases).*
 
 Usage
 -----
@@ -23,10 +23,11 @@ let verbosity = CounterOption(shortFlag: "v", longFlag: "verbose",
   helpMessage: "Print verbose messages. Specify multiple times to increase verbosity.")
 
 cli.addOptions(filePath, compress, help, verbosity)
-let (success, error) = cli.parse()
-if !success {
-  println(error!)
-  cli.printUsage()
+
+do {
+  try cli.parse()
+} catch {
+  cli.printUsage(error)
   exit(EX_USAGE)
 }
 
@@ -105,10 +106,11 @@ let cli = CommandLine()
 let op = EnumOption<Operation>(shortFlag: "o", longFlag: "operation", required: true,
   helpMessage: "File operation - c for create, x for extract, l for list, or v for verify.")
 cli.setOptions(op)
-let (success, error) = cli.parse()
-if !success {
-  println(error!)
-  cli.printUsage()
+
+do {
+  try cli.parse()
+} catch {
+  cli.printUsage(error)
   exit(EX_USAGE)
 }
 
