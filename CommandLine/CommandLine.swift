@@ -242,7 +242,12 @@ public class CommandLine {
     }
   }
   
-  /** Prints a usage message to stdout. */
+  /**
+   * Prints a usage message to stdout.
+   * 
+   * - parameter error: An optional error thrown from `parse()`. A description of the error
+   *   (e.g. "Missing required option --extract") will be printed before the usage message.
+   */
   public func printUsage(error: ErrorType? = nil) {
     if let err = error as? ParseError {
       print("\(err)\n")
