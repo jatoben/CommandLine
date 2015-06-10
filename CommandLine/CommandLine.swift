@@ -154,25 +154,17 @@ public class CommandLine {
         continue
       }
       
-      /* Swift strings don't have substringFromIndex(). Do a little dance instead. */
-      var flag = ""
-      var skipChars =
-        arg.hasPrefix(LongOptionPrefix) ? LongOptionPrefix.characters.count : ShortOptionPrefix.characters.count
-      for c in arg.characters {
-        if skipChars-- > 0 {
-          continue
-        }
-        
-        flag.append(c)
-      }
+      let skipChars = arg.hasPrefix(LongOptionPrefix) ?
+        LongOptionPrefix.characters.count : ShortOptionPrefix.characters.count
+      let flagWithArg = arg[Range(start: advance(arg.startIndex, skipChars), end: arg.endIndex)]
       
       /* The argument contained nothing but ShortOptionPrefix or LongOptionPrefix */
-      if flag.isEmpty {
+      if flagWithArg.isEmpty {
         continue
       }
       
       /* Remove attached argument from flag */
-      flag = flag.splitByCharacter(ArgumentAttacher, maxSplits: 1)[0]
+      let flag = flagWithArg.splitByCharacter(ArgumentAttacher, maxSplits: 1)[0]
       
       var flagMatched = false
       for option in _options {

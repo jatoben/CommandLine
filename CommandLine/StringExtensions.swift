@@ -84,22 +84,20 @@ internal extension String {
    */
   func splitByCharacter(splitBy: Character, maxSplits: Int = 0) -> [String] {
     var s = [String]()
-    var buf = ""
     var numSplits = 0
     
-    for c in self.characters {
+    var curIdx = self.startIndex
+    for(var i = self.startIndex; i != self.endIndex; i = i.successor()) {
+      let c = self[i]
       if c == splitBy && (maxSplits == 0 || numSplits < maxSplits) {
-        s.append(buf)
-        buf = ""
+        s.append(self[Range(start: curIdx, end: i)])
+        curIdx = i.successor()
         numSplits++
-        continue
       }
-      
-      buf.append(c)
     }
     
-    if buf.characters.count > 0 {
-      s.append(buf)
+    if curIdx != self.endIndex {
+      s.append(self[Range(start: curIdx, end: self.endIndex)])
     }
     
     return s
