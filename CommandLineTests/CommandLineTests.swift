@@ -16,7 +16,6 @@
  */
 
 import XCTest
-import CommandLine
 
 internal class CommandLineTests: XCTestCase {
   
@@ -512,7 +511,6 @@ internal class CommandLineTests: XCTestCase {
       "-f", "45", "-p", "0.05", "-x", "extra1", "extra2", "extra3" ])
     
     let boolOpt = BoolOption(shortFlag: "d", longFlag: "debug", helpMessage: "Enables debug mode.")
-    
     let counterOpt = CounterOption(shortFlag: "v", longFlag: "verbose",
       helpMessage: "Enables verbose output. Specify multiple times for extra verbosity.")
     let stringOpt = StringOption(shortFlag: "n", longFlag: "name", required: true,
@@ -558,5 +556,73 @@ internal class CommandLineTests: XCTestCase {
     } catch {
       XCTFail("Unexpected parse error: \(error)")
     }
+  }
+  
+  func testPrintUsage() {
+    let cli = CommandLine(arguments: [ "CommandLineTests", "-dvvv", "--name", "John Q. Public",
+      "-f", "45", "-p", "0.05", "-x", "extra1", "extra2", "extra3" ])
+    
+    let boolOpt = BoolOption(shortFlag: "d", longFlag: "debug", helpMessage: "Enables debug mode.")
+    let counterOpt = CounterOption(shortFlag: "v", longFlag: "verbose",
+      helpMessage: "Enables verbose output. Specify multiple times for extra verbosity.")
+    let stringOpt = StringOption(shortFlag: "n", longFlag: "name", required: true,
+      helpMessage: "Name a Cy Young winner.")
+    let intOpt = IntOption(shortFlag: "f", longFlag: "favorite", required: true,
+      helpMessage: "Your favorite number.")
+    let doubleOpt = DoubleOption(shortFlag: "p", longFlag: "p-value", required: true,
+      helpMessage: "P-value for test.")
+    let extraOpt = MultiStringOption(shortFlag: "x", longFlag: "Extra", required: true,
+      helpMessage: "X is for Extra.")
+    
+    let opts = [boolOpt, counterOpt, stringOpt, intOpt, doubleOpt, extraOpt]
+    cli.addOptions(opts)
+    
+    var out = ""
+    cli.printUsage(&out)
+    XCTAssertGreaterThan(out.characters.count, 0)
+    
+    /* There should be at least 2 lines per option, plus the intro Usage statement */
+    XCTAssertGreaterThanOrEqual(out.splitByCharacter("\n").count, (opts.count * 2) + 1)
+  }
+  
+  func testPrintUsageError() {
+    let cli = CommandLine(arguments: [ "CommandLineTests" ])
+    cli.addOption(StringOption(shortFlag: "n", longFlag: "name", required: true,
+      helpMessage: "Your name"))
+    
+    do {
+      try cli.parse()
+      XCTFail("Didn't throw with missing required argument")
+    } catch {
+      var out = ""
+      cli.printUsage(error, to: &out)
+      
+      let errorMessage = out.splitByCharacter("\n", maxSplits: 1)[0]
+      XCTAssertTrue(errorMessage.hasPrefix("Missing required"))
+    }
+  }
+  
+  func testPrintUsageToStderr() {
+    let cli = CommandLine(arguments: [ "CommandLineTests" ])
+    cli.addOption(StringOption(shortFlag: "n", longFlag: "name", required: true,
+      helpMessage: "Your name"))
+    
+    /* Toss stderr into /dev/null, so the printUsage() output doesn't pollute regular
+     * XCTest messages.
+     */
+    let origStdErr = dup(fileno(stderr))
+    let null = fopen("/dev/null", "w")
+    dup2(fileno(null), fileno(stderr))
+    
+    defer {
+      dup2(origStdErr, fileno(stderr))
+      fclose(null)
+    }
+    
+    let error = CommandLine.ParseError.InvalidArgument("ack")
+    
+    /* Just make sure these doesn't crash or throw */
+    cli.printUsage()
+    cli.printUsage(error)
   }
 }

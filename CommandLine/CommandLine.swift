@@ -31,6 +31,14 @@ let ArgumentStopper = "--"
  */
 let ArgumentAttacher: Character = "="
 
+/* An output stream to stderr; used by CommandLine.printUsage(). */
+private struct StderrOutputStream: OutputStreamType {
+  static let stream = StderrOutputStream()
+  func write(s: String) {
+    fputs(s, stderr)
+  }
+}
+
 /**
  * The CommandLine class implements a command-line interface for your app.
  * 
@@ -242,17 +250,16 @@ public class CommandLine {
     }
   }
   
-  /**
-   * Prints a usage message to stdout.
-   * 
-   * - parameter error: An optional error thrown from `parse()`. A description of the error
-   *   (e.g. "Missing required option --extract") will be printed before the usage message.
+  /* printUsage() is generic for OutputStreamType because the Swift compiler crashes
+   * on inout protocol function parameters in Xcode 7 beta 1 (rdar://21372694).
    */
-  public func printUsage(error: ErrorType? = nil) {
-    if let err = error as? ParseError {
-      print("\(err)\n")
-    }
-    
+  
+  /**
+   * Prints a usage message.
+   * 
+   * - parameter to: An OutputStreamType to write the error message to.
+   */
+  public func printUsage<TargetStream: OutputStreamType>(inout to: TargetStream) {
     let name = _arguments[0]
     
     var flagWidth = 0
@@ -260,12 +267,43 @@ public class CommandLine {
       flagWidth = max(flagWidth,
         "  \(ShortOptionPrefix)\(opt.shortFlag), \(LongOptionPrefix)\(opt.longFlag):".characters.count)
     }
-    
-    print("Usage: \(name) [options]")
+
+    print("Usage: \(name) [options]", &to)
     for opt in _options {
       let flags = "  \(ShortOptionPrefix)\(opt.shortFlag), \(LongOptionPrefix)\(opt.longFlag):".paddedToWidth(flagWidth)
       
-      print("\(flags)\n      \(opt.helpMessage)")
+      print("\(flags)\n      \(opt.helpMessage)", &to)
     }
+  }
+  
+  /**
+   * Prints a usage message.
+   *
+   * - parameter error: An error thrown from `parse()`. A description of the error
+   *   (e.g. "Missing required option --extract") will be printed before the usage message.
+   * - parameter to: An OutputStreamType to write the error message to.
+   */
+  public func printUsage<TargetStream: OutputStreamType>(error: ErrorType, inout to: TargetStream) {
+    print("\(error)\n", &to)
+    printUsage(&to)
+  }
+  
+  /**
+   * Prints a usage message.
+   *
+   * - parameter error: An error thrown from `parse()`. A description of the error
+   *   (e.g. "Missing required option --extract") will be printed before the usage message.
+   */
+  public func printUsage(error: ErrorType) {
+    var out = StderrOutputStream.stream
+    printUsage(error, to: &out)
+  }
+  
+  /**
+   * Prints a usage message.
+   */
+  public func printUsage() {
+    var out = StderrOutputStream.stream
+    printUsage(&out)
   }
 }
