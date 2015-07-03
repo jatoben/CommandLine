@@ -238,13 +238,7 @@ public class CommandLine {
     }
 
     /* Check to see if any required options were not matched */
-    var missingOptions: [Option] = []
-    for option in _options {
-      if option.required && !option.wasSet {
-        missingOptions.append(option)
-      }
-    }
-    
+    let missingOptions = _options.filter { $0.required && !$0.wasSet }
     guard missingOptions.count == 0 else {
       throw ParseError.MissingRequiredOptions(missingOptions)
     }
