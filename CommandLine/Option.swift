@@ -102,6 +102,7 @@ public class BoolOption: Option {
   
   override func setValue(values: [String]) -> Bool {
     _value = true
+    _wasSet = true
     return true
   }
 }
