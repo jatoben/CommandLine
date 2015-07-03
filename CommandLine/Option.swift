@@ -23,6 +23,8 @@ public class Option {
   var longFlag: String
   var required: Bool
   var helpMessage: String
+  let shortFlag: String?
+  let longFlag: String?
   
   /* Override this property to test _value for nil on each Option subclass.
    *
@@ -46,7 +48,11 @@ public class Option {
     self.required = required
   }
   
-  func match(values: [String]) -> Bool {
+  func flagMatch(flag: String) -> Bool {
+    return flag == shortFlag || flag == longFlag
+  }
+  
+  func setValue(values: [String]) -> Bool {
     return false
   }
 }
@@ -71,7 +77,7 @@ public class BoolOption: Option {
     super.init(shortFlag: shortFlag, longFlag: longFlag, required: false, helpMessage: helpMessage)
   }
   
-  override func match(values: [String]) -> Bool {
+  override func setValue(values: [String]) -> Bool {
     _value = true
     return true
   }
@@ -89,7 +95,7 @@ public class IntOption: Option {
     return _value != nil
   }
   
-  override func match(values: [String]) -> Bool {
+  override func setValue(values: [String]) -> Bool {
     if values.count == 0 {
       return false
     }
@@ -123,7 +129,7 @@ public class CounterOption: Option {
     super.init(shortFlag: shortFlag, longFlag: longFlag, required: false, helpMessage: helpMessage)
   }
   
-  override func match(values: [String]) -> Bool {
+  override func setValue(values: [String]) -> Bool {
     _value += 1
     return true
   }
@@ -141,7 +147,7 @@ public class DoubleOption: Option {
     return _value != nil
   }
   
-  override func match(values: [String]) -> Bool {
+  override func setValue(values: [String]) -> Bool {
     if values.count == 0 {
       return false
     }
@@ -167,7 +173,7 @@ public class StringOption: Option {
     return _value != nil
   }
   
-  override func match(values: [String]) -> Bool {
+  override func setValue(values: [String]) -> Bool {
     if values.count == 0 {
       return false
     }
@@ -189,7 +195,7 @@ public class MultiStringOption: Option {
     return _value != nil
   }
   
-  override func match(values: [String]) -> Bool {
+  override func setValue(values: [String]) -> Bool {
     if values.count == 0 {
       return false
     }
@@ -214,7 +220,7 @@ public class EnumOption<T:RawRepresentable where T.RawValue == String>: Option {
     super.init(shortFlag: shortFlag, longFlag: longFlag, required: required, helpMessage: helpMessage)
   }
   
-  override func match(values: [String]) -> Bool {
+  override func setValue(values: [String]) -> Bool {
     if values.count == 0 {
       return false
     }
