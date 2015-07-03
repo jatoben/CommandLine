@@ -24,6 +24,17 @@ public class Option {
   let required: Bool
   let helpMessage: String
   
+  public var flagDescription: String {
+    switch (shortFlag, longFlag) {
+    case (let sf, let lf) where sf != nil && lf != nil:
+      return "\(ShortOptionPrefix)\(sf!), \(LongOptionPrefix)\(lf!)"
+    case (_, let lf) where lf != nil:
+      return "\(LongOptionPrefix)\(lf!)"
+    default:
+      return "\(ShortOptionPrefix)\(shortFlag)"
+    }
+  }
+  
   /* Override this property to test _value for nil on each Option subclass.
    *
    * This is necessary to support nil checks on an array of Options (see
