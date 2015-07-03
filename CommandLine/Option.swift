@@ -31,7 +31,7 @@ public class Option {
     case (_, let lf) where lf != nil:
       return "\(LongOptionPrefix)\(lf!)"
     default:
-      return "\(ShortOptionPrefix)\(shortFlag)"
+      return "\(ShortOptionPrefix)\(shortFlag!)"
     }
   }
   
