@@ -199,9 +199,9 @@ public class CommandLine {
       
       var flagMatched = false
       for option in _options {
-        if flag == option.shortFlag || flag == option.longFlag {
+        if option.flagMatch(flag) {
           let vals = self._getFlagValues(idx)
-          guard option.match(vals) else {
+          guard option.setValue(vals) else {
             throw ParseError.InvalidValueForOption(option, vals)
           }
           
@@ -211,16 +211,16 @@ public class CommandLine {
       }
       
       /* Flags that do not take any arguments can be concatenated */
+      let flagLength = flag.characters.count
       if !flagMatched && !arg.hasPrefix(LongOptionPrefix) {
         for (i, c) in flag.characters.enumerate() {
-          let flagLength = flag.characters.count
           for option in _options {
-            if String(c) == option.shortFlag {
+            if option.flagMatch(String(c)) {
               /* Values are allowed at the end of the concatenated flags, e.g.
                * -xvf <file1> <file2>
                */
               let vals = (i == flagLength - 1) ? self._getFlagValues(idx) : [String]()
-              guard option.match(vals) else {
+              guard option.setValue(vals) else {
                 throw ParseError.InvalidValueForOption(option, vals)
               }
               
@@ -264,14 +264,12 @@ public class CommandLine {
     
     var flagWidth = 0
     for opt in _options {
-      flagWidth = max(flagWidth,
-        "  \(ShortOptionPrefix)\(opt.shortFlag), \(LongOptionPrefix)\(opt.longFlag):".characters.count)
+      flagWidth = max(flagWidth, "  \(opt.flagDescription):".characters.count)
     }
 
     print("Usage: \(name) [options]", &to)
     for opt in _options {
-      let flags = "  \(ShortOptionPrefix)\(opt.shortFlag), \(LongOptionPrefix)\(opt.longFlag):".paddedToWidth(flagWidth)
-      
+      let flags = "  \(opt.flagDescription):".paddedToWidth(flagWidth)
       print("\(flags)\n      \(opt.helpMessage)", &to)
     }
   }

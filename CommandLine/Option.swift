@@ -19,10 +19,21 @@
  * The base class for a command-line option.
  */
 public class Option {
-  var shortFlag: String
-  var longFlag: String
-  var required: Bool
-  var helpMessage: String
+  let shortFlag: String?
+  let longFlag: String?
+  let required: Bool
+  let helpMessage: String
+  
+  public var flagDescription: String {
+    switch (shortFlag, longFlag) {
+    case (let sf, let lf) where sf != nil && lf != nil:
+      return "\(ShortOptionPrefix)\(sf!), \(LongOptionPrefix)\(lf!)"
+    case (_, let lf) where lf != nil:
+      return "\(LongOptionPrefix)\(lf!)"
+    default:
+      return "\(ShortOptionPrefix)\(shortFlag!)"
+    }
+  }
   
   /* Override this property to test _value for nil on each Option subclass.
    *
@@ -35,10 +46,15 @@ public class Option {
     return false
   }
   
-  public init(shortFlag: String, longFlag: String, required: Bool, helpMessage: String) {
-    assert(shortFlag.characters.count == 1, "Short flag must be a single character")
-    assert(Int(shortFlag) == nil && shortFlag.toDouble() == nil, "Short flag cannot be a numeric value")
-    assert(Int(longFlag) == nil && longFlag.toDouble() == nil, "Long flag cannot be a numeric value")
+  private init(_ shortFlag: String?, _ longFlag: String?, _ required: Bool, _ helpMessage: String) {
+    if let sf = shortFlag {
+      assert(sf.characters.count == 1, "Short flag must be a single character")
+      assert(Int(sf) == nil && sf.toDouble() == nil, "Short flag cannot be a numeric value")
+    }
+    
+    if let lf = longFlag {
+      assert(Int(lf) == nil && lf.toDouble() == nil, "Long flag cannot be a numeric value")
+    }
     
     self.shortFlag = shortFlag
     self.longFlag = longFlag
@@ -46,7 +62,30 @@ public class Option {
     self.required = required
   }
   
-  func match(values: [String]) -> Bool {
+  /* The optional casts in these initalizers force them to call the private initializer. Without
+   * the casts, they recursively call themselves.
+   */
+  
+  /** Initializes a new Option that has both long and short flags. */
+  public convenience init(shortFlag: String, longFlag: String, required: Bool = false, helpMessage: String) {
+    self.init(shortFlag as String?, longFlag, required, helpMessage)
+  }
+  
+  /** Initializes a new Option that has only a short flag. */
+  public convenience init(shortFlag: String, required: Bool = false, helpMessage: String) {
+    self.init(shortFlag as String?, nil, required, helpMessage)
+  }
+  
+  /** Initializes a new Option that has only a long flag. */
+  public convenience init(longFlag: String, required: Bool = false, helpMessage: String) {
+    self.init(nil, longFlag as String?, required, helpMessage)
+  }
+  
+  func flagMatch(flag: String) -> Bool {
+    return flag == shortFlag || flag == longFlag
+  }
+  
+  func setValue(values: [String]) -> Bool {
     return false
   }
 }
@@ -67,11 +106,7 @@ public class BoolOption: Option {
     return true
   }
   
-  public init(shortFlag: String, longFlag: String, helpMessage: String) {
-    super.init(shortFlag: shortFlag, longFlag: longFlag, required: false, helpMessage: helpMessage)
-  }
-  
-  override func match(values: [String]) -> Bool {
+  override func setValue(values: [String]) -> Bool {
     _value = true
     return true
   }
@@ -89,7 +124,7 @@ public class IntOption: Option {
     return _value != nil
   }
   
-  override func match(values: [String]) -> Bool {
+  override func setValue(values: [String]) -> Bool {
     if values.count == 0 {
       return false
     }
@@ -119,11 +154,7 @@ public class CounterOption: Option {
     return true
   }
   
-  public init(shortFlag: String, longFlag: String, helpMessage: String) {
-    super.init(shortFlag: shortFlag, longFlag: longFlag, required: false, helpMessage: helpMessage)
-  }
-  
-  override func match(values: [String]) -> Bool {
+  override func setValue(values: [String]) -> Bool {
     _value += 1
     return true
   }
@@ -141,7 +172,7 @@ public class DoubleOption: Option {
     return _value != nil
   }
   
-  override func match(values: [String]) -> Bool {
+  override func setValue(values: [String]) -> Bool {
     if values.count == 0 {
       return false
     }
@@ -167,7 +198,7 @@ public class StringOption: Option {
     return _value != nil
   }
   
-  override func match(values: [String]) -> Bool {
+  override func setValue(values: [String]) -> Bool {
     if values.count == 0 {
       return false
     }
@@ -189,7 +220,7 @@ public class MultiStringOption: Option {
     return _value != nil
   }
   
-  override func match(values: [String]) -> Bool {
+  override func setValue(values: [String]) -> Bool {
     if values.count == 0 {
       return false
     }
@@ -210,11 +241,30 @@ public class EnumOption<T:RawRepresentable where T.RawValue == String>: Option {
     return _value != nil
   }
   
-  override public init(shortFlag: String, longFlag: String, required: Bool, helpMessage: String) {
-    super.init(shortFlag: shortFlag, longFlag: longFlag, required: required, helpMessage: helpMessage)
+  /* Re-defining the intializers is necessary to make the Swift 2 compiler happy, as
+   * of Xcode 7 beta 2.
+   */
+  
+  private override init(_ shortFlag: String?, _ longFlag: String?, _ required: Bool, _ helpMessage: String) {
+    super.init(shortFlag, longFlag, required, helpMessage)
   }
   
-  override func match(values: [String]) -> Bool {
+  /** Initializes a new Option that has both long and short flags. */
+  public convenience init(shortFlag: String, longFlag: String, required: Bool = false, helpMessage: String) {
+    self.init(shortFlag as String?, longFlag, required, helpMessage)
+  }
+  
+  /** Initializes a new Option that has only a short flag. */
+  public convenience init(shortFlag: String, required: Bool = false, helpMessage: String) {
+    self.init(shortFlag as String?, nil, required, helpMessage)
+  }
+  
+  /** Initializes a new Option that has only a long flag. */
+  public convenience init(longFlag: String, required: Bool = false, helpMessage: String) {
+    self.init(nil, longFlag as String?, required, helpMessage)
+  }
+  
+  override func setValue(values: [String]) -> Bool {
     if values.count == 0 {
       return false
     }
