@@ -90,19 +90,17 @@ public class Option {
  */
 public class BoolOption: Option {
   private var _value: Bool = false
-  private var _wasSet: Bool = false
   
   public var value: Bool {
     return _value
   }
   
   override public var wasSet: Bool {
-    return _wasSet
+    return _value
   }
   
   override func setValue(values: [String]) -> Bool {
     _value = true
-    _wasSet = true
     return true
   }
 }
