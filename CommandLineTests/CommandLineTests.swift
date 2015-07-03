@@ -536,6 +536,38 @@ internal class CommandLineTests: XCTestCase {
       XCTFail("Failed to parse mixed command line: \(error)")
     }
   }
+  
+  func testShortFlagOnlyOption() {
+    let cli = CommandLine(arguments: ["-s", "itchy", "--itchy", "scratchy"])
+    
+    let o1 = StringOption(shortFlag: "s", helpMessage: "short only")
+    let o2 = StringOption(shortFlag: "i", helpMessage: "another short")
+    cli.addOptions(o1, o2)
+    
+    do {
+      try cli.parse()
+      XCTAssertEqual(o1.value!, "itchy", "Failed to get correct string value from short-flag-only option")
+      XCTAssertNil(o2.value, "Incorrectly set value for short-flag-only option")
+    } catch {
+      XCTFail("Failed to parse short-flag-only command line: \(error)")
+    }
+  }
+  
+  func testLongFlagOnlyOption() {
+    let cli = CommandLine(arguments: ["-s", "itchy", "--itchy", "scratchy"])
+    
+    let o1 = StringOption(longFlag: "scratchy", helpMessage: "long only")
+    let o2 = StringOption(longFlag: "itchy", helpMessage: "long short")
+    cli.addOptions(o1, o2)
+    
+    do {
+      try cli.parse()
+      XCTAssertNil(o1.value, "Incorrectly set value for long-flag-only option")
+      XCTAssertEqual(o2.value!, "scratchy", "Failed to get correct string value from long-flag-only option")
+    } catch {
+      XCTFail("Failed to parse long-flag-only command line: \(error)")
+    }
+  }
 
   func testStrictMode() {
     let cli = CommandLine(arguments: [ "CommandLineTests", "--valid", "--invalid"])
