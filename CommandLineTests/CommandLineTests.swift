@@ -537,6 +537,44 @@ internal class CommandLineTests: XCTestCase {
     }
   }
   
+  func testWasSetProperty() {
+    let cli = CommandLine(arguments: [ "CommandLineTests", "-a", "-b", "-c", "str", "-d", "1",
+      "-e", "3.14159", "-f", "extra1", "extra2", "extra3" ])
+    
+    let setOptions = [
+      BoolOption(shortFlag: "a", longFlag: "bool", helpMessage: "A set boolean option"),
+      CounterOption(shortFlag: "b", longFlag: "counter", helpMessage: "A set counter option"),
+      StringOption(shortFlag: "c", longFlag: "str", helpMessage: "A set string option"),
+      IntOption(shortFlag: "d", longFlag: "int", helpMessage: "A set int option"),
+      DoubleOption(shortFlag: "e", longFlag: "double", helpMessage: "A set double option"),
+      MultiStringOption(shortFlag: "f", longFlag: "multi", helpMessage: "A set multistring option")
+    ]
+    
+    let unsetOptions = [
+      BoolOption(shortFlag: "t", longFlag: "unbool", helpMessage: "An unset boolean option"),
+      CounterOption(shortFlag: "v", longFlag: "uncounter", helpMessage: "An unset counter option"),
+      StringOption(shortFlag: "w", longFlag: "unstr", helpMessage: "An unset string option"),
+      IntOption(shortFlag: "y", longFlag: "unint", helpMessage: "An unset int option"),
+      DoubleOption(shortFlag: "x", longFlag: "undouble", helpMessage: "An unset double option"),
+      MultiStringOption(shortFlag: "z", longFlag: "unmulti", helpMessage: "An unset multistring option")
+    ]
+    
+    cli.addOptions(setOptions)
+    cli.addOptions(unsetOptions)
+    
+    do {
+      try cli.parse()
+      for opt in setOptions {
+        XCTAssertTrue(opt.wasSet, "wasSet was false for set option \(opt.flagDescription)")
+      }
+      for opt in unsetOptions {
+        XCTAssertFalse(opt.wasSet, "wasSet was true for unset option \(opt.flagDescription)")
+      }
+    } catch {
+      XCTFail("Failed to parse command line with set & unset options: \(error)")
+    }
+  }
+  
   func testShortFlagOnlyOption() {
     let cli = CommandLine(arguments: ["-s", "itchy", "--itchy", "scratchy"])
     

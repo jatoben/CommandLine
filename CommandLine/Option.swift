@@ -19,10 +19,15 @@
  * The base class for a command-line option.
  */
 public class Option {
-  let shortFlag: String?
-  let longFlag: String?
-  let required: Bool
-  let helpMessage: String
+  public let shortFlag: String?
+  public let longFlag: String?
+  public let required: Bool
+  public let helpMessage: String
+  
+  /** True if the option was set when parsing command-line arguments */
+  public var wasSet: Bool {
+    return false
+  }
   
   public var flagDescription: String {
     switch (shortFlag, longFlag) {
@@ -33,17 +38,6 @@ public class Option {
     default:
       return "\(ShortOptionPrefix)\(shortFlag!)"
     }
-  }
-  
-  /* Override this property to test _value for nil on each Option subclass.
-   *
-   * This is necessary to support nil checks on an array of Options (see
-   * CommandLine.parse()) because Swift doesn't allow overriding property
-   * declarations with differing types, and methods (unlike functions) are not
-   * covariant as of beta 4.
-   */
-  var isSet: Bool {
-    return false
   }
   
   private init(_ shortFlag: String?, _ longFlag: String?, _ required: Bool, _ helpMessage: String) {
@@ -101,9 +95,8 @@ public class BoolOption: Option {
     return _value
   }
   
-  override var isSet: Bool {
-    /* BoolOption is always set; if missing from the command line, it's false */
-    return true
+  override public var wasSet: Bool {
+    return _value
   }
   
   override func setValue(values: [String]) -> Bool {
@@ -120,10 +113,10 @@ public class IntOption: Option {
     return _value
   }
   
-  override var isSet: Bool {
+  override public var wasSet: Bool {
     return _value != nil
   }
-  
+
   override func setValue(values: [String]) -> Bool {
     if values.count == 0 {
       return false
@@ -149,9 +142,8 @@ public class CounterOption: Option {
     return _value
   }
   
-  override var isSet: Bool {
-    /* CounterOption is always set; if missing from the command line, it's 0 */
-    return true
+  override public var wasSet: Bool {
+    return _value > 0
   }
   
   override func setValue(values: [String]) -> Bool {
@@ -167,8 +159,8 @@ public class DoubleOption: Option {
   public var value: Double? {
     return _value
   }
-  
-  override var isSet: Bool {
+
+  override public var wasSet: Bool {
     return _value != nil
   }
   
@@ -194,7 +186,7 @@ public class StringOption: Option {
     return _value
   }
   
-  override var isSet: Bool {
+  override public var wasSet: Bool {
     return _value != nil
   }
   
@@ -216,7 +208,7 @@ public class MultiStringOption: Option {
     return _value
   }
   
-  override var isSet: Bool {
+  override public var wasSet: Bool {
     return _value != nil
   }
   
@@ -237,7 +229,7 @@ public class EnumOption<T:RawRepresentable where T.RawValue == String>: Option {
     return _value
   }
   
-  override var isSet: Bool {
+  override public var wasSet: Bool {
     return _value != nil
   }
   

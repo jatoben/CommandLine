@@ -240,7 +240,7 @@ public class CommandLine {
     /* Check to see if any required options were not matched */
     var missingOptions: [Option] = []
     for option in _options {
-      if option.required && !option.isSet {
+      if option.required && !option.wasSet {
         missingOptions.append(option)
       }
     }
