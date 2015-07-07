@@ -71,10 +71,9 @@ public class CommandLine {
         return "Invalid argument: \(arg)"
       case let .InvalidValueForOption(opt, vals):
         let vs = ", ".join(vals)
-        return "Invalid value(s) for option \(opt.longFlag): \(vs)"
+        return "Invalid value(s) for option \(opt.flagDescription): \(vs)"
       case let .MissingRequiredOptions(opts):
-        return "Missing required options: \(opts.map { return $0.longFlag })"
-
+        return "Missing required options: \(opts.map { return $0.flagDescription })"
       }
     }
   }

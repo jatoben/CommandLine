@@ -628,6 +628,31 @@ internal class CommandLineTests: XCTestCase {
     }
   }
   
+  func testInvalidArgumentErrorDescription() {
+    let cli = CommandLine(arguments: [ "CommandLineTests", "--int", "invalid"])
+    let o1 = IntOption(longFlag: "int", helpMessage: "Int flag.")
+    cli.addOptions(o1)
+    
+    do {
+      try cli.parse()
+    } catch {
+      XCTAssertTrue("\(error)".hasSuffix("\(o1.flagDescription): invalid"), "Invalid error description: \(error)")
+    }
+  }
+  
+  func testMissingRequiredOptionsErrorDescription() {
+    let cli = CommandLine(arguments: [ "CommandLineTests"])
+    let o1 = IntOption(longFlag: "int", required: true, helpMessage: "Int flag.")
+    cli.addOptions(o1)
+    
+    do {
+      try cli.parse()
+    } catch {
+      let requiredOptions = [o1].map { return $0.flagDescription }
+      XCTAssertTrue("\(error)".hasSuffix("options: \(requiredOptions)"), "Invalid error description: \(error)")
+    }
+  }
+  
   func testPrintUsage() {
     let cli = CommandLine(arguments: [ "CommandLineTests", "-dvvv", "--name", "John Q. Public",
       "-f", "45", "-p", "0.05", "-x", "extra1", "extra2", "extra3" ])
