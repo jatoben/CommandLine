@@ -70,7 +70,7 @@ public class CommandLine {
       case let .InvalidArgument(arg):
         return "Invalid argument: \(arg)"
       case let .InvalidValueForOption(opt, vals):
-        let vs = ", ".join(vals)
+        let vs = vals.joinWithSeparator(", ")
         return "Invalid value(s) for option \(opt.flagDescription): \(vs)"
       case let .MissingRequiredOptions(opts):
         return "Missing required options: \(opts.map { return $0.flagDescription })"
@@ -186,7 +186,7 @@ public class CommandLine {
       
       let skipChars = arg.hasPrefix(LongOptionPrefix) ?
         LongOptionPrefix.characters.count : ShortOptionPrefix.characters.count
-      let flagWithArg = arg[Range(start: advance(arg.startIndex, skipChars), end: arg.endIndex)]
+      let flagWithArg = arg[Range(start: arg.startIndex.advancedBy(skipChars), end: arg.endIndex)]
       
       /* The argument contained nothing but ShortOptionPrefix or LongOptionPrefix */
       if flagWithArg.isEmpty {
@@ -260,10 +260,10 @@ public class CommandLine {
       flagWidth = max(flagWidth, "  \(opt.flagDescription):".characters.count)
     }
 
-    print("Usage: \(name) [options]", &to)
+    print("Usage: \(name) [options]", toStream: &to)
     for opt in _options {
       let flags = "  \(opt.flagDescription):".paddedToWidth(flagWidth)
-      print("\(flags)\n      \(opt.helpMessage)", &to)
+      print("\(flags)\n      \(opt.helpMessage)", toStream: &to)
     }
   }
   
@@ -275,7 +275,7 @@ public class CommandLine {
    * - parameter to: An OutputStreamType to write the error message to.
    */
   public func printUsage<TargetStream: OutputStreamType>(error: ErrorType, inout to: TargetStream) {
-    print("\(error)\n", &to)
+    print("\(error)\n", toStream: &to)
     printUsage(&to)
   }
   
