@@ -197,35 +197,31 @@ public class CommandLine {
       let flag = flagWithArg.splitByCharacter(ArgumentAttacher, maxSplits: 1)[0]
       
       var flagMatched = false
-      for option in _options {
-        if option.flagMatch(flag) {
-          let vals = self._getFlagValues(idx)
-          guard option.setValue(vals) else {
-            throw ParseError.InvalidValueForOption(option, vals)
-          }
-          
-          flagMatched = true
-          break
+      for option in _options where option.flagMatch(flag) {
+        let vals = self._getFlagValues(idx)
+        guard option.setValue(vals) else {
+          throw ParseError.InvalidValueForOption(option, vals)
         }
+          
+        flagMatched = true
+        break
       }
       
       /* Flags that do not take any arguments can be concatenated */
       let flagLength = flag.characters.count
       if !flagMatched && !arg.hasPrefix(LongOptionPrefix) {
         for (i, c) in flag.characters.enumerate() {
-          for option in _options {
-            if option.flagMatch(String(c)) {
-              /* Values are allowed at the end of the concatenated flags, e.g.
-               * -xvf <file1> <file2>
-               */
-              let vals = (i == flagLength - 1) ? self._getFlagValues(idx) : [String]()
-              guard option.setValue(vals) else {
-                throw ParseError.InvalidValueForOption(option, vals)
-              }
-              
-              flagMatched = true
-              break
+          for option in _options where option.flagMatch(String(c)) {
+            /* Values are allowed at the end of the concatenated flags, e.g.
+            * -xvf <file1> <file2>
+            */
+            let vals = (i == flagLength - 1) ? self._getFlagValues(idx) : [String]()
+            guard option.setValue(vals) else {
+              throw ParseError.InvalidValueForOption(option, vals)
             }
+            
+            flagMatched = true
+            break
           }
         }
       }
