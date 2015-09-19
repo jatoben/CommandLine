@@ -1,4 +1,4 @@
-CommandLine
+CommandLine [![Build Status](https://travis-ci.org/jatoben/CommandLine.svg?branch=master)](https://travis-ci.org/jatoben/CommandLine)
 ===========
 A pure Swift library for creating command-line interfaces.
 
