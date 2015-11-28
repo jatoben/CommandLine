@@ -506,6 +506,35 @@ internal class CommandLineTests: XCTestCase {
     }
   }
   
+  /* These two tests should assert() in cli.addOption, but there's no clean way to test for
+   * assertions in Swift 2, so they're commented out for now.
+   */
+
+  /*
+  func testShortFlagReuse() {
+    let cli = CommandLine()
+    let op1 = BoolOption(shortFlag: "v", longFlag: "verbose", helpMessage: "")
+    let op2 = StringOption(shortFlag: "v", longFlag: "verify", helpMessage: "")
+    cli.addOptions(op1, op2)
+    XCTFail("Added two options with the same short flag")
+  }
+
+  func testLongFlagReuse() {
+    let cli = CommandLine()
+    let op1 = BoolOption(shortFlag: "v", longFlag: "verbose", helpMessage: "")
+    let op2 = StringOption(shortFlag: "d", longFlag: "verbose", helpMessage: "")
+    cli.addOptions(op1, op2)
+    XCTFail("Added two options with the same long flag")
+  }
+  */
+
+  func testDifferentCaseFlagReuse() {
+    let cli = CommandLine()
+    let op1 = BoolOption(shortFlag: "v", longFlag: "verbose", helpMessage: "")
+    let op2 = StringOption(shortFlag: "V", longFlag: "verify", helpMessage: "")
+    cli.addOptions(op1, op2)
+  }
+
   func testMixedExample() {
     let cli = CommandLine(arguments: [ "CommandLineTests", "-dvvv", "--name", "John Q. Public",
       "-f", "45", "-p", "0.05", "-x", "extra1", "extra2", "extra3" ])
