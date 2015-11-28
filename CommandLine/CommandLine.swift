@@ -53,6 +53,17 @@ private struct StderrOutputStream: OutputStreamType {
 public class CommandLine {
   private var _arguments: [String]
   private var _options: [Option] = [Option]()
+  private var _usedFlags: Set<String> {
+    var usedFlags = Set<String>(minimumCapacity: _options.count * 2)
+
+    for option in _options {
+      for case let flag? in [option.shortFlag, option.longFlag] {
+        usedFlags.insert(flag)
+      }
+    }
+
+    return usedFlags
+  }
   
   /** A ParseError is thrown if the `parse()` method fails. */
   public enum ParseError: ErrorType, CustomStringConvertible {
@@ -129,6 +140,11 @@ public class CommandLine {
    * - parameter option: The option to add.
    */
   public func addOption(option: Option) {
+    let uf = _usedFlags
+    for case let flag? in [option.shortFlag, option.longFlag] {
+      assert(!uf.contains(flag), "Flag '\(flag)' already in use")
+    }
+
     _options.append(option)
   }
   
@@ -138,7 +154,9 @@ public class CommandLine {
    * - parameter options: An array containing the options to add.
    */
   public func addOptions(options: [Option]) {
-    _options += options
+    for o in options {
+      addOption(o)
+    }
   }
   
   /**
@@ -147,7 +165,9 @@ public class CommandLine {
    * - parameter options: The options to add.
    */
   public func addOptions(options: Option...) {
-    _options += options
+    for o in options {
+      addOption(o)
+    }
   }
   
   /**
