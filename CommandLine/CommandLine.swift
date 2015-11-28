@@ -140,8 +140,9 @@ public class CommandLine {
    * - parameter option: The option to add.
    */
   public func addOption(option: Option) {
+    let uf = _usedFlags
     for case let flag? in [option.shortFlag, option.longFlag] {
-      assert(!_usedFlags.contains(flag), "Flag '\(flag)' already in use")
+      assert(!uf.contains(flag), "Flag '\(flag)' already in use")
     }
 
     _options.append(option)
