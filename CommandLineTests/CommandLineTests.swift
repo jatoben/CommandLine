@@ -720,4 +720,22 @@ internal class CommandLineTests: XCTestCase {
     cli.printUsage()
     cli.printUsage(error)
   }
+
+  func testTrailingArguments() {
+    let cli = CommandLine(arguments: [ "CommandLineTests", "-xv", "file1", "file2" ])
+
+    let x = BoolOption(shortFlag: "x", longFlag: "x1", helpMessage: "")
+    let v = CounterOption(shortFlag: "v", longFlag: "v1", helpMessage: "")
+
+    cli.addOptions(x, v)
+
+    do {
+      try cli.parse()
+      XCTAssertTrue(x.value as Bool, "Failed to get true value from concat flags with value")
+      XCTAssertEqual(v.value, 1, "Failed to get correct value from concat flags with value")
+      XCTAssertEqual(cli.lastParsedArgumentIndex, 1, "Failed to get right last parsed argument index")
+    } catch {
+      XCTFail("Failed to parse trailing argument flags with value: \(error)")
+    }
+  }
 }

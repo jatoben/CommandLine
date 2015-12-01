@@ -53,7 +53,8 @@ private struct StderrOutputStream: OutputStreamType {
 public class CommandLine {
   private var _arguments: [String]
   private var _options: [Option] = [Option]()
-  
+  public private(set) var lastParsedArgumentIndex: Int = 0
+
   /** A ParseError is thrown if the `parse()` method fails. */
   public enum ParseError: ErrorType, CustomStringConvertible {
     /** Thrown if an unrecognized argument is passed to `parse()` in strict mode */
@@ -118,6 +119,7 @@ public class CommandLine {
       }
     
       args.append(_arguments[i])
+      lastParsedArgumentIndex = i
     }
     
     return args
@@ -204,6 +206,7 @@ public class CommandLine {
         }
           
         flagMatched = true
+        lastParsedArgumentIndex = idx
         break
       }
       
@@ -221,6 +224,7 @@ public class CommandLine {
             }
             
             flagMatched = true
+            lastParsedArgumentIndex = idx
             break
           }
         }
