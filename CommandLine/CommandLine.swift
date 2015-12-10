@@ -15,8 +15,7 @@
  * limitations under the License.
  */
 
-/* Required for setlocale(3) */
-@_exported import Darwin
+import Darwin
 
 let ShortOptionPrefix = "-"
 let LongOptionPrefix = "--"
