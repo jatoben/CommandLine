@@ -16,7 +16,7 @@
  */
 
 /* Required for setlocale(3) */
-@exported import Darwin
+@_exported import Darwin
 
 let ShortOptionPrefix = "-"
 let LongOptionPrefix = "--"

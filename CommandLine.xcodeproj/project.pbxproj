@@ -114,7 +114,7 @@
 			children = (
 				5D449B63198B412E00F9A8A6 /* ReadMe.md */,
 				5D06884519674D7D00BBFAAC /* CommandLine */,
-				5D06885219674D7D00BBFAAC /* CommandLineTests */,
+				5D06885219674D7D00BBFAAC /* Tests */,
 				5D06884419674D7D00BBFAAC /* Products */,
 			);
 			sourceTree = "<group>";
@@ -147,14 +147,14 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
-		5D06885219674D7D00BBFAAC /* CommandLineTests */ = {
+		5D06885219674D7D00BBFAAC /* Tests */ = {
 			isa = PBXGroup;
 			children = (
 				5D06885519674D7D00BBFAAC /* CommandLineTests.swift */,
 				5D8DC808198D8BA0007CD61B /* StringExtensionTests.swift */,
 				5D06885319674D7D00BBFAAC /* Supporting Files */,
 			);
-			path = CommandLineTests;
+			path = Tests;
 			sourceTree = "<group>";
 		};
 		5D06885319674D7D00BBFAAC /* Supporting Files */ = {
@@ -477,7 +477,7 @@
 					"DEBUG=1",
 					"$(inherited)",
 				);
-				INFOPLIST_FILE = CommandLineTests/Info.plist;
+				INFOPLIST_FILE = Tests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
 				METAL_ENABLE_DEBUG_INFO = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.github.jatoben.${PRODUCT_NAME:rfc1034identifier}";
@@ -493,7 +493,7 @@
 					"$(DEVELOPER_FRAMEWORKS_DIR)",
 					"$(inherited)",
 				);
-				INFOPLIST_FILE = CommandLineTests/Info.plist;
+				INFOPLIST_FILE = Tests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
 				METAL_ENABLE_DEBUG_INFO = NO;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.github.jatoben.${PRODUCT_NAME:rfc1034identifier}";

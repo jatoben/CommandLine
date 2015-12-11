@@ -665,7 +665,10 @@ internal class CommandLineTests: XCTestCase {
     do {
       try cli.parse()
     } catch {
-      XCTAssertTrue("\(error)".hasSuffix("\(o1.flagDescription): invalid"), "Invalid error description: \(error)")
+      if let error = error as? CommandLine.ParseError, case .InvalidValueForOption = error {
+        XCTAssertTrue(String(error).hasSuffix("\(o1.flagDescription): invalid"))
+      }
+      else { XCTFail("Unexpected error: \(error)") }
     }
   }
   
@@ -677,8 +680,11 @@ internal class CommandLineTests: XCTestCase {
     do {
       try cli.parse()
     } catch {
-      let requiredOptions = [o1].map { return $0.flagDescription }
-      XCTAssertTrue("\(error)".hasSuffix("options: \(requiredOptions)"), "Invalid error description: \(error)")
+      if let error = error as? CommandLine.ParseError, case .MissingRequiredOptions = error {
+        let requiredOptions = [o1].map { return $0.flagDescription }
+        XCTAssertTrue(String(error).hasSuffix("options: \(requiredOptions)"), "Invalid error description: \(error)")
+      }
+      else { XCTFail("Unexpected error: \(error)") }
     }
   }
   
@@ -719,7 +725,9 @@ internal class CommandLineTests: XCTestCase {
       XCTFail("Didn't throw with missing required argument")
     } catch {
       var out = ""
-      cli.printUsage(error, to: &out)
+      if let error = error as? CommandLine.ParseError {
+        cli.printUsage(error, to: &out)
+      }
       
       let errorMessage = out.splitByCharacter("\n", maxSplits: 1)[0]
       XCTAssertTrue(errorMessage.hasPrefix("Missing required"))
