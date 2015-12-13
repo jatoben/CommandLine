@@ -16,7 +16,11 @@
  */
 
 /* Required for setlocale(3) */
-@_exported import Darwin
+#if os(OSX)
+  import Darwin
+#elseif os(Linux)
+  import Glibc
+#endif
 
 let ShortOptionPrefix = "-"
 let LongOptionPrefix = "--"

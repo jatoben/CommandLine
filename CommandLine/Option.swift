@@ -31,12 +31,14 @@ public class Option {
   
   public var flagDescription: String {
     switch (shortFlag, longFlag) {
-    case (let sf, let lf) where sf != nil && lf != nil:
-      return "\(ShortOptionPrefix)\(sf!), \(LongOptionPrefix)\(lf!)"
-    case (_, let lf) where lf != nil:
-      return "\(LongOptionPrefix)\(lf!)"
+    case let (.Some(sf), .Some(lf)):
+      return "\(ShortOptionPrefix)\(sf), \(LongOptionPrefix)\(lf)"
+    case (.None, let .Some(lf)):
+      return "\(LongOptionPrefix)\(lf)"
+    case (let .Some(sf), .None):
+      return "\(ShortOptionPrefix)\(sf)"
     default:
-      return "\(ShortOptionPrefix)\(shortFlag!)"
+      return ""
     }
   }
   
