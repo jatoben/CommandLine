@@ -164,3 +164,29 @@ internal extension String {
     return s
   }
 }
+
+#if os(Linux)
+  /**
+   *  Returns `true` iff `self` begins with `prefix`.
+   *
+   *  A basic implementation of `hasPrefix` for Linux.
+   *  Should be removed once a proper `hasPrefix` patch makes it to the Swift 2.2 development branch.
+   */
+
+  extension String {
+    func hasPrefix(prefix: String) -> Bool {
+      if prefix.isEmpty { return false }
+
+      let c = self.characters
+      let p = prefix.characters
+
+      if p.count > c.count { return false }
+
+      for (c,p) in zip(c.prefix(p.count), p) {
+        guard c == p else { return false }
+      }
+
+      return true
+    }
+  }
+#endif
