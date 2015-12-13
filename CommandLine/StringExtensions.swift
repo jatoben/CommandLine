@@ -16,7 +16,11 @@
  */
 
 /* Required for localeconv(3) */
-import Darwin
+#if os(OSX)
+  import Darwin
+#elseif os(Linux)
+  import Glibc
+#endif
 
 internal extension String {
   /* Retrieves locale-specified decimal separator from the environment
