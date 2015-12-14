@@ -1,5 +1,5 @@
 /*
- * CommandLine.swift
+ * main.swift
  * Copyright (c) 2015 Ben Gollmer.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,11 +15,7 @@
  * limitations under the License.
  */
 
- import PackageDescription
+import XCTest
 
- let package = Package(name: "CommandLine")
+XCTMain([CommandLineTests(), StringExtensionTests()])
 
- #if os(Linux)
- let target = Target(name: "CommandLineTests", dependencies: [.Target(name: "CommandLine")])
- package.targets.append(target)
- #endif
