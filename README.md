@@ -2,7 +2,7 @@ CommandLine [![Build Status](https://travis-ci.org/jatoben/CommandLine.svg?branc
 ===========
 A pure Swift library for creating command-line interfaces.
 
-*Note: CommandLine `master` requires Xcode 7  / Swift 2.0. If you're using older versions of Swift, please check out the [earlier releases](https://github.com/jatoben/CommandLine/releases).*
+*Note: CommandLine `master` requires Xcode 7  / Swift 2.0, and aims to support the latest 2.2-dev snapshot on Linux (although not all tests pass yet). If you're using older versions of Swift, please check out the [earlier releases](https://github.com/jatoben/CommandLine/releases).*
 
 Usage
 -----
@@ -31,9 +31,9 @@ do {
   exit(EX_USAGE)
 }
 
-println("File path is \(filePath.value!)")
-println("Compress is \(compress.value)")
-println("Verbosity is \(verbosity.value)")
+print("File path is \(filePath.value!)")
+print("Compress is \(compress.value)")
+print("Verbosity is \(verbosity.value)")
 ```
 
 See `Option.swift` for additional Option types.
@@ -58,7 +58,7 @@ Usage: example [options]
       Use data compression.
   -h, --help:    
       Prints a help message.
-  -v, --verbose: 
+  -v, --verbose:
       Print verbose messages. Specify multiple times to increase verbosity.
 ```
 
