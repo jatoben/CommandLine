@@ -10,7 +10,7 @@ matrix:
       sudo: required
       dist: trusty
       before_install:
-        - sudo apt-get install -y clang libicu-dev
+        - sudo apt-get install -y libicu-dev
         - ./install-linux-swift.sh
         - export PATH="/swift/usr/bin:${PATH}"
       script:
