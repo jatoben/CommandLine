@@ -57,6 +57,7 @@ private struct StderrOutputStream: OutputStreamType {
 public class CommandLine {
   private var _arguments: [String]
   private var _options: [Option] = [Option]()
+  private var _commandArguments: [String] = [String]()
   private var _usedFlags: Set<String> {
     var usedFlags = Set<String>(minimumCapacity: _options.count * 2)
 
@@ -201,10 +202,14 @@ public class CommandLine {
   public func parse(strict: Bool = false) throws {
     for (idx, arg) in _arguments.enumerate() {
       if arg == ArgumentStopper {
+        _commandArguments.appendContentsOf([String](_arguments[(idx + 1)..<_arguments.count]))
         break
       }
       
       if !arg.hasPrefix(ShortOptionPrefix) {
+        if idx > 0 {
+          _commandArguments.append(arg)
+        }
         continue
       }
       
@@ -316,5 +321,13 @@ public class CommandLine {
   public func printUsage() {
     var out = StderrOutputStream.stream
     printUsage(&out)
+  }
+
+  /**
+  * Get an array containing any arguments to the command that are not flag options, in the 
+  * order they appeared in the command line invocation.
+  */
+  public func getCommandArguments() -> [String] {
+    return [String](_commandArguments)
   }
 }
