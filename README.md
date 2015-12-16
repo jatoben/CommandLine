@@ -131,7 +131,7 @@ Note: Enums must be initalizable from a String value.
 
 Any strings provided in the invocation that are not predefined options can be accessed as an array, and their descriptions are included in usage notes:
 
-```objective-c
+```swift
 import CommandLine
 
 let cli = CommandLine()
@@ -141,7 +141,9 @@ let boolOptionA = BoolOption(shortFlag: "a", longFlag: "anOption",
 let boolOptionB = BoolOption(shortFlag: "b", longFlag: "anotherOption",
   helpMessage: "Another boolean option.")
 cli.addOptions(boolOptionA, boolOptionB)
-cli.addCommandArguments(["arg1 description", "arg2 description"])
+
+let argument = Argument(name: "arg", description: "some argument")
+cli.addCommandArguments([argument])
 
 do {
   try cli.parse()

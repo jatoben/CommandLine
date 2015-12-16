@@ -102,7 +102,7 @@ internal class CommandLineArgumentTests: XCTestCase {
 
     // --- more argument descriptions provided than were parsed, unlimited max ---
 
-    let descriptions = [ Argument(name: "arg1", description: "description 1"), Argument(name: "arg2", description: "description 2")]
+    let descriptions = [Argument(name: "arg1", description: "description 1"), Argument(name: "arg2", description: "description 2")]
     cli.addCommandArguments(descriptions)
 
     // III
@@ -211,14 +211,15 @@ internal class CommandLineArgumentTests: XCTestCase {
     let opts = [boolOpt, counterOpt, stringOpt, intOpt, doubleOpt, extraOpt]
     cli.addOptions(opts)
 
-    cli.addCommandArguments([ Argument(name: "arg1", description: "description 1"), Argument(name: "arg2", description: "description 2")], maxAllowedArguments: limit)
+    let arguments = [Argument(name: "arg1", description: "description 1"), Argument(name: "arg2", description: "description 2")]
+    cli.addCommandArguments(arguments, maxAllowedArguments: limit)
 
     var out = ""
     cli.printUsage(&out)
     XCTAssertGreaterThan(out.characters.count, 0)
 
     /* There should be at least 2 lines per option, plus the intro Usage statement */
-    XCTAssertGreaterThanOrEqual(out.splitByCharacter("\n").count, (opts.count * 2) + 1)
+    XCTAssertGreaterThanOrEqual(out.splitByCharacter("\n").count, opts.count * 2 + arguments.count * 2 + 1)
   }
 }
 
