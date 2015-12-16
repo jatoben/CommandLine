@@ -127,10 +127,47 @@ switch op.value {
 
 Note: Enums must be initalizable from a String value.
 
+### Command arguments
+
+Any strings provided in the invocation that are not predefined options can be accessed as an array, and their descriptions are included in usage notes:
+
+```objective-c
+import CommandLine
+
+let cli = CommandLine()
+
+let boolOptionA = BoolOption(shortFlag: "a", longFlag: "anOption",
+  helpMessage: "Some boolean option.")
+let boolOptionB = BoolOption(shortFlag: "b", longFlag: "anotherOption",
+  helpMessage: "Another boolean option.")
+cli.addOptions(boolOptionA, boolOptionB)
+cli.addCommandArgumentDescriptions(["arg1 description", "arg2 description"])
+
+do {
+  try cli.parse()
+} catch {
+  cli.printUsage(error)
+  exit(EX_USAGE)
+}
+
+print("anOption is \(boolOptionA.value)")
+print("anotherOption is \(boolOptionB.value)")
+print("Command arguments are \(cli.getCommandLineArguments())")
+```
+All the following incantations are valid:
+
+```bash
+./example3 some-string -a -b
+./example3 -a some-string -b
+./example3 -a -b -- some-string
+```
+
+You can have either limited or unlimited sets of arguments; see `addCommandArgumentDescriptions` for more details. 
+
 ### Fully emoji-compliant
 
 ```bash
-$ ./example3 -👍 --👻
+$ ./example4 -👍 --👻
 ```
 
 *(please don't actually do this)*

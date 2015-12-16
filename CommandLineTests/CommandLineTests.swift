@@ -786,24 +786,4 @@ internal class CommandLineTests: XCTestCase {
     cli.printUsage()
     cli.printUsage(error)
   }
-
-  func testCommandArguments() {
-    let option = BoolOption(shortFlag: "a", longFlag: "a1", required: true, helpMessage: "")
-    runCommandArgumentTest(CommandLine(arguments: ["CommandLineTests", "-a", "--", "arg1", "arg2", "arg3"]), option: option, expectedArguments: ["arg1", "arg2", "arg3"])
-    runCommandArgumentTest(CommandLine(arguments: ["CommandLineTests", "-a", "arg1", "--", "arg2", "arg3"]), option: option, expectedArguments: ["arg1", "arg2", "arg3"])
-    runCommandArgumentTest(CommandLine(arguments: ["CommandLineTests", "arg1", "-a", "arg2", "--", "arg3"]), option: option, expectedArguments: ["arg1", "arg2", "arg3"])
-    runCommandArgumentTest(CommandLine(arguments: ["CommandLineTests", "arg3", "arg1", "-a", "arg2", "--"]), option: option, expectedArguments: ["arg3", "arg1", "arg2"])
-  }
-
-  func runCommandArgumentTest(cli:CommandLine, option:BoolOption, expectedArguments:[String]) {
-    cli.addOption(option)
-    do {
-      try cli.parse()
-      XCTAssertTrue(option.value, "Failed to get true value from short bool")
-    } catch {
-      XCTFail("Failed to parse bool options: \(error)")
-    }
-    let parsedArguments = cli.getCommandArguments()
-    XCTAssert(parsedArguments == expectedArguments, "Arguments were not parsed correctly. Expected \(expectedArguments), got \(parsedArguments)")
-  }
 }
