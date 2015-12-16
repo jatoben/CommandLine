@@ -103,7 +103,7 @@ internal class CommandLineArgumentTests: XCTestCase {
     // --- more argument descriptions provided than were parsed, unlimited max ---
 
     let descriptions = [ Argument(name: "arg1", description: "description 1"), Argument(name: "arg2", description: "description 2")]
-    cli.addCommandArgumentDescriptions(descriptions)
+    cli.addCommandArguments(descriptions)
 
     // III
     runExpectedCommandArgumentTest(cli, option: option, strict: false, shouldFailNotEnough: true, shouldFailTooMany: false)
@@ -113,7 +113,7 @@ internal class CommandLineArgumentTests: XCTestCase {
 
     // --- more argument descriptions provided than were parsed, limited max ---
 
-    cli.addCommandArgumentDescriptions(descriptions, maxAllowedArguments: 2)
+    cli.addCommandArguments(descriptions, maxAllowedArguments: 2)
 
     // V
     runExpectedCommandArgumentTest(cli, option: option, strict: false, shouldFailNotEnough: true, shouldFailTooMany: false)
@@ -125,7 +125,7 @@ internal class CommandLineArgumentTests: XCTestCase {
 
     cli = CommandLine(arguments: ["CommandLine", "-a", "arg1", "arg2"])
     cli.addOption(option)
-    cli.addCommandArgumentDescriptions(descriptions)
+    cli.addCommandArguments(descriptions)
 
     // VII
     runExpectedCommandArgumentTest(cli, option: option, strict: false, shouldFailNotEnough: false, shouldFailTooMany: false)
@@ -135,7 +135,7 @@ internal class CommandLineArgumentTests: XCTestCase {
 
     // --- expectation met with descriptions provided + limited max args allowed ---
 
-    cli.addCommandArgumentDescriptions(descriptions, maxAllowedArguments: 2)
+    cli.addCommandArguments(descriptions, maxAllowedArguments: 2)
 
     // IX
     runExpectedCommandArgumentTest(cli, option: option, strict: false, shouldFailNotEnough: false, shouldFailTooMany: false)
@@ -147,7 +147,7 @@ internal class CommandLineArgumentTests: XCTestCase {
 
     cli = CommandLine(arguments: ["CommandLine", "-a", "arg1", "arg2", "arg3"])
     cli.addOption(option)
-    cli.addCommandArgumentDescriptions(descriptions)
+    cli.addCommandArguments(descriptions)
 
     // XI
     runExpectedCommandArgumentTest(cli, option: option, strict: false, shouldFailNotEnough: false, shouldFailTooMany: false)
@@ -157,7 +157,7 @@ internal class CommandLineArgumentTests: XCTestCase {
 
     // --- more arguments than expected argument descriptions with limited max arguments ---
 
-    cli.addCommandArgumentDescriptions(descriptions, maxAllowedArguments: 2)
+    cli.addCommandArguments(descriptions, maxAllowedArguments: 2)
 
     // XIII
     runExpectedCommandArgumentTest(cli, option: option, strict: false, shouldFailNotEnough: false, shouldFailTooMany: false)
@@ -211,7 +211,7 @@ internal class CommandLineArgumentTests: XCTestCase {
     let opts = [boolOpt, counterOpt, stringOpt, intOpt, doubleOpt, extraOpt]
     cli.addOptions(opts)
 
-    cli.addCommandArgumentDescriptions([ Argument(name: "arg1", description: "description 1"), Argument(name: "arg2", description: "description 2")], maxAllowedArguments: limit)
+    cli.addCommandArguments([ Argument(name: "arg1", description: "description 1"), Argument(name: "arg2", description: "description 2")], maxAllowedArguments: limit)
 
     var out = ""
     cli.printUsage(&out)

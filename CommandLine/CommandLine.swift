@@ -57,9 +57,9 @@ private struct StderrOutputStream: OutputStreamType {
 public class CommandLine {
   private var _arguments: [String]
   private var _options: [Option] = [Option]()
-  private var _commandArgumentDescriptions: [Argument]?
-  private var _maxExpectedCommandArguments: Int = -1
-  private var _commandArguments: [String] = [String]()
+  private var _commandArguments: [Argument]?
+  private var _maxAllowedCommandArguments: Int = -1
+  private var _parsedCommandArguments: [String] = [String]()
   private var _usedFlags: Set<String> {
     var usedFlags = Set<String>(minimumCapacity: _options.count * 2)
 
@@ -157,17 +157,17 @@ public class CommandLine {
    * arguments are ever parsed than the amount of strings in this array, a 
    * `MissingExpectedCommandArgument` ParseError is thrown.
    *
-   * - parameter commandArgumentDescriptions: array of descriptions.
-   * - parameter maxExpectedCommandArguments: the maximum number of arguments 
+   * - parameter commandArguments: array of descriptions.
+   * - parameter maxAllowedCommandArguments: the maximum number of arguments 
    *   that can be passed to the command. If the number of parsed
    *   arguments is ever lower than this value, a `MissingExpectedCommandArgument`
    *   ParseError is thrown. In strict mode, if more arguments are found than this
    *   value is defined to be, a `TooManyCommandArguments` ParseError is thrown.
    *   (default: -1 for unlimited arguments.)
    */
-  public func addCommandArgumentDescriptions(commandArgumentDescriptions: [Argument], maxAllowedArguments: Int = -1) {
-    self._commandArgumentDescriptions = commandArgumentDescriptions
-    self._maxExpectedCommandArguments = maxAllowedArguments
+  public func addCommandArguments(commandArguments: [Argument], maxAllowedArguments: Int = -1) {
+    self._commandArguments = commandArguments
+    self._maxAllowedCommandArguments = maxAllowedArguments
   }
   
   /**
@@ -227,24 +227,24 @@ public class CommandLine {
   /**
    * Parses command-line arguments into their matching Option values. Throws `ParseError` if
    * argument parsing fails, or if less command arguments were found than expected as
-   * defined by `commandArgumentDescriptions` in `init()`.
+   * set in `addCommandArguments()`
    *
    * - parameter strict: Fail if any unrecognized arguments are present, or if more 
-   *   non-option command arguments are found than were expected as defined by the `init()`
-   *   parameter `maxExpectedCommandArguments` (default: false).
+   *   non-option command arguments are found than were expected as defined by the
+   *   parameter `maxAllowedCommandArguments` in `addCommandArguments()` (default: false).
    */
   public func parse(strict: Bool = false) throws {
-    _commandArguments = [String]()
+    _parsedCommandArguments = [String]()
 
     for (idx, arg) in _arguments.enumerate() {
       if arg == ArgumentStopper {
-        _commandArguments.appendContentsOf([String](_arguments[(idx + 1)..<_arguments.count]))
+        _parsedCommandArguments.appendContentsOf([String](_arguments[(idx + 1)..<_arguments.count]))
         break
       }
       
       if !arg.hasPrefix(ShortOptionPrefix) {
         if idx > 0 {
-          _commandArguments.append(arg)
+          _parsedCommandArguments.append(arg)
         }
         continue
       }
@@ -304,18 +304,18 @@ public class CommandLine {
     }
 
     if strict {
-      if _maxExpectedCommandArguments > -1 {
-        if _commandArguments.count < _maxExpectedCommandArguments {
+      if _maxAllowedCommandArguments > -1 {
+        if _parsedCommandArguments.count < _maxAllowedCommandArguments {
           throw ParseError.MissingExpectedCommandArgument
-        } else if _commandArguments.count > _maxExpectedCommandArguments {
+        } else if _parsedCommandArguments.count > _maxAllowedCommandArguments {
           throw ParseError.TooManyCommandArguments
         }
       } else {
-        if _commandArguments.count < _commandArgumentDescriptions?.count {
+        if _parsedCommandArguments.count < _commandArguments?.count {
           throw ParseError.MissingExpectedCommandArgument
         }
       }
-    } else if _commandArguments.count < _commandArgumentDescriptions?.count {
+    } else if _parsedCommandArguments.count < _commandArguments?.count {
       throw ParseError.MissingExpectedCommandArgument
     }
   }
@@ -338,11 +338,11 @@ public class CommandLine {
     }
 
     var arguments = ""
-    if let argumentDescriptions = _commandArgumentDescriptions {
+    if let argumentDescriptions = _commandArguments {
       for argument in argumentDescriptions {
         arguments.appendContentsOf("\(argument.name), ")
       }
-      if _maxExpectedCommandArguments == -1 {
+      if _maxAllowedCommandArguments == -1 {
         arguments.appendContentsOf("...")
       } else {
         arguments = String(arguments.characters.dropLast(2))
@@ -355,7 +355,7 @@ public class CommandLine {
       print("\(flags)\n      \(opt.helpMessage)", toStream: &to)
     }
 
-    if let argumentDescriptions = _commandArgumentDescriptions {
+    if let argumentDescriptions = _commandArguments {
       for argument in argumentDescriptions {
         print("\(argument.name)\n      \(argument.description)", toStream: &to)
       }
@@ -398,6 +398,6 @@ public class CommandLine {
   * order they appeared in the command line invocation.
   */
   public func getCommandArguments() -> [String] {
-    return [String](_commandArguments)
+    return [String](_parsedCommandArguments)
   }
 }

@@ -141,7 +141,7 @@ let boolOptionA = BoolOption(shortFlag: "a", longFlag: "anOption",
 let boolOptionB = BoolOption(shortFlag: "b", longFlag: "anotherOption",
   helpMessage: "Another boolean option.")
 cli.addOptions(boolOptionA, boolOptionB)
-cli.addCommandArgumentDescriptions(["arg1 description", "arg2 description"])
+cli.addCommandArguments(["arg1 description", "arg2 description"])
 
 do {
   try cli.parse()
@@ -162,7 +162,7 @@ All the following incantations are valid:
 ./example3 -a -b -- some-string
 ```
 
-You can have either limited or unlimited sets of arguments; see `addCommandArgumentDescriptions` for more details. 
+You can have either limited or unlimited sets of arguments; see `addCommandArguments` for more details. 
 
 ### Fully emoji-compliant
 
