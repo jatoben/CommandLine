@@ -336,6 +336,7 @@ public class CommandLine {
 
     var arguments = ""
     if let argumentDescriptions = _commandArguments {
+      arguments.appendContentsOf("-- ")
       for argument in argumentDescriptions {
         arguments.appendContentsOf("\(argument.name), ")
       }
@@ -354,7 +355,7 @@ public class CommandLine {
 
     if let argumentDescriptions = _commandArguments {
       for argument in argumentDescriptions {
-        print("\(argument.name)\n      \(argument.description)", toStream: &to)
+        print("  \(argument.name)\n      \(argument.description)", toStream: &to)
       }
     }
   }
