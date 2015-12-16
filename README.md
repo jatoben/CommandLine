@@ -129,7 +129,7 @@ Note: Enums must be initalizable from a String value.
 
 ### Command arguments
 
-Any strings provided in the invocation that are not predefined options can be accessed as an array, and their descriptions are included in usage notes:
+Any strings provided after the option terminator (“--”) can be accessed as an array, and their descriptions are included in usage notes:
 
 ```swift
 import CommandLine
@@ -156,11 +156,8 @@ print("anOption is \(boolOptionA.value)")
 print("anotherOption is \(boolOptionB.value)")
 print("Command arguments are \(cli.getCommandLineArguments())")
 ```
-All the following incantations are valid:
 
 ```bash
-./example3 some-string -a -b
-./example3 -a some-string -b
 ./example3 -a -b -- some-string
 ```
 

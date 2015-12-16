@@ -243,9 +243,6 @@ public class CommandLine {
       }
       
       if !arg.hasPrefix(ShortOptionPrefix) {
-        if idx > 0 {
-          _parsedCommandArguments.append(arg)
-        }
         continue
       }
       

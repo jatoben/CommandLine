@@ -36,17 +36,16 @@ internal class CommandLineArgumentTests: XCTestCase {
 
   func testCommandArguments() {
     let option = BoolOption(shortFlag: "a", longFlag: "a1", required: true, helpMessage: "")
-    runCommandArgumentTest(CommandLine(arguments: ["CommandLineTests", "-a", "--", "arg1", "arg2", "arg3"]), option: option, expectedArguments: ["arg1", "arg2", "arg3"])
-    runCommandArgumentTest(CommandLine(arguments: ["CommandLineTests", "-a", "arg1", "--", "arg2", "arg3"]), option: option, expectedArguments: ["arg1", "arg2", "arg3"])
-    runCommandArgumentTest(CommandLine(arguments: ["CommandLineTests", "arg1", "-a", "arg2", "--", "arg3"]), option: option, expectedArguments: ["arg1", "arg2", "arg3"])
-    runCommandArgumentTest(CommandLine(arguments: ["CommandLineTests", "arg3", "arg1", "-a", "arg2", "--"]), option: option, expectedArguments: ["arg3", "arg1", "arg2"])
+    let stringOption = StringOption(shortFlag: "s", longFlag: "s1", required: true, helpMessage: "")
+    runCommandArgumentTest(CommandLine(arguments: ["CommandLineTests", "-a", "-s", "string", "--", "arg1", "arg2", "arg3"]), option: option, stringOption: stringOption, expectedArguments: ["arg1", "arg2", "arg3"])
   }
 
-  func runCommandArgumentTest(cli:CommandLine, option:BoolOption, expectedArguments:[String]) {
-    cli.addOption(option)
+  func runCommandArgumentTest(cli:CommandLine, option:BoolOption, stringOption:StringOption, expectedArguments:[String]) {
+    cli.addOptions([option, stringOption])
     do {
       try cli.parse()
       XCTAssertTrue(option.value, "Failed to get true value from short bool")
+      XCTAssertTrue(stringOption.value! == "string", "Failed to get string value")
     } catch {
       XCTFail("Failed to parse command arguments with bool option: \(error)")
     }
@@ -123,7 +122,7 @@ internal class CommandLineArgumentTests: XCTestCase {
 
     // --- expectation met with descriptions provided + unlimited max args allowed ---
 
-    cli = CommandLine(arguments: ["CommandLine", "-a", "arg1", "arg2"])
+    cli = CommandLine(arguments: ["CommandLine", "-a", "--", "arg1", "arg2"])
     cli.addOption(option)
     cli.addCommandArguments(descriptions)
 
@@ -145,7 +144,7 @@ internal class CommandLineArgumentTests: XCTestCase {
 
     // --- more arguments than expected argument descriptions but unlimited max arguments ---
 
-    cli = CommandLine(arguments: ["CommandLine", "-a", "arg1", "arg2", "arg3"])
+    cli = CommandLine(arguments: ["CommandLine", "-a", "--", "arg1", "arg2", "arg3"])
     cli.addOption(option)
     cli.addCommandArguments(descriptions)
 
