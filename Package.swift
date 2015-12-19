@@ -1,5 +1,5 @@
 /*
- * CommandLine.swift
+ * Package.swift
  * Copyright (c) 2015 Ben Gollmer.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,11 +15,10 @@
  * limitations under the License.
  */
 
- import PackageDescription
+import PackageDescription
 
- let package = Package(name: "CommandLine")
+let package = Package(name: "CommandLine", exclude: ["CommandLineTests"])
 
- #if os(Linux)
- let target = Target(name: "CommandLineTests", dependencies: [.Target(name: "CommandLine")])
- package.targets.append(target)
- #endif
+let target = Target(name: "CommandLineTests", dependencies: [.Target(name: "CommandLine")])
+package.targets.append(target)
+
