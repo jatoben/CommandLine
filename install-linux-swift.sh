@@ -13,4 +13,5 @@ tar -zxvf "${SWIFT_SNAPSHOT}.tar.gz"
 cd "swift-corelibs-xctest-${SWIFT_SNAPSHOT}"
 ./build_script.py --swiftc="/swift/usr/bin/swiftc" --build-dir="/tmp/XCTest_build" --swift-build-dir="/swift/usr" --library-install-path="/swift/usr/lib/swift/linux" --module-install-path="/swift/usr/lib/swift/linux/x86_64"
 cd ..
+rm -rf "swift-corelibs-xctest-${SWIFT_SNAPSHOT}"
 
