@@ -118,8 +118,8 @@ public class CommandLine {
     if attachedArg.count > 1 {
       args.append(attachedArg[1])
     }
-    
-    for var i = flagIndex + 1; i < _arguments.count; i++ {
+
+    for i in (flagIndex + 1).stride(to: _arguments.count, by: 1) {
       if !skipFlagChecks {
         if _arguments[i] == ArgumentStopper {
           skipFlagChecks = true
