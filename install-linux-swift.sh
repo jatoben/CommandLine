@@ -1,6 +1,6 @@
 #!/bin/bash
 set -ev
-SWIFT_SNAPSHOT="swift-2.2-SNAPSHOT-2015-12-18-a"
+SWIFT_SNAPSHOT="swift-2.2-SNAPSHOT-2015-12-31-a"
 
 echo "Installing ${SWIFT_SNAPSHOT}..."
 curl -s -L -O "https://swift.org/builds/ubuntu1404/${SWIFT_SNAPSHOT}/${SWIFT_SNAPSHOT}-ubuntu14.04.tar.gz"
@@ -14,4 +14,3 @@ cd "swift-corelibs-xctest-${SWIFT_SNAPSHOT}"
 ./build_script.py --swiftc="/swift/usr/bin/swiftc" --build-dir="/tmp/XCTest_build" --swift-build-dir="/swift/usr" --library-install-path="/swift/usr/lib/swift/linux" --module-install-path="/swift/usr/lib/swift/linux/x86_64"
 cd ..
 rm -rf "swift-corelibs-xctest-${SWIFT_SNAPSHOT}"
-
