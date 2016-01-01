@@ -17,8 +17,7 @@
 
 import PackageDescription
 
-let package = Package(name: "CommandLine", exclude: ["CommandLineTests"])
+let package = Package(name: "CommandLine")
 
 let target = Target(name: "CommandLineTests", dependencies: [.Target(name: "CommandLine")])
 package.targets.append(target)
-
