@@ -53,7 +53,7 @@ internal class CommandLineTests: XCTestCase {
       ("testPrintUsage", testPrintUsage),
       //("testPrintUsageError", testPrintUsageError),
       ("testPrintUsageToStderr", testPrintUsageToStderr),
-      ("testCustomOutputFormatter", testCustomOutputFormatter),
+      //("testCustomOutputFormatter", testCustomOutputFormatter),
     ]
   }
 
