@@ -180,7 +180,8 @@ public class CommandLine {
    * - parameter options: An array containing the options to set.
    */
   public func setOptions(options: [Option]) {
-    _options = options
+    _options = [Option]()
+    addOptions(options)
   }
   
   /**
@@ -189,7 +190,8 @@ public class CommandLine {
    * - parameter options: The options to set.
    */
   public func setOptions(options: Option...) {
-    _options = options
+    _options = [Option]()
+    addOptions(options)
   }
   
   /**
