@@ -57,7 +57,7 @@ private struct StderrOutputStream: OutputStreamType {
 public class CommandLine {
   private var _arguments: [String]
   private var _options: [Option] = [Option]()
-  private var _maxFlagWidth: Int = 0
+  private var _maxFlagDescriptionWidth: Int = 0
   private var _usedFlags: Set<String> {
     var usedFlags = Set<String>(minimumCapacity: _options.count * 2)
 
@@ -103,12 +103,12 @@ public class CommandLine {
    *
    * - seealso: `defaultFormat`, `formatOutput`
    */
-  public var maxFlagWidth: Int {
-    if _maxFlagWidth == 0 {
-      _maxFlagWidth = _options.map { $0.flagDescription.characters.count }.sort().first ?? 0
+  public var maxFlagDescriptionWidth: Int {
+    if _maxFlagDescriptionWidth == 0 {
+      _maxFlagDescriptionWidth = _options.map { $0.flagDescription.characters.count }.sort().first ?? 0
     }
 
-    return _maxFlagWidth
+    return _maxFlagDescriptionWidth
   }
 
   /**
@@ -211,7 +211,7 @@ public class CommandLine {
     }
 
     _options.append(option)
-    _maxFlagWidth = 0
+    _maxFlagDescriptionWidth = 0
   }
   
   /**
@@ -348,7 +348,7 @@ public class CommandLine {
     case .Error:
       return "\(s)\n\n"
     case .OptionFlag:
-      return "  \(s.paddedToWidth(maxFlagWidth)):\n"
+      return "  \(s.paddedToWidth(maxFlagDescriptionWidth)):\n"
     case .OptionHelp:
       return "      \(s)\n"
     }
