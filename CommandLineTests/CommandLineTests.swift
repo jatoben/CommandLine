@@ -797,4 +797,52 @@ internal class CommandLineTests: XCTestCase {
     cli.printUsage()
     cli.printUsage(error)
   }
+
+  func testCustomOutputFormatter() {
+    let cli = CommandLine(arguments: [ "CommandLineTests" ])
+    cli.formatOutput = { s, type in
+      switch type {
+      case .About:
+        return "[ABOUT]\(s)\n"
+      case .Error:
+        return "[ERROR]\(s)\n"
+      case .OptionFlag:
+        return "[FLAG]\(s)\n"
+      case .OptionHelp:
+        return "[HELP]\(s)\n"
+      }
+    }
+
+    let boolOpt = BoolOption(shortFlag: "d", longFlag: "debug", helpMessage: "Enables debug mode.")
+    let counterOpt = CounterOption(shortFlag: "v", longFlag: "verbose",
+      helpMessage: "Enables verbose output. Specify multiple times for extra verbosity.")
+    let stringOpt = StringOption(shortFlag: "n", longFlag: "name", required: true,
+      helpMessage: "Name a Cy Young winner.")
+    let intOpt = IntOption(shortFlag: "f", longFlag: "favorite", required: true,
+      helpMessage: "Your favorite number.")
+    let doubleOpt = DoubleOption(shortFlag: "p", longFlag: "p-value", required: true,
+      helpMessage: "P-value for test.")
+    let extraOpt = MultiStringOption(shortFlag: "x", longFlag: "Extra", required: true,
+      helpMessage: "X is for Extra.")
+
+    let opts = [boolOpt, counterOpt, stringOpt, intOpt, doubleOpt, extraOpt]
+    cli.addOptions(opts)
+
+    do {
+      try cli.parse()
+      XCTFail("Parsed missing required option")
+    } catch {
+      var out = ""
+      cli.printUsage(error, to: &out)
+
+      let o = out.splitByCharacter("\n")
+      XCTAssertTrue(o[0].hasPrefix("[ERROR]"))
+      XCTAssertTrue(o[1].hasPrefix("[ABOUT]"))
+
+      for i in 2.stride(to: opts.count, by: 2) {
+        XCTAssertTrue(o[i].hasPrefix("[FLAG]"))
+        XCTAssertTrue(o[i + 1].hasPrefix("[HELP]"))
+      }
+    }
+  }
 }
