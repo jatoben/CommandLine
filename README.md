@@ -63,7 +63,7 @@ Usage: example [options]
 
 You can fully customize the usage message by supplying a `formatOutput` function. For example, [Rainbow](https://github.com/onevcat/Rainbow) provides a handy way to generate colorized output:
 
-```
+```swift
 import Rainbow
 
 cli.formatOutput = { s, type in
