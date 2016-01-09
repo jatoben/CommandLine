@@ -172,14 +172,12 @@ public class CommandLine {
   }
   
   /* Returns all argument values from flagIndex to the next flag or the end of the argument array. */
-  private func _getFlagValues(flagIndex: Int) -> [String] {
+  private func _getFlagValues(flagIndex: Int, _ attachedArg: String? = nil) -> [String] {
     var args: [String] = [String]()
     var skipFlagChecks = false
-    
-    /* Grab attached arg, if any */
-    var attachedArg = _arguments[flagIndex].splitByCharacter(ArgumentAttacher, maxSplits: 1)
-    if attachedArg.count > 1 {
-      args.append(attachedArg[1])
+
+    if let a = attachedArg {
+      args.append(a)
     }
 
     for i in (flagIndex + 1).stride(to: _arguments.count, by: 1) {
@@ -295,16 +293,20 @@ public class CommandLine {
       }
       
       /* Remove attached argument from flag */
-      let flag = flagWithArg.splitByCharacter(ArgumentAttacher, maxSplits: 1)[0]
+      let splitFlag = flagWithArg.splitByCharacter(ArgumentAttacher, maxSplits: 1)
+      let flag = splitFlag[0]
+      let attachedArg: String? = splitFlag.count == 2 ? splitFlag[1] : nil
       
       var flagMatched = false
       for option in _options where option.flagMatch(flag) {
-        let vals = self._getFlagValues(idx)
+        let vals = self._getFlagValues(idx, attachedArg)
         guard option.setValue(vals) else {
           throw ParseError.InvalidValueForOption(option, vals)
         }
 
-        for i in idx.stride(through: min(idx + option.claimedValues, strays.endIndex - 1), by: 1) {
+        var claimedIdx = idx + option.claimedValues
+        if attachedArg != nil { claimedIdx -= 1 }
+        for i in idx.stride(through: claimedIdx, by: 1) {
           strays[i] = nil
         }
 
@@ -320,12 +322,14 @@ public class CommandLine {
             /* Values are allowed at the end of the concatenated flags, e.g.
             * -xvf <file1> <file2>
             */
-            let vals = (i == flagLength - 1) ? self._getFlagValues(idx) : [String]()
+            let vals = (i == flagLength - 1) ? self._getFlagValues(idx, attachedArg) : [String]()
             guard option.setValue(vals) else {
               throw ParseError.InvalidValueForOption(option, vals)
             }
 
-            for i in idx.stride(through: min(idx + option.claimedValues, strays.endIndex - 1), by: 1) {
+            var claimedIdx = idx + option.claimedValues
+            if attachedArg != nil { claimedIdx -= 1 }
+            for i in idx.stride(through: claimedIdx, by: 1) {
               strays[i] = nil
             }
             
