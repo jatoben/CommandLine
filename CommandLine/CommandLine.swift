@@ -70,6 +70,8 @@ public class CommandLine {
     return usedFlags
   }
 
+  public private(set) var strayValues: [String] = [String]()
+
   /**
    * If supplied, this function will be called when printing usage messages.
    *
@@ -259,7 +261,7 @@ public class CommandLine {
   /**
    * Parses command-line arguments into their matching Option values.
    *
-   * - parameter strict: Fail if any unrecognized arguments are present (default: false).
+   * - parameter strict: Fail if any unrecognized flags are present (default: false).
    *
    * - throws: A `ParseError` if argument parsing fails:
    *   - `.InvalidArgument` if an unrecognized flag is present and `strict` is true
@@ -268,6 +270,12 @@ public class CommandLine {
    *   - `.MissingRequiredOptions` if a required option isn't present
    */
   public func parse(strict: Bool = false) throws {
+    /* Kind of an ugly cast here */
+    var strays = _arguments.map { $0 as String? }
+
+    /* Nuke executable name */
+    strays[0] = nil
+
     for (idx, arg) in _arguments.enumerate() {
       if arg == ArgumentStopper {
         break
@@ -295,7 +303,11 @@ public class CommandLine {
         guard option.setValue(vals) else {
           throw ParseError.InvalidValueForOption(option, vals)
         }
-          
+
+        for i in idx.stride(through: min(idx + option.claimedValues, strays.endIndex - 1), by: 1) {
+          strays[i] = nil
+        }
+
         flagMatched = true
         break
       }
@@ -311,6 +323,10 @@ public class CommandLine {
             let vals = (i == flagLength - 1) ? self._getFlagValues(idx) : [String]()
             guard option.setValue(vals) else {
               throw ParseError.InvalidValueForOption(option, vals)
+            }
+
+            for i in idx.stride(through: min(idx + option.claimedValues, strays.endIndex - 1), by: 1) {
+              strays[i] = nil
             }
             
             flagMatched = true
@@ -330,6 +346,8 @@ public class CommandLine {
     guard missingOptions.count == 0 else {
       throw ParseError.MissingRequiredOptions(missingOptions)
     }
+
+    strayValues = strays.flatMap { $0 }
   }
 
   /**
