@@ -708,7 +708,7 @@ internal class CommandLineTests: XCTestCase {
   }
 
   func testStrayValues() {
-    let cli = CommandLine(arguments: [ "CommandLineTests", "onefish", "twofish", "-b", "redfish", "-c", "green", "blue", "-xvvi", "9", "--formats=json", "xml", "binary", "--verbose", "fish", "--type=pdf", "woo!"])
+    let cli = CommandLine(arguments: [ "CommandLineTests", "onefish", "twofish", "-b", "redfish", "-c", "green", "blue", "-xvvi", "9", "-w", "--who", "--formats=json", "xml", "binary", "--verbose", "fish", "--type=pdf", "woo!"])
     let o1 = BoolOption(shortFlag: "b", longFlag: "bool", helpMessage: "Boolean option")
     let o2 = StringOption(shortFlag: "c", longFlag: "color", helpMessage: "String option")
     let o3 = BoolOption(shortFlag: "x", longFlag: "extract", helpMessage: "Combined bool option")
@@ -728,13 +728,15 @@ internal class CommandLineTests: XCTestCase {
       XCTAssertEqual(o5.value!, 9, "Incorrect value for combined int option with stray values")
       XCTAssertEqual(o6.value!, ["json", "xml", "binary"], "Incorrect value for attached multistring option with stray values")
       XCTAssertEqual(o7.value!, "pdf", "Incorrect value for attached string option with stray values")
-      XCTAssertEqual(cli.strayValues, ["onefish", "twofish", "redfish", "blue", "fish", "woo!"], "Incorrect stray values")
+      XCTAssertEqual(cli.strayValues, ["onefish", "twofish", "redfish", "blue", "-w", "--who", "fish", "woo!"], "Incorrect stray values")
     } catch {
       XCTFail("Unexpected parse error: \(error)")
     }
 
     do {
+      let cli = CommandLine(arguments: [ "CommandLineTests", "onefish", "twofish", "-b", "redfish", "-c", "green", "blue", "-xvvi", "9", "--formats=json", "xml", "binary", "--verbose", "fish", "--type=pdf", "woo!"])
       o4.reset()
+      cli.addOptions(o1, o2, o3, o4, o5, o6, o7)
 
       try cli.parse(true)
       XCTAssertTrue(o1.value, "Failed to set bool option with stray values")
