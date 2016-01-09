@@ -70,6 +70,28 @@ public class CommandLine {
     return usedFlags
   }
 
+  /**
+   * After calling `parse()`, this property will contain any values that weren't captured
+   * by an Option. For example:
+   *
+   * ```
+   * let cli = CommandLine()
+   * let fileType = StringOption(shortFlag: "t", longFlag: "type", required: true, helpMessage: "Type of file")
+   *
+   * do {
+   *   try cli.parse()
+   *   print("File type is \(type), files are \(cli.strayValues)")
+   * catch {
+   *   cli.printUsage(error)
+   *   exit(EX_USAGE)
+   * }
+   *
+   * ---
+   *
+   * $ ./readfiles --type=pdf ~/file1.pdf ~/file2.pdf
+   * File type is pdf, files are ["~/file1.pdf", "~/file2.pdf"]
+   * ```
+   */
   public private(set) var strayValues: [String] = [String]()
 
   /**
