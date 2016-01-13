@@ -71,6 +71,30 @@ public class CommandLine {
   }
 
   /**
+   * After calling `parse()`, this property will contain any values that weren't captured
+   * by an Option. For example:
+   *
+   * ```
+   * let cli = CommandLine()
+   * let fileType = StringOption(shortFlag: "t", longFlag: "type", required: true, helpMessage: "Type of file")
+   *
+   * do {
+   *   try cli.parse()
+   *   print("File type is \(type), files are \(cli.strayValues)")
+   * catch {
+   *   cli.printUsage(error)
+   *   exit(EX_USAGE)
+   * }
+   *
+   * ---
+   *
+   * $ ./readfiles --type=pdf ~/file1.pdf ~/file2.pdf
+   * File type is pdf, files are ["~/file1.pdf", "~/file2.pdf"]
+   * ```
+   */
+  public private(set) var strayValues: [String] = [String]()
+
+  /**
    * If supplied, this function will be called when printing usage messages.
    *
    * You can use the `defaultFormat` function to get the normally-formatted
@@ -170,14 +194,12 @@ public class CommandLine {
   }
   
   /* Returns all argument values from flagIndex to the next flag or the end of the argument array. */
-  private func _getFlagValues(flagIndex: Int) -> [String] {
+  private func _getFlagValues(flagIndex: Int, _ attachedArg: String? = nil) -> [String] {
     var args: [String] = [String]()
     var skipFlagChecks = false
-    
-    /* Grab attached arg, if any */
-    var attachedArg = _arguments[flagIndex].splitByCharacter(ArgumentAttacher, maxSplits: 1)
-    if attachedArg.count > 1 {
-      args.append(attachedArg[1])
+
+    if let a = attachedArg {
+      args.append(a)
     }
 
     for i in (flagIndex + 1).stride(to: _arguments.count, by: 1) {
@@ -259,7 +281,7 @@ public class CommandLine {
   /**
    * Parses command-line arguments into their matching Option values.
    *
-   * - parameter strict: Fail if any unrecognized arguments are present (default: false).
+   * - parameter strict: Fail if any unrecognized flags are present (default: false).
    *
    * - throws: A `ParseError` if argument parsing fails:
    *   - `.InvalidArgument` if an unrecognized flag is present and `strict` is true
@@ -268,6 +290,12 @@ public class CommandLine {
    *   - `.MissingRequiredOptions` if a required option isn't present
    */
   public func parse(strict: Bool = false) throws {
+    /* Kind of an ugly cast here */
+    var strays = _arguments.map { $0 as String? }
+
+    /* Nuke executable name */
+    strays[0] = nil
+
     for (idx, arg) in _arguments.enumerate() {
       if arg == ArgumentStopper {
         break
@@ -287,15 +315,23 @@ public class CommandLine {
       }
       
       /* Remove attached argument from flag */
-      let flag = flagWithArg.splitByCharacter(ArgumentAttacher, maxSplits: 1)[0]
+      let splitFlag = flagWithArg.splitByCharacter(ArgumentAttacher, maxSplits: 1)
+      let flag = splitFlag[0]
+      let attachedArg: String? = splitFlag.count == 2 ? splitFlag[1] : nil
       
       var flagMatched = false
       for option in _options where option.flagMatch(flag) {
-        let vals = self._getFlagValues(idx)
+        let vals = self._getFlagValues(idx, attachedArg)
         guard option.setValue(vals) else {
           throw ParseError.InvalidValueForOption(option, vals)
         }
-          
+
+        var claimedIdx = idx + option.claimedValues
+        if attachedArg != nil { claimedIdx -= 1 }
+        for i in idx.stride(through: claimedIdx, by: 1) {
+          strays[i] = nil
+        }
+
         flagMatched = true
         break
       }
@@ -308,9 +344,15 @@ public class CommandLine {
             /* Values are allowed at the end of the concatenated flags, e.g.
             * -xvf <file1> <file2>
             */
-            let vals = (i == flagLength - 1) ? self._getFlagValues(idx) : [String]()
+            let vals = (i == flagLength - 1) ? self._getFlagValues(idx, attachedArg) : [String]()
             guard option.setValue(vals) else {
               throw ParseError.InvalidValueForOption(option, vals)
+            }
+
+            var claimedIdx = idx + option.claimedValues
+            if attachedArg != nil { claimedIdx -= 1 }
+            for i in idx.stride(through: claimedIdx, by: 1) {
+              strays[i] = nil
             }
             
             flagMatched = true
@@ -330,6 +372,8 @@ public class CommandLine {
     guard missingOptions.count == 0 else {
       throw ParseError.MissingRequiredOptions(missingOptions)
     }
+
+    strayValues = strays.flatMap { $0 }
   }
 
   /**

@@ -48,6 +48,7 @@ internal class CommandLineTests: XCTestCase {
       ("testShortFlagOnlyOption", testShortFlagOnlyOption),
       ("testLongFlagOnlyOption", testLongFlagOnlyOption),
       ("testStrictMode", testStrictMode),
+      ("testStrayValues", testStrayValues),
       //("testInvalidArgumentErrorDescription", testInvalidArgumentErrorDescription),
       //("testMissingRequiredOptionsErrorDescription", testMissingRequiredOptionsErrorDescription),
       ("testPrintUsage", testPrintUsage),
@@ -703,6 +704,51 @@ internal class CommandLineTests: XCTestCase {
       XCTAssertEqual(arg, "--invalid", "Incorrect argument identified in InvalidArgument: \(arg)")
     } catch {
       XCTFail("Unexpected parse error: \(error)")
+    }
+  }
+
+  func testStrayValues() {
+    let cli = CommandLine(arguments: [ "CommandLineTests", "onefish", "twofish", "-b", "redfish", "-c", "green", "blue", "-xvvi", "9", "-w", "--who", "--formats=json", "xml", "binary", "--verbose", "fish", "--type=pdf", "woo!"])
+    let o1 = BoolOption(shortFlag: "b", longFlag: "bool", helpMessage: "Boolean option")
+    let o2 = StringOption(shortFlag: "c", longFlag: "color", helpMessage: "String option")
+    let o3 = BoolOption(shortFlag: "x", longFlag: "extract", helpMessage: "Combined bool option")
+    let o4 = CounterOption(shortFlag: "v", longFlag: "verbose", helpMessage: "Combined counter option")
+    let o5 = IntOption(shortFlag: "i", longFlag: "int", helpMessage: "Combined int option")
+    let o6 = MultiStringOption(shortFlag: "f", longFlag: "formats", helpMessage: "Attached multistring option")
+    let o7 = StringOption(shortFlag: "t", longFlag: "type", helpMessage: "Attached string option")
+
+    cli.addOptions(o1, o2, o3, o4, o5, o6, o7)
+
+    do {
+      try cli.parse()
+      XCTAssertTrue(o1.value, "Failed to set bool option with stray values")
+      XCTAssertEqual(o2.value!, "green", "Incorrect value for string option with stray values")
+      XCTAssertTrue(o3.value, "Failed to set combined bool option with stray values")
+      XCTAssertEqual(o4.value, 3, "Incorrect value for combined counter option with stray values")
+      XCTAssertEqual(o5.value!, 9, "Incorrect value for combined int option with stray values")
+      XCTAssertEqual(o6.value!, ["json", "xml", "binary"], "Incorrect value for attached multistring option with stray values")
+      XCTAssertEqual(o7.value!, "pdf", "Incorrect value for attached string option with stray values")
+      XCTAssertEqual(cli.strayValues, ["onefish", "twofish", "redfish", "blue", "-w", "--who", "fish", "woo!"], "Incorrect stray values")
+    } catch {
+      XCTFail("Unexpected parse error: \(error)")
+    }
+
+    do {
+      let cli = CommandLine(arguments: [ "CommandLineTests", "onefish", "twofish", "-b", "redfish", "-c", "green", "blue", "-xvvi", "9", "--formats=json", "xml", "binary", "--verbose", "fish", "--type=pdf", "woo!"])
+      o4.reset()
+      cli.addOptions(o1, o2, o3, o4, o5, o6, o7)
+
+      try cli.parse(true)
+      XCTAssertTrue(o1.value, "Failed to set bool option with stray values")
+      XCTAssertEqual(o2.value!, "green", "Incorrect value for string option with stray values")
+      XCTAssertTrue(o3.value, "Failed to set combined bool option with stray values")
+      XCTAssertEqual(o4.value, 3, "Incorrect value for combined counter option with stray values")
+      XCTAssertEqual(o5.value!, 9, "Incorrect value for combined int option with stray values")
+      XCTAssertEqual(o6.value!, ["json", "xml", "binary"], "Incorrect value for attached multistring option with stray values")
+      XCTAssertEqual(o7.value!, "pdf", "Incorrect value for attached string option with stray values")
+      XCTAssertEqual(cli.strayValues, ["onefish", "twofish", "redfish", "blue", "fish", "woo!"], "Incorrect stray values")
+    } catch {
+      XCTFail("Stray values should not cause a throw in strict mode")
     }
   }
 
