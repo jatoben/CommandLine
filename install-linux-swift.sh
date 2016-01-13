@@ -1,6 +1,6 @@
 #!/bin/bash
 set -ev
-SWIFT_SNAPSHOT="swift-2.2-SNAPSHOT-2016-01-06-a"
+SWIFT_SNAPSHOT="swift-2.2-SNAPSHOT-2016-01-11-a"
 
 echo "Installing ${SWIFT_SNAPSHOT}..."
 curl -s -L -O "https://swift.org/builds/ubuntu1404/${SWIFT_SNAPSHOT}/${SWIFT_SNAPSHOT}-ubuntu14.04.tar.gz"
