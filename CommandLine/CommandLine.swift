@@ -291,10 +291,10 @@ public class CommandLine {
    */
   public func parse(strict: Bool = false) throws {
     /* Kind of an ugly cast here */
-    var strays = _arguments.map { $0 as String? }
+    var strays = _arguments
 
     /* Nuke executable name */
-    strays[0] = nil
+    strays[0] = ""
 
     for (idx, arg) in _arguments.enumerate() {
       if arg == ArgumentStopper {
@@ -329,7 +329,7 @@ public class CommandLine {
         var claimedIdx = idx + option.claimedValues
         if attachedArg != nil { claimedIdx -= 1 }
         for i in idx.stride(through: claimedIdx, by: 1) {
-          strays[i] = nil
+          strays[i] = ""
         }
 
         flagMatched = true
@@ -352,7 +352,7 @@ public class CommandLine {
             var claimedIdx = idx + option.claimedValues
             if attachedArg != nil { claimedIdx -= 1 }
             for i in idx.stride(through: claimedIdx, by: 1) {
-              strays[i] = nil
+              strays[i] = ""
             }
             
             flagMatched = true
@@ -373,7 +373,7 @@ public class CommandLine {
       throw ParseError.MissingRequiredOptions(missingOptions)
     }
 
-    strayValues = strays.flatMap { $0 }
+    unparsed = strays.filter { $0 != "" }
   }
 
   /**
