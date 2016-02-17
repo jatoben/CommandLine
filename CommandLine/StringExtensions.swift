@@ -94,14 +94,14 @@ internal extension String {
     for i in self.characters.indices {
       let c = self[i]
       if c == splitBy && (maxSplits == 0 || numSplits < maxSplits) {
-        s.append(self[Range(start: curIdx, end: i)])
+        s.append(self[curIdx..<i])
         curIdx = i.successor()
         numSplits += 1
       }
     }
 
     if curIdx != self.endIndex {
-      s.append(self[Range(start: curIdx, end: self.endIndex)])
+      s.append(self[curIdx..<self.endIndex])
     }
 
     return s
