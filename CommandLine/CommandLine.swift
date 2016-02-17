@@ -80,7 +80,7 @@ public class CommandLine {
    *
    * do {
    *   try cli.parse()
-   *   print("File type is \(type), files are \(cli.strayValues)")
+   *   print("File type is \(type), files are \(cli.unparsed)")
    * catch {
    *   cli.printUsage(error)
    *   exit(EX_USAGE)
@@ -92,7 +92,7 @@ public class CommandLine {
    * File type is pdf, files are ["~/file1.pdf", "~/file2.pdf"]
    * ```
    */
-  public private(set) var strayValues: [String] = [String]()
+  public private(set) var unparsed: [String] = [String]()
 
   /**
    * If supplied, this function will be called when printing usage messages.
