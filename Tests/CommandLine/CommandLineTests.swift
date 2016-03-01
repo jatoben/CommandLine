@@ -24,8 +24,8 @@ import XCTest
 #endif
 
 internal class CommandLineTests: XCTestCase {
-  /* TODO: The commented-out tests segfault on Linux as of the Swift 2.2 2015-12-31 snapshot. */
-  var allTests : [(String, () -> ())] {
+  /* TODO: The commented-out tests segfault on Linux as of the Swift 2.2 2016-01-11 snapshot. */
+  var allTests : [(String, () throws -> Void)] {
     return [
       ("testBoolOptions", testBoolOptions),
       ("testIntOptions", testIntOptions),
@@ -49,12 +49,12 @@ internal class CommandLineTests: XCTestCase {
       ("testLongFlagOnlyOption", testLongFlagOnlyOption),
       ("testStrictMode", testStrictMode),
       ("testStrayValues", testStrayValues),
-      //("testInvalidArgumentErrorDescription", testInvalidArgumentErrorDescription),
-      //("testMissingRequiredOptionsErrorDescription", testMissingRequiredOptionsErrorDescription),
+      ("testInvalidArgumentErrorDescription", testInvalidArgumentErrorDescription),
+      ("testMissingRequiredOptionsErrorDescription", testMissingRequiredOptionsErrorDescription),
       ("testPrintUsage", testPrintUsage),
-      //("testPrintUsageError", testPrintUsageError),
+      ("testPrintUsageError", testPrintUsageError),
       ("testPrintUsageToStderr", testPrintUsageToStderr),
-      //("testCustomOutputFormatter", testCustomOutputFormatter),
+      ("testCustomOutputFormatter", testCustomOutputFormatter),
     ]
   }
 
