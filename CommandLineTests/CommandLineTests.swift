@@ -25,7 +25,7 @@ import XCTest
 
 internal class CommandLineTests: XCTestCase {
   /* TODO: The commented-out tests segfault on Linux as of the Swift 2.2 2016-01-11 snapshot. */
-  var allTests : [(String, () -> ())] {
+  var allTests : [(String, () throws -> Void)] {
     return [
       ("testBoolOptions", testBoolOptions),
       ("testIntOptions", testIntOptions),
