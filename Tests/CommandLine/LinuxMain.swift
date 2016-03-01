@@ -1,5 +1,5 @@
 /*
- * Package.swift
+ * LinuxMain.swift
  * Copyright (c) 2015 Ben Gollmer.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,6 +15,7 @@
  * limitations under the License.
  */
 
-import PackageDescription
+import XCTest
+@testable import CommandLinetest
 
-let package = Package(name: "CommandLine")
+XCTMain([CommandLineTests(), StringExtensionTests()])
