@@ -290,7 +290,6 @@ public class CommandLine {
    *   - `.MissingRequiredOptions` if a required option isn't present
    */
   public func parse(strict: Bool = false) throws {
-    /* Kind of an ugly cast here */
     var strays = _arguments
 
     /* Nuke executable name */
