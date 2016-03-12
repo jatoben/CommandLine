@@ -80,7 +80,7 @@ public class CommandLine {
    *
    * do {
    *   try cli.parse()
-   *   print("File type is \(type), files are \(cli.strayValues)")
+   *   print("File type is \(type), files are \(cli.unparsedArguments)")
    * catch {
    *   cli.printUsage(error)
    *   exit(EX_USAGE)
@@ -92,7 +92,7 @@ public class CommandLine {
    * File type is pdf, files are ["~/file1.pdf", "~/file2.pdf"]
    * ```
    */
-  public private(set) var strayValues: [String] = [String]()
+  public private(set) var unparsedArguments: [String] = [String]()
 
   /**
    * If supplied, this function will be called when printing usage messages.
@@ -291,10 +291,10 @@ public class CommandLine {
    */
   public func parse(strict: Bool = false) throws {
     /* Kind of an ugly cast here */
-    var strays = _arguments.map { $0 as String? }
+    var strays = _arguments
 
     /* Nuke executable name */
-    strays[0] = nil
+    strays[0] = ""
 
     for (idx, arg) in _arguments.enumerate() {
       if arg == ArgumentStopper {
@@ -329,7 +329,7 @@ public class CommandLine {
         var claimedIdx = idx + option.claimedValues
         if attachedArg != nil { claimedIdx -= 1 }
         for i in idx.stride(through: claimedIdx, by: 1) {
-          strays[i] = nil
+          strays[i] = ""
         }
 
         flagMatched = true
@@ -352,7 +352,7 @@ public class CommandLine {
             var claimedIdx = idx + option.claimedValues
             if attachedArg != nil { claimedIdx -= 1 }
             for i in idx.stride(through: claimedIdx, by: 1) {
-              strays[i] = nil
+              strays[i] = ""
             }
             
             flagMatched = true
@@ -373,7 +373,7 @@ public class CommandLine {
       throw ParseError.MissingRequiredOptions(missingOptions)
     }
 
-    strayValues = strays.flatMap { $0 }
+    unparsedArguments = strays.filter { $0 != "" }
   }
 
   /**
