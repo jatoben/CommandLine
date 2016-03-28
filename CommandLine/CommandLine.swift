@@ -69,6 +69,11 @@ public class CommandLine {
 
     return usedFlags
   }
+    
+    /**
+     * If set to true this will print the command and the verb in printUsage
+     **/
+    public var usesSubCommands=false
 
   /**
    * After calling `parse()`, this property will contain any values that weren't captured
@@ -410,7 +415,12 @@ public class CommandLine {
     /* Nil coalescing operator (??) doesn't work on closures :( */
     let format = formatOutput != nil ? formatOutput! : defaultFormat
 
-    let name = _arguments[0]
+    var name = ""
+    if usesSubCommands &&  _arguments.count>1 {
+        name = _arguments[0].splitByCharacter("/").last!+" "+_arguments[1]
+    }else{
+        name = _arguments[0].splitByCharacter("/").last!
+    }
     print(format("Usage: \(name) [options]", .About), terminator: "", toStream: &to)
 
     for opt in _options {
