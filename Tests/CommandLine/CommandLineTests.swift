@@ -551,7 +551,7 @@ internal class CommandLineTests: XCTestCase {
 
   /*
   func testShortFlagReuse() {
-    let cli = CommandLine()
+    let cli = CommandLine(arguments: [])
     let op1 = BoolOption(shortFlag: "v", longFlag: "verbose", helpMessage: "")
     let op2 = StringOption(shortFlag: "v", longFlag: "verify", helpMessage: "")
     cli.addOptions(op1, op2)
@@ -559,7 +559,7 @@ internal class CommandLineTests: XCTestCase {
   }
 
   func testLongFlagReuse() {
-    let cli = CommandLine()
+    let cli = CommandLine(arguments: [])
     let op1 = BoolOption(shortFlag: "v", longFlag: "verbose", helpMessage: "")
     let op2 = StringOption(shortFlag: "d", longFlag: "verbose", helpMessage: "")
     cli.addOptions(op1, op2)
@@ -567,7 +567,7 @@ internal class CommandLineTests: XCTestCase {
   }
 
   func testSetOptionFlagReuse() {
-    let cli = CommandLine()
+    let cli = CommandLine(arguments: [])
     let opts = [
       BoolOption(shortFlag: "v", longFlag: "verbose", helpMessage: ""),
       StringOption(shortFlag: "v", longFlag: "verify", helpMessage: "")
@@ -579,7 +579,7 @@ internal class CommandLineTests: XCTestCase {
   */
 
   func testDifferentCaseFlagReuse() {
-    let cli = CommandLine()
+    let cli = CommandLine(arguments: [])
     let op1 = BoolOption(shortFlag: "v", longFlag: "verbose", helpMessage: "")
     let op2 = StringOption(shortFlag: "V", longFlag: "verify", helpMessage: "")
     cli.addOptions(op1, op2)
