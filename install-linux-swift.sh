@@ -1,7 +1,7 @@
 #!/bin/bash
 set -ev
-SWIFT_SNAPSHOT="swift-DEVELOPMENT-SNAPSHOT-2016-02-25-a"
-XCTEST_SNAPSHOT="swift-DEVELOPMENT-SNAPSHOT-2016-02-25-a"
+SWIFT_SNAPSHOT="swift-DEVELOPMENT-SNAPSHOT-2016-05-31-a"
+XCTEST_SNAPSHOT="swift-DEVELOPMENT-SNAPSHOT-2016-05-31-a"
 
 echo "Installing ${SWIFT_SNAPSHOT}..."
 if [ ! -f "${SWIFT_SNAPSHOT}-ubuntu14.04.tar.gz" ]; then
@@ -18,6 +18,6 @@ if [ ! -f "${XCTEST_SNAPSHOT}.tar.gz" ]; then
 fi
 tar -zxvf "${XCTEST_SNAPSHOT}.tar.gz"
 cd "swift-corelibs-xctest-${XCTEST_SNAPSHOT}"
-sudo ./build_script.py --swiftc="/swift/usr/bin/swiftc" --build-dir="/tmp/XCTest_build" --swift-build-dir="/swift/usr" --library-install-path="/swift/usr/lib/swift/linux" --module-install-path="/swift/usr/lib/swift/linux/x86_64" --arch x86_64
+sudo ./build_script.py --swiftc="/swift/usr/bin/swiftc" --build-dir="/tmp/XCTest_build" --foundation-build-dir="/swift/usr/lib/swift/linux" --library-install-path="/swift/usr/lib/swift/linux" --module-install-path="/swift/usr/lib/swift/linux/x86_64"
 cd ..
 rm -rf "swift-corelibs-xctest-${XCTEST_SNAPSHOT}"

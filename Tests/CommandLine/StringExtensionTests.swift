@@ -25,7 +25,7 @@ import XCTest
 
 class StringExtensionTests: XCTestCase {
   /* TODO: The commented-out tests segfault on Linux as of the Swift 2.2 2016-01-11 snapshot. */
-  var allTests : [(String, () throws -> Void)] {
+  static var allTests : [(String, StringExtensionTests -> () throws -> Void)] {
     return [
       //("testToDouble", testToDouble),
       ("testSplitByCharacter", testSplitByCharacter),
@@ -124,11 +124,19 @@ class StringExtensionTests: XCTestCase {
                    a.characters.count, "Bad padding with negative pad width")
 
     let b = a.paddedToWidth(80)
-    let lastBCharIndex = b.endIndex.advancedBy(-1)
+    #if swift(>=3.0)
+      let lastBCharIndex = b.index(before: b.endIndex)
+		#else
+      let lastBCharIndex = b.endIndex.advancedBy(-1)
+		#endif
     XCTAssertEqual(b[lastBCharIndex], " " as Character, "Failed to pad with default character")
 
     let c = a.paddedToWidth(80, padBy: "+")
-    let lastCCharIndex = c.endIndex.advancedBy(-1)
+    #if swift(>=3.0)
+      let lastCCharIndex = c.index(before: b.endIndex)
+    #else
+      let lastCCharIndex = c.endIndex.advancedBy(-1)
+    #endif
     XCTAssertEqual(c[lastCCharIndex], "+" as Character, "Failed to pad with specified character")
   }
 
