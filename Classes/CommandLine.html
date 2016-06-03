@@ -1,0 +1,844 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>CommandLine Class Reference</title>
+    <link rel="stylesheet" type="text/css" href="../css/jazzy.css" />
+    <link rel="stylesheet" type="text/css" href="../css/highlight.css" />
+    <meta charset="utf-8">
+    <script src="../js/jquery.min.js" defer></script>
+    <script src="../js/jazzy.js" defer></script>
+    
+  </head>
+  <body>
+
+    <a name="//apple_ref/swift/Class/CommandLine" class="dashAnchor"></a>
+
+    <a title="CommandLine Class Reference"></a>
+
+    <header class="header">
+      <p class="header-col header-col--primary">
+        <a class="header-link" href="../index.html">
+          CommandLine Docs
+        </a>
+        
+      </p>
+    
+        <p class="header-col header-col--secondary">
+          <a class="header-link" href="https://github.com/jatoben/CommandLine">
+            <img class="header-icon" src="../img/gh.png"/>
+            View on GitHub
+          </a>
+        </p>
+    
+    </header>
+
+    <p class="breadcrumbs">
+      <a class="breadcrumb" href="../index.html">CommandLine Reference</a>
+      <img class="carat" src="../img/carat.png" />
+      CommandLine Class Reference
+    </p>
+
+    <div class="content-wrapper">
+      <nav class="navigation">
+        <ul class="nav-groups">
+          <li class="nav-group-name">
+            <a class="nav-group-name-link" href="../Classes.html">Classes</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/BoolOption.html">BoolOption</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/CommandLine.html">CommandLine</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/CommandLine/OutputType.html">– OutputType</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/CommandLine/ParseError.html">– ParseError</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/CounterOption.html">CounterOption</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/DoubleOption.html">DoubleOption</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/EnumOption.html">EnumOption</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/IntOption.html">IntOption</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/MultiStringOption.html">MultiStringOption</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/Option.html">Option</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/StringOption.html">StringOption</a>
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </nav>
+      <article class="main-content">
+
+        <section class="section">
+          <div class="section-content">
+            <h1>CommandLine</h1>
+              <div class="declaration">
+                <div class="language">
+                  <pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="kt">CommandLine</span></code></pre>
+
+                </div>
+              </div>
+            <p>The CommandLine class implements a command-line interface for your app.</p>
+
+<p>To use it, define one or more Options (see Option.swift) and add them to your
+ CommandLine object, then invoke <code>parse()</code>. Each Option object will be populated with
+ the value given by the user.</p>
+
+<p>If any required options are missing or if an invalid value is found, <code>parse()</code> will throw
+ a <code>ParseError</code>. You can then call <code>printUsage()</code> to output an automatically-generated usage
+ message.</p>
+
+          </div>
+        </section>
+
+        <section class="section">
+          <div class="section-content">
+            <div class="task-group">
+              <ul class="item-container">
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:vC11CommandLine11CommandLine17unparsedArgumentsGSaSS_"></a>
+                    <a name="//apple_ref/swift/Property/unparsedArguments" class="dashAnchor"></a>
+                    <a class="token" href="#/s:vC11CommandLine11CommandLine17unparsedArgumentsGSaSS_">unparsedArguments</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>After calling <code>parse()</code>, this property will contain any values that weren&rsquo;t captured
+ by an Option. For example:</p>
+
+<pre class="highlight plaintext"><code> let cli = CommandLine()
+ let fileType = StringOption(shortFlag: "t", longFlag: "type", required: true, helpMessage: "Type of file")
+
+ do {
+   try cli.parse()
+   print("File type is \(type), files are \(cli.unparsedArguments)")
+ catch {
+   cli.printUsage(error)
+   exit(EX_USAGE)
+ }
+
+ ---
+
+ $ ./readfiles --type=pdf ~/file1.pdf ~/file2.pdf
+ File type is pdf, files are ["~/file1.pdf", "~/file2.pdf"]
+</code></pre>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">private(set)</span> <span class="k">var</span> <span class="nv">unparsedArguments</span><span class="p">:</span> <span class="p">[</span><span class="kt">String</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="kt">String</span><span class="p">]()</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:vC11CommandLine11CommandLine12formatOutputGSqFTSSOS0_10OutputType_SS_"></a>
+                    <a name="//apple_ref/swift/Property/formatOutput" class="dashAnchor"></a>
+                    <a class="token" href="#/s:vC11CommandLine11CommandLine12formatOutputGSqFTSSOS0_10OutputType_SS_">formatOutput</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>If supplied, this function will be called when printing usage messages.</p>
+
+<p>You can use the <code>defaultFormat</code> function to get the normally-formatted
+ output, either before or after modifying the provided string. For example:</p>
+
+<pre class="highlight plaintext"><code> let cli = CommandLine()
+ cli.formatOutput = { str, type in
+   switch(type) {
+   case .Error:
+     // Make errors shouty
+     return defaultFormat(str.uppercaseString, type: type)
+   case .OptionHelp:
+     // Don't use the default indenting
+     return "&gt;&gt; \(s)\n"
+   default:
+     return defaultFormat(str, type: type)
+   }
+ }
+</code></pre>
+
+<div class="aside aside-note">
+    <p class="aside-title">Note</p>
+    Newlines are not appended to the result of this function. If you don&rsquo;t use
+<code>defaultFormat()</code>, be sure to add them before returning.
+
+</div>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="k">var</span> <span class="nv">formatOutput</span><span class="p">:</span> <span class="p">((</span><span class="kt">String</span><span class="p">,</span> <span class="kt">OutputType</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">String</span><span class="p">)?</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:vC11CommandLine11CommandLine23maxFlagDescriptionWidthSi"></a>
+                    <a name="//apple_ref/swift/Property/maxFlagDescriptionWidth" class="dashAnchor"></a>
+                    <a class="token" href="#/s:vC11CommandLine11CommandLine23maxFlagDescriptionWidthSi">maxFlagDescriptionWidth</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>The maximum width of all options&rsquo; <code>flagDescription</code> properties; provided for use by
+ output formatters.</p>
+
+<div class="aside aside-seealso">
+    <p class="aside-title">Seealso</p>
+    <code>defaultFormat</code>, <code><a href="../Classes/CommandLine.html#/s:vC11CommandLine11CommandLine12formatOutputGSqFTSSOS0_10OutputType_SS_">formatOutput</a></code>
+
+</div>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="k">var</span> <span class="nv">maxFlagDescriptionWidth</span><span class="p">:</span> <span class="kt">Int</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:OC11CommandLine11CommandLine10OutputType"></a>
+                    <a name="//apple_ref/swift/Enum/OutputType" class="dashAnchor"></a>
+                    <a class="token" href="#/s:OC11CommandLine11CommandLine10OutputType">OutputType</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>The type of output being supplied to an output formatter.</p>
+
+<div class="aside aside-seealso">
+    <p class="aside-title">Seealso</p>
+    <code><a href="../Classes/CommandLine.html#/s:vC11CommandLine11CommandLine12formatOutputGSqFTSSOS0_10OutputType_SS_">formatOutput</a></code>
+
+</div>
+
+                        <a href="../Classes/CommandLine/OutputType.html" class="slightly-smaller">See more</a>
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">enum</span> <span class="kt">OutputType</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:OC11CommandLine11CommandLine10ParseError"></a>
+                    <a name="//apple_ref/swift/Enum/ParseError" class="dashAnchor"></a>
+                    <a class="token" href="#/s:OC11CommandLine11CommandLine10ParseError">ParseError</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                        <a href="../Classes/CommandLine/ParseError.html" class="slightly-smaller">See more</a>
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="kt">CommandLine</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:FC11CommandLine11CommandLinecFT9argumentsGSaSS__S0_"></a>
+                    <a name="//apple_ref/swift/Method/init(arguments:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:FC11CommandLine11CommandLinecFT9argumentsGSaSS__S0_">init(arguments:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Initializes a CommandLine object.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="nf">init</span><span class="p">(</span><span class="nv">arguments</span><span class="p">:</span> <span class="p">[</span><span class="kt">String</span><span class="p">]</span> <span class="o">=</span> <span class="kt">Process</span><span class="o">.</span><span class="n">arguments</span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>arguments</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>Arguments to parse. If omitted, the arguments passed to the app on the command line will automatically be used.</p>
+
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                      <div>
+                        <h4>Return Value</h4>
+                        <p>An initalized CommandLine object.</p>
+
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:FC11CommandLine11CommandLine9addOptionFCS_6OptionT_"></a>
+                    <a name="//apple_ref/swift/Method/addOption(_:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:FC11CommandLine11CommandLine9addOptionFCS_6OptionT_">addOption(_:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Adds an Option to the command line.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">addOption</span><span class="p">(</span><span class="nv">option</span><span class="p">:</span> <span class="kt">Option</span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>option</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The option to add.</p>
+
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:FC11CommandLine11CommandLine10addOptionsFGSaCS_6Option_T_"></a>
+                    <a name="//apple_ref/swift/Method/addOptions(_:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:FC11CommandLine11CommandLine10addOptionsFGSaCS_6Option_T_">addOptions(_:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Adds one or more Options to the command line.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">addOptions</span><span class="p">(</span><span class="nv">options</span><span class="p">:</span> <span class="p">[</span><span class="kt">Option</span><span class="p">])</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>options</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>An array containing the options to add.</p>
+
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:FC11CommandLine11CommandLine10addOptionsFtGSaCS_6Option__T_"></a>
+                    <a name="//apple_ref/swift/Method/addOptions(_:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:FC11CommandLine11CommandLine10addOptionsFtGSaCS_6Option__T_">addOptions(_:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Adds one or more Options to the command line.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">addOptions</span><span class="p">(</span><span class="nv">options</span><span class="p">:</span> <span class="kt">Option</span><span class="o">...</span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>options</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The options to add.</p>
+
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:FC11CommandLine11CommandLine10setOptionsFGSaCS_6Option_T_"></a>
+                    <a name="//apple_ref/swift/Method/setOptions(_:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:FC11CommandLine11CommandLine10setOptionsFGSaCS_6Option_T_">setOptions(_:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Sets the command line Options. Any existing options will be overwritten.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">setOptions</span><span class="p">(</span><span class="nv">options</span><span class="p">:</span> <span class="p">[</span><span class="kt">Option</span><span class="p">])</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>options</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>An array containing the options to set.</p>
+
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:FC11CommandLine11CommandLine10setOptionsFtGSaCS_6Option__T_"></a>
+                    <a name="//apple_ref/swift/Method/setOptions(_:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:FC11CommandLine11CommandLine10setOptionsFtGSaCS_6Option__T_">setOptions(_:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Sets the command line Options. Any existing options will be overwritten.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">setOptions</span><span class="p">(</span><span class="nv">options</span><span class="p">:</span> <span class="kt">Option</span><span class="o">...</span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>options</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The options to set.</p>
+
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:FC11CommandLine11CommandLine5parseFzTSb_T_"></a>
+                    <a name="//apple_ref/swift/Method/parse(_:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:FC11CommandLine11CommandLine5parseFzTSb_T_">parse(_:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Parses command-line arguments into their matching Option values.</p>
+
+<div class="aside aside-throws">
+    <p class="aside-title">Throws</p>
+    <p>A <code><a href="../Classes/CommandLine/ParseError.html">ParseError</a></code> if argument parsing fails:</p>
+
+<ul>
+<li><code>.InvalidArgument</code> if an unrecognized flag is present and <code>strict</code> is true</li>
+<li><code>.InvalidValueForOption</code> if the value supplied to an option is not valid (for
+example, a string is supplied for an IntOption)</li>
+<li><code>.MissingRequiredOptions</code> if a required option isn&rsquo;t present</li>
+</ul>
+
+</div>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">parse</span><span class="p">(</span><span class="nv">strict</span><span class="p">:</span> <span class="kt">Bool</span> <span class="o">=</span> <span class="kc">false</span><span class="p">)</span> <span class="k">throws</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>strict</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>Fail if any unrecognized flags are present (default: false).</p>
+
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:FC11CommandLine11CommandLine13defaultFormatFTSS4typeOS0_10OutputType_SS"></a>
+                    <a name="//apple_ref/swift/Method/defaultFormat(_:type:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:FC11CommandLine11CommandLine13defaultFormatFTSS4typeOS0_10OutputType_SS">defaultFormat(_:type:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Provides the default formatting of <code><a href="../Classes/CommandLine.html#/s:FC11CommandLine11CommandLine10printUsageFT_T_">printUsage()</a></code> output.</p>
+
+<div class="aside aside-seealso">
+    <p class="aside-title">Seealso</p>
+    <p><code><a href="../Classes/CommandLine.html#/s:vC11CommandLine11CommandLine12formatOutputGSqFTSSOS0_10OutputType_SS_">formatOutput</a></code></p>
+
+</div>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">defaultFormat</span><span class="p">(</span><span class="nv">s</span><span class="p">:</span> <span class="kt">String</span><span class="p">,</span> <span class="nv">type</span><span class="p">:</span> <span class="kt">OutputType</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">String</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>s</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The string to format.</p>
+
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>type</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>Type of output.</p>
+
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                      <div>
+                        <h4>Return Value</h4>
+                        <p>The formatted string.</p>
+
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:FC11CommandLine11CommandLine10printUsageuRxs16OutputStreamTyperFRxT_"></a>
+                    <a name="//apple_ref/swift/Method/printUsage(_:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:FC11CommandLine11CommandLine10printUsageuRxs16OutputStreamTyperFRxT_">printUsage(_:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="kt">CommandLine</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:FC11CommandLine11CommandLine10printUsageuRxs16OutputStreamTyperFTPs9ErrorType_2toRx_T_"></a>
+                    <a name="//apple_ref/swift/Method/printUsage(_:to:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:FC11CommandLine11CommandLine10printUsageuRxs16OutputStreamTyperFTPs9ErrorType_2toRx_T_">printUsage(_:to:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="kt">CommandLine</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:FC11CommandLine11CommandLine10printUsageFPs9ErrorType_T_"></a>
+                    <a name="//apple_ref/swift/Method/printUsage(_:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:FC11CommandLine11CommandLine10printUsageFPs9ErrorType_T_">printUsage(_:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="kt">CommandLine</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:FC11CommandLine11CommandLine10printUsageFT_T_"></a>
+                    <a name="//apple_ref/swift/Method/printUsage()" class="dashAnchor"></a>
+                    <a class="token" href="#/s:FC11CommandLine11CommandLine10printUsageFT_T_">printUsage()</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Prints a usage message.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">printUsage</span><span class="p">()</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </section>
+
+      </article>
+    </div>
+    <section class="footer">
+      <p>Copyright © 2014-16 Ben Gollmer. Licensed under the Apache License, Version 2.0.</p>
+      <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.6.2</a>, a <a class="link" href="http://realm.io" target="_blank" rel="external">Realm</a> project.</p>
+    </section>
+  </body>
+</div>
+</html>

@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>CommandLine  Reference</title>
+    <link rel="stylesheet" type="text/css" href="css/jazzy.css" />
+    <link rel="stylesheet" type="text/css" href="css/highlight.css" />
+    <meta charset="utf-8">
+    <script src="js/jquery.min.js" defer></script>
+    <script src="js/jazzy.js" defer></script>
+    
+  </head>
+  <body>
+
+
+    <a title="CommandLine  Reference"></a>
+
+    <header class="header">
+      <p class="header-col header-col--primary">
+        <a class="header-link" href="index.html">
+          CommandLine Docs
+        </a>
+        
+      </p>
+    
+        <p class="header-col header-col--secondary">
+          <a class="header-link" href="https://github.com/jatoben/CommandLine">
+            <img class="header-icon" src="img/gh.png"/>
+            View on GitHub
+          </a>
+        </p>
+    
+    </header>
+
+    <p class="breadcrumbs">
+      <a class="breadcrumb" href="index.html">CommandLine Reference</a>
+      <img class="carat" src="img/carat.png" />
+      CommandLine  Reference
+    </p>
+
+    <div class="content-wrapper">
+      <nav class="navigation">
+        <ul class="nav-groups">
+          <li class="nav-group-name">
+            <a class="nav-group-name-link" href="Classes.html">Classes</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Classes/BoolOption.html">BoolOption</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Classes/CommandLine.html">CommandLine</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Classes/CommandLine/OutputType.html">– OutputType</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Classes/CommandLine/ParseError.html">– ParseError</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Classes/CounterOption.html">CounterOption</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Classes/DoubleOption.html">DoubleOption</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Classes/EnumOption.html">EnumOption</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Classes/IntOption.html">IntOption</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Classes/MultiStringOption.html">MultiStringOption</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Classes/Option.html">Option</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Classes/StringOption.html">StringOption</a>
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </nav>
+      <article class="main-content">
+
+        <section class="section">
+          <div class="section-content">
+            
+            <a href='#commandline-a-href-https-travis-ci-org-jatoben-commandline-img-src-https-travis-ci-org-jatoben-commandline-svg-branch-master-alt-build-status-a' class='anchor' aria-hidden=true><span class="header-anchor"></span></a><h1 id='commandline-a-href-https-travis-ci-org-jatoben-commandline-img-src-https-travis-ci-org-jatoben-commandline-svg-branch-master-alt-build-status-a'>CommandLine <a href="https://travis-ci.org/jatoben/CommandLine"><img src="https://travis-ci.org/jatoben/CommandLine.svg?branch=master" alt="Build Status"></a></h1>
+
+<p>A pure Swift library for creating command-line interfaces.</p>
+
+<p><em>Note: CommandLine <code>master</code> requires Xcode 7.3 / Swift 2.2, and aims to support the latest 2.2-dev snapshot on Linux (although not all tests pass yet). If you&rsquo;re using older versions of Swift, please check out the <a href="https://github.com/jatoben/CommandLine/releases">earlier releases</a>.</em></p>
+<a href='#usage' class='anchor' aria-hidden=true><span class="header-anchor"></span></a><h2 id='usage'>Usage</h2>
+
+<p>CommandLine aims to have a simple and self-explanatory API.</p>
+<pre class="highlight swift"><code><span class="kd">import</span> <span class="kt">CommandLine</span>
+
+<span class="k">let</span> <span class="nv">cli</span> <span class="o">=</span> <span class="kt">CommandLine</span><span class="p">()</span>
+
+<span class="k">let</span> <span class="nv">filePath</span> <span class="o">=</span> <span class="kt">StringOption</span><span class="p">(</span><span class="nv">shortFlag</span><span class="p">:</span> <span class="s">"f"</span><span class="p">,</span> <span class="nv">longFlag</span><span class="p">:</span> <span class="s">"file"</span><span class="p">,</span> <span class="nv">required</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span>
+  <span class="nv">helpMessage</span><span class="p">:</span> <span class="s">"Path to the output file."</span><span class="p">)</span>
+<span class="k">let</span> <span class="nv">compress</span> <span class="o">=</span> <span class="kt">BoolOption</span><span class="p">(</span><span class="nv">shortFlag</span><span class="p">:</span> <span class="s">"c"</span><span class="p">,</span> <span class="nv">longFlag</span><span class="p">:</span> <span class="s">"compress"</span><span class="p">,</span>
+  <span class="nv">helpMessage</span><span class="p">:</span> <span class="s">"Use data compression."</span><span class="p">)</span>
+<span class="k">let</span> <span class="nv">help</span> <span class="o">=</span> <span class="kt">BoolOption</span><span class="p">(</span><span class="nv">shortFlag</span><span class="p">:</span> <span class="s">"h"</span><span class="p">,</span> <span class="nv">longFlag</span><span class="p">:</span> <span class="s">"help"</span><span class="p">,</span>
+  <span class="nv">helpMessage</span><span class="p">:</span> <span class="s">"Prints a help message."</span><span class="p">)</span>
+<span class="k">let</span> <span class="nv">verbosity</span> <span class="o">=</span> <span class="kt">CounterOption</span><span class="p">(</span><span class="nv">shortFlag</span><span class="p">:</span> <span class="s">"v"</span><span class="p">,</span> <span class="nv">longFlag</span><span class="p">:</span> <span class="s">"verbose"</span><span class="p">,</span>
+  <span class="nv">helpMessage</span><span class="p">:</span> <span class="s">"Print verbose messages. Specify multiple times to increase verbosity."</span><span class="p">)</span>
+
+<span class="n">cli</span><span class="o">.</span><span class="nf">addOptions</span><span class="p">(</span><span class="n">filePath</span><span class="p">,</span> <span class="n">compress</span><span class="p">,</span> <span class="n">help</span><span class="p">,</span> <span class="n">verbosity</span><span class="p">)</span>
+
+<span class="k">do</span> <span class="p">{</span>
+  <span class="k">try</span> <span class="n">cli</span><span class="o">.</span><span class="nf">parse</span><span class="p">()</span>
+<span class="p">}</span> <span class="k">catch</span> <span class="p">{</span>
+  <span class="n">cli</span><span class="o">.</span><span class="nf">printUsage</span><span class="p">(</span><span class="n">error</span><span class="p">)</span>
+  <span class="nf">exit</span><span class="p">(</span><span class="kt">EX_USAGE</span><span class="p">)</span>
+<span class="p">}</span>
+
+<span class="nf">print</span><span class="p">(</span><span class="s">"File path is </span><span class="se">\(</span><span class="n">filePath</span><span class="o">.</span><span class="n">value</span><span class="o">!</span><span class="se">)</span><span class="s">"</span><span class="p">)</span>
+<span class="nf">print</span><span class="p">(</span><span class="s">"Compress is </span><span class="se">\(</span><span class="n">compress</span><span class="o">.</span><span class="n">value</span><span class="se">)</span><span class="s">"</span><span class="p">)</span>
+<span class="nf">print</span><span class="p">(</span><span class="s">"Verbosity is </span><span class="se">\(</span><span class="n">verbosity</span><span class="o">.</span><span class="n">value</span><span class="se">)</span><span class="s">"</span><span class="p">)</span>
+</code></pre>
+
+<p>See <code>Option.swift</code> for additional Option types.</p>
+
+<p>To use CommandLine in your project, add it to your workspace, then add CommandLine.framework to the <strong>Build Phases / Link Binary With Libraries</strong> setting of your target.</p>
+
+<p>If you are building a command-line tool and need to embed this and other frameworks to it, follow the steps in <a href="http://colemancda.github.io/programming/2015/02/12/embedded-swift-frameworks-osx-command-line-tools/">http://colemancda.github.io/programming/2015/02/12/embedded-swift-frameworks-osx-command-line-tools/</a> to link Swift frameworks to your command-line tool.</p>
+
+<p>If you are building a standalone command-line tool, you&rsquo;ll need to add the CommandLine source files directly to your target, because Xcode <a href="https://github.com/ksm/SwiftInFlux#static-libraries">can&rsquo;t yet build static libraries that contain Swift code</a>.</p>
+<a href='#features' class='anchor' aria-hidden=true><span class="header-anchor"></span></a><h2 id='features'>Features</h2>
+<a href='#automatically-generated-usage-messages' class='anchor' aria-hidden=true><span class="header-anchor"></span></a><h3 id='automatically-generated-usage-messages'>Automatically generated usage messages</h3>
+<pre class="highlight plaintext"><code>Usage: example [options]
+  -f, --file:    
+      Path to the output file.
+  -c, --compress:
+      Use data compression.
+  -h, --help:    
+      Prints a help message.
+  -v, --verbose:
+      Print verbose messages. Specify multiple times to increase verbosity.
+</code></pre>
+
+<p>You can fully customize the usage message by supplying a <code>formatOutput</code> function. For example, <a href="https://github.com/onevcat/Rainbow">Rainbow</a> provides a handy way to generate colorized output:</p>
+<pre class="highlight swift"><code><span class="kd">import</span> <span class="kt">Rainbow</span>
+
+<span class="n">cli</span><span class="o">.</span><span class="n">formatOutput</span> <span class="o">=</span> <span class="p">{</span> <span class="n">s</span><span class="p">,</span> <span class="n">type</span> <span class="k">in</span>
+  <span class="k">var</span> <span class="nv">str</span><span class="p">:</span> <span class="kt">String</span>
+  <span class="k">switch</span><span class="p">(</span><span class="n">type</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">case</span> <span class="o">.</span><span class="kt">Error</span><span class="p">:</span>
+    <span class="n">str</span> <span class="o">=</span> <span class="n">s</span><span class="o">.</span><span class="n">red</span><span class="o">.</span><span class="n">bold</span>
+  <span class="k">case</span> <span class="o">.</span><span class="kt">OptionFlag</span><span class="p">:</span>
+    <span class="n">str</span> <span class="o">=</span> <span class="n">s</span><span class="o">.</span><span class="n">green</span><span class="o">.</span><span class="n">underline</span>
+  <span class="k">case</span> <span class="o">.</span><span class="kt">OptionHelp</span><span class="p">:</span>
+    <span class="n">str</span> <span class="o">=</span> <span class="n">s</span><span class="o">.</span><span class="n">blue</span>
+  <span class="k">default</span><span class="p">:</span>
+    <span class="n">str</span> <span class="o">=</span> <span class="n">s</span>
+  <span class="p">}</span>
+
+  <span class="k">return</span> <span class="n">cli</span><span class="o">.</span><span class="nf">defaultFormat</span><span class="p">(</span><span class="n">str</span><span class="p">,</span> <span class="nv">type</span><span class="p">:</span> <span class="n">type</span><span class="p">)</span>
+<span class="p">}</span>
+</code></pre>
+
+<p><img src="https://cloud.githubusercontent.com/assets/318083/12108437/1e3ec25c-b335-11e5-9cc9-d45ad3ab3dc7.png" alt=""></p>
+<a href='#supports-all-common-flag-styles' class='anchor' aria-hidden=true><span class="header-anchor"></span></a><h3 id='supports-all-common-flag-styles'>Supports all common flag styles</h3>
+
+<p>These command-lines are equivalent:</p>
+<pre class="highlight shell"><code><span class="gp">$ </span>./example -c -v -f /path/to/file
+<span class="gp">$ </span>./example -cvf /path/to/file
+<span class="gp">$ </span>./example -c --verbose --file /path/to/file
+<span class="gp">$ </span>./example -cv --file /path/to/file
+<span class="gp">$ </span>./example --compress -v --file<span class="o">=</span>/path/to/file
+</code></pre>
+
+<p>Option processing can be stopped with &rsquo;&ndash;&rsquo;, <a href="https://www.gnu.org/prep/standards/html_node/Command_002dLine-Interfaces.html">as in getopt(3)</a>.</p>
+<a href='#intelligent-handling-of-negative-int-amp-float-arguments' class='anchor' aria-hidden=true><span class="header-anchor"></span></a><h3 id='intelligent-handling-of-negative-int-amp-float-arguments'>Intelligent handling of negative int &amp; float arguments</h3>
+
+<p>This will pass negative 42 to the int option, and negative 3.1419 to the float option:</p>
+<pre class="highlight shell"><code><span class="gp">$ </span>./example2 -i -42 --float -3.1419
+</code></pre>
+<a href='#locale-aware-float-parsing' class='anchor' aria-hidden=true><span class="header-anchor"></span></a><h3 id='locale-aware-float-parsing'>Locale-aware float parsing</h3>
+
+<p>Floats will be handled correctly when in a locale that uses an alternate decimal point character:</p>
+<pre class="highlight shell"><code><span class="gp">$ </span><span class="nv">LC_NUMERIC</span><span class="o">=</span>sv_SE.UTF-8 ./example2 --float 3,1419
+</code></pre>
+<a href='#type-safe-enum-options' class='anchor' aria-hidden=true><span class="header-anchor"></span></a><h3 id='type-safe-enum-options'>Type-safe Enum options</h3>
+<pre class="highlight swift"><code><span class="kd">enum</span> <span class="kt">Operation</span><span class="p">:</span> <span class="kt">String</span> <span class="p">{</span>
+  <span class="k">case</span> <span class="kt">Create</span>  <span class="o">=</span> <span class="s">"c"</span>
+  <span class="k">case</span> <span class="kt">Extract</span> <span class="o">=</span> <span class="s">"x"</span>
+  <span class="k">case</span> <span class="kt">List</span>    <span class="o">=</span> <span class="s">"l"</span>
+  <span class="k">case</span> <span class="kt">Verify</span>  <span class="o">=</span> <span class="s">"v"</span>
+<span class="p">}</span>
+
+<span class="k">let</span> <span class="nv">cli</span> <span class="o">=</span> <span class="kt">CommandLine</span><span class="p">()</span>
+<span class="k">let</span> <span class="nv">op</span> <span class="o">=</span> <span class="kt">EnumOption</span><span class="o">&lt;</span><span class="kt">Operation</span><span class="o">&gt;</span><span class="p">(</span><span class="nv">shortFlag</span><span class="p">:</span> <span class="s">"o"</span><span class="p">,</span> <span class="nv">longFlag</span><span class="p">:</span> <span class="s">"operation"</span><span class="p">,</span> <span class="nv">required</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span>
+  <span class="nv">helpMessage</span><span class="p">:</span> <span class="s">"File operation - c for create, x for extract, l for list, or v for verify."</span><span class="p">)</span>
+<span class="n">cli</span><span class="o">.</span><span class="nf">setOptions</span><span class="p">(</span><span class="n">op</span><span class="p">)</span>
+
+<span class="k">do</span> <span class="p">{</span>
+  <span class="k">try</span> <span class="n">cli</span><span class="o">.</span><span class="nf">parse</span><span class="p">()</span>
+<span class="p">}</span> <span class="k">catch</span> <span class="p">{</span>
+  <span class="n">cli</span><span class="o">.</span><span class="nf">printUsage</span><span class="p">(</span><span class="n">error</span><span class="p">)</span>
+  <span class="nf">exit</span><span class="p">(</span><span class="kt">EX_USAGE</span><span class="p">)</span>
+<span class="p">}</span>
+
+<span class="k">switch</span> <span class="n">op</span><span class="o">.</span><span class="n">value</span> <span class="p">{</span>
+  <span class="k">case</span> <span class="kt">Operation</span><span class="o">.</span><span class="kt">Create</span><span class="p">:</span>
+    <span class="c1">// Create file</span>
+
+  <span class="k">case</span> <span class="kt">Operation</span><span class="o">.</span><span class="kt">Extract</span><span class="p">:</span>
+    <span class="c1">// Extract file</span>
+
+  <span class="c1">// Remainder of cases</span>
+<span class="p">}</span>
+</code></pre>
+
+<p>Note: Enums must be initalizable from a String value.</p>
+<a href='#fully-emoji-compliant' class='anchor' aria-hidden=true><span class="header-anchor"></span></a><h3 id='fully-emoji-compliant'>Fully emoji-compliant</h3>
+<pre class="highlight shell"><code><span class="gp">$ </span>./example3 -👍 --👻
+</code></pre>
+
+<p><em>(please don&rsquo;t actually do this)</em></p>
+<a href='#license' class='anchor' aria-hidden=true><span class="header-anchor"></span></a><h2 id='license'>License</h2>
+
+<p>Copyright &copy; 2014 Ben Gollmer.</p>
+
+<p>Licensed under the Apache License, Version 2.0 (the <q>License</q>); you may not use this file except in compliance with the License. You may obtain a copy of the License at</p>
+
+<p><a href="http://www.apache.org/licenses/LICENSE-2.0">http://www.apache.org/licenses/LICENSE-2.0</a></p>
+
+<p>Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an <q>AS IS</q> BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.</p>
+
+          </div>
+        </section>
+
+
+      </article>
+    </div>
+    <section class="footer">
+      <p>Copyright © 2014-16 Ben Gollmer. Licensed under the Apache License, Version 2.0.</p>
+      <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.6.2</a>, a <a class="link" href="http://realm.io" target="_blank" rel="external">Realm</a> project.</p>
+    </section>
+  </body>
+</div>
+</html>
