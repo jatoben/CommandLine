@@ -25,7 +25,7 @@ import XCTest
 
 class StringExtensionTests: XCTestCase {
   /* TODO: The commented-out tests segfault on Linux as of the Swift 2.2 2016-01-11 snapshot. */
-  static var allTests : [(String, StringExtensionTests -> () throws -> Void)] {
+  static var allTests : [(String, (StringExtensionTests) -> () throws -> Void)] {
     return [
       //("testToDouble", testToDouble),
       ("testSplitByCharacter", testSplitByCharacter),
