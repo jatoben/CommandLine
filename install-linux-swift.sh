@@ -1,11 +1,11 @@
 #!/bin/bash
 set -ev
-SWIFT_SNAPSHOT="swift-3.0-preview-1"
+SWIFT_SNAPSHOT="swift-3.0-PREVIEW-2"
 XCTEST_SNAPSHOT="swift-3.0-PREVIEW-1"
 
 echo "Installing ${SWIFT_SNAPSHOT}..."
 if [ ! -f "${SWIFT_SNAPSHOT}-ubuntu14.04.tar.gz" ]; then
-  curl -s -L -O "https://swift.org/builds/${SWIFT_SNAPSHOT}/ubuntu1404/${SWIFT_SNAPSHOT}/${SWIFT_SNAPSHOT}-ubuntu14.04.tar.gz"
+  curl -s -L -O "https://swift.org/builds/$(echo $SWIFT_SNAPSHOT | tr A-Z a-z)/ubuntu1404/${SWIFT_SNAPSHOT}/${SWIFT_SNAPSHOT}-ubuntu14.04.tar.gz"
 fi
 
 tar -zxvf "${SWIFT_SNAPSHOT}-ubuntu14.04.tar.gz"
