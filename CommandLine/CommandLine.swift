@@ -453,7 +453,7 @@ public class CommandLine {
       }
       
       /* Remove attached argument from flag */
-      let splitFlag = flagWithArg.splitByCharacter(ArgumentAttacher, maxSplits: 1)
+      let splitFlag = flagWithArg.split(by: ArgumentAttacher, maxSplits: 1)
       let flag = splitFlag[0]
       let attachedArg: String? = splitFlag.count == 2 ? splitFlag[1] : nil
       
@@ -535,7 +535,7 @@ public class CommandLine {
     case .Error:
       return "\(s)\n\n"
     case .OptionFlag:
-      return "  \(s.paddedToWidth(maxFlagDescriptionWidth)):\n"
+      return "  \(s.padded(toWidth: maxFlagDescriptionWidth)):\n"
     case .OptionHelp:
       return "      \(s)\n"
     }
