@@ -17,6 +17,7 @@ matrix:
       dist: trusty
       before_install:
         - sudo apt-get install -y clang libicu-dev
+        - sudo locale-gen sv_SE.UTF-8 # for alternate-locale tests
         - ./install-linux-swift.sh
         - export PATH="/swift/usr/bin:${PATH}"
       script:

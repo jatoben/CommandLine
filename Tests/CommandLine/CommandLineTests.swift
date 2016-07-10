@@ -25,14 +25,13 @@ import Foundation
 #endif
 
 internal class CommandLineTests: XCTestCase {
-  /* TODO: The commented-out tests segfault on Linux as of the Swift 2.2 2016-01-11 snapshot. */
   static var allTests : [(String, (CommandLineTests) -> () throws -> Void)] {
     return [
       ("testBoolOptions", testBoolOptions),
       ("testIntOptions", testIntOptions),
       ("testCounterOptions", testCounterOptions),
       ("testDoubleOptions", testDoubleOptions),
-      //("testDoubleOptionsInAlternateLocale", testDoubleOptionsInAlternateLocale),
+      ("testDoubleOptionsInAlternateLocale", testDoubleOptionsInAlternateLocale),
       ("testStringOptions", testStringOptions),
       ("testMultiStringOptions", testMultiStringOptions),
       ("testConcatOptionWithValue", testConcatOptionWithValue),
