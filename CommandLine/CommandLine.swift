@@ -19,8 +19,12 @@ import Foundation
 /* Required for setlocale(3) */
 #if os(OSX)
   import Darwin
+  
+  private let process = ProcessInfo.processInfo
 #elseif os(Linux)
   import Glibc
+  
+  private let process = ProcessInfo.processInfo()
 #endif
 
 let ShortOptionPrefix = "-"
@@ -225,7 +229,7 @@ public class CommandLine {
    *
    * - returns: An initalized CommandLine object.
    */
-  public init(arguments: [String] = Process.arguments) {
+  public init(arguments: [String] = process.arguments) {
     self._arguments = arguments
     
     /* Initialize locale settings from the environment */
