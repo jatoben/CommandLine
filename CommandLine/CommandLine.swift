@@ -170,7 +170,7 @@ public class CommandLine {
 
   /** A ParseError is thrown if the `parse()` method fails. */
   #if swift(>=3.0)
-    public enum ParseError: ErrorProtocol, CustomStringConvertible {
+    public enum ParseError: Error, CustomStringConvertible {
       /** Thrown if an unrecognized argument is passed to `parse()` in strict mode */
       case InvalidArgument(String)
 
@@ -586,7 +586,7 @@ public class CommandLine {
    * - parameter to: An OutputStreamType to write the error message to.
    */
   #if swift(>=3.0)
-    public func printUsage<TargetStream: OutputStream>(_ error: ErrorProtocol, to: inout TargetStream) {
+    public func printUsage<TargetStream: OutputStream>(_ error: Error, to: inout TargetStream) {
       let format = formatOutput != nil ? formatOutput! : defaultFormat
       print(format("\(error)", .Error), terminator: "", to: &to)
       printUsage(&to)
@@ -606,7 +606,7 @@ public class CommandLine {
    *   (e.g. "Missing required option --extract") will be printed before the usage message.
    */
   #if swift(>=3.0)
-    public func printUsage(_ error: ErrorProtocol) {
+    public func printUsage(_ error: Error) {
       var out = StderrOutputStream.stream
       printUsage(error, to: &out)
     }

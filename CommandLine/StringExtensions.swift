@@ -84,7 +84,8 @@ internal extension String {
       }
     }
 
-    return (Double(Int(characteristic)!) +
+    let doubleCharacteristic = Double(Int(characteristic)!)
+    return (doubleCharacteristic +
       Double(Int(mantissa)!) / pow(Double(10), Double(mantissa.characters.count - 1))) *
       (isNegative ? -1 : 1)
   }
