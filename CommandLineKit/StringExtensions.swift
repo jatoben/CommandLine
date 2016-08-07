@@ -180,7 +180,7 @@ internal extension String {
    * If a single word is longer than the line width, it will be placed (unsplit)
    * on a line by itself.
    *
-   * - parameter atWidth:   The maximum length of a line.
+   * - parameter atWidth: The maximum length of a line.
    * - parameter wrapBy:  The line break character to use.
    * - parameter splitBy: The character to use when splitting the string into words.
    *

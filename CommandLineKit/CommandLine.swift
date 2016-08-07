@@ -168,55 +168,32 @@ public class CommandLine {
     case OptionHelp
   }
 
-  /** A ParseError is thrown if the `parse()` method fails. */
   #if swift(>=3.0)
-    public enum ParseError: Error, CustomStringConvertible {
-      /** Thrown if an unrecognized argument is passed to `parse()` in strict mode */
-      case InvalidArgument(String)
 
-      /** Thrown if the value for an Option is invalid (e.g. a string is passed to an IntOption) */
-      case InvalidValueForOption(Option, [String])
-      
-      /** Thrown if an Option with required: true is missing */
-      case MissingRequiredOptions([Option])
-      
-      public var description: String {
-        switch self {
-        case let .InvalidArgument(arg):
-          return "Invalid argument: \(arg)"
-        case let .InvalidValueForOption(opt, vals):
-          let vs = vals.joined(separator: ", ")
-          return "Invalid value(s) for option \(opt.flagDescription): \(vs)"
-        case let .MissingRequiredOptions(opts):
-          return "Missing required options: \(opts.map { return $0.flagDescription })"
-        }
+  /** A ParseError is thrown if the `parse()` method fails. */
+  public enum ParseError: Error, CustomStringConvertible {
+    /** Thrown if an unrecognized argument is passed to `parse()` in strict mode */
+    case InvalidArgument(String)
+
+    /** Thrown if the value for an Option is invalid (e.g. a string is passed to an IntOption) */
+    case InvalidValueForOption(Option, [String])
+    
+    /** Thrown if an Option with required: true is missing */
+    case MissingRequiredOptions([Option])
+    
+    public var description: String {
+      switch self {
+      case let .InvalidArgument(arg):
+        return "Invalid argument: \(arg)"
+      case let .InvalidValueForOption(opt, vals):
+        let vs = vals.joined(separator: ", ")
+        return "Invalid value(s) for option \(opt.flagDescription): \(vs)"
+      case let .MissingRequiredOptions(opts):
+        return "Missing required options: \(opts.map { return $0.flagDescription })"
       }
     }
-  #else
-    public enum ParseError: ErrorType, CustomStringConvertible {
-      /** Thrown if an unrecognized argument is passed to `parse()` in strict mode */
-      case InvalidArgument(String)
+  }
 
-      /** Thrown if the value for an Option is invalid (e.g. a string is passed to an IntOption) */
-      case InvalidValueForOption(Option, [String])
-      
-      /** Thrown if an Option with required: true is missing */
-      case MissingRequiredOptions([Option])
-      
-      public var description: String {
-        switch self {
-        case let .InvalidArgument(arg):
-          return "Invalid argument: \(arg)"
-        case let .InvalidValueForOption(opt, vals):
-          let vs = vals.joinWithSeparator(", ")
-          return "Invalid value(s) for option \(opt.flagDescription): \(vs)"
-        case let .MissingRequiredOptions(opts):
-          return "Missing required options: \(opts.map { return $0.flagDescription })"
-        }
-      }
-    }
-  #endif
-  
   /**
    * Initializes a CommandLine object.
    *
@@ -225,14 +202,12 @@ public class CommandLine {
    *
    * - returns: An initalized CommandLine object.
    */
-  public init(arguments: [String] = Process.arguments) {
+  public init(arguments: [String] = Swift.CommandLine.arguments) {
     self._arguments = arguments
-    
+
     /* Initialize locale settings from the environment */
     setlocale(LC_ALL, "")
   }
-  
-  #if swift(>=3.0)
 
   /* Returns all argument values from flagIndex to the next flag or the end of the argument array. */
   private func _getFlagValues(_ flagIndex: Int, _ attachedArg: String? = nil) -> [String] {
@@ -321,6 +296,45 @@ public class CommandLine {
 
   #else
 
+  /** A ParseError is thrown if the `parse()` method fails. */
+  public enum ParseError: ErrorType, CustomStringConvertible {
+    /** Thrown if an unrecognized argument is passed to `parse()` in strict mode */
+    case InvalidArgument(String)
+
+    /** Thrown if the value for an Option is invalid (e.g. a string is passed to an IntOption) */
+    case InvalidValueForOption(Option, [String])
+    
+    /** Thrown if an Option with required: true is missing */
+    case MissingRequiredOptions([Option])
+      
+    public var description: String {
+      switch self {
+      case let .InvalidArgument(arg):
+        return "Invalid argument: \(arg)"
+      case let .InvalidValueForOption(opt, vals):
+        let vs = vals.joinWithSeparator(", ")
+        return "Invalid value(s) for option \(opt.flagDescription): \(vs)"
+      case let .MissingRequiredOptions(opts):
+        return "Missing required options: \(opts.map { return $0.flagDescription })"
+      }
+    }
+  }
+
+  /**
+   * Initializes a CommandLine object.
+   *
+   * - parameter arguments: Arguments to parse. If omitted, the arguments passed to the app
+   *   on the command line will automatically be used.
+   *
+   * - returns: An initalized CommandLine object.
+   */
+  public init(arguments: [String] = Process.arguments) {
+    self._arguments = arguments
+    
+    /* Initialize locale settings from the environment */
+    setlocale(LC_ALL, "")
+  }
+  
   /* Returns all argument values from flagIndex to the next flag or the end of the argument array. */
   private func _getFlagValues(flagIndex: Int, _ attachedArg: String? = nil) -> [String] {
     var args: [String] = [String]()
