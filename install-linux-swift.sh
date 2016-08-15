@@ -1,7 +1,7 @@
 #!/bin/bash
 set -ev
-SWIFT_SNAPSHOT="swift-3.0-PREVIEW-4"
-XCTEST_SNAPSHOT="swift-3.0-PREVIEW-4"
+SWIFT_SNAPSHOT="swift-3.0-PREVIEW-5"
+XCTEST_SNAPSHOT="swift-3.0-PREVIEW-5"
 
 echo "Installing ${SWIFT_SNAPSHOT}..."
 if [ ! -f "${SWIFT_SNAPSHOT}-ubuntu14.04.tar.gz" ]; then
