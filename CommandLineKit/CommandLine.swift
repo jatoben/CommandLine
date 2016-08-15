@@ -38,7 +38,7 @@ let ArgumentAttacher: Character = "="
 
 /* An output stream to stderr; used by CommandLine.printUsage(). */
 #if swift(>=3.0)
-  private struct StderrOutputStream: OutputStream {
+  private struct StderrOutputStream: TextOutputStream {
     static let stream = StderrOutputStream()
     func write(_ s: String) {
       fputs(s, stderr)
@@ -565,7 +565,7 @@ public class CommandLine {
    * - parameter to: An OutputStreamType to write the error message to.
    */
   #if swift(>=3.0)
-    public func printUsage<TargetStream: OutputStream>(_ to: inout TargetStream) {
+    public func printUsage<TargetStream: TextOutputStream>(_ to: inout TargetStream) {
       /* Nil coalescing operator (??) doesn't work on closures :( */
       let format = formatOutput != nil ? formatOutput! : defaultFormat
 
@@ -600,7 +600,7 @@ public class CommandLine {
    * - parameter to: An OutputStreamType to write the error message to.
    */
   #if swift(>=3.0)
-    public func printUsage<TargetStream: OutputStream>(_ error: Error, to: inout TargetStream) {
+    public func printUsage<TargetStream: TextOutputStream>(_ error: Error, to: inout TargetStream) {
       let format = formatOutput != nil ? formatOutput! : defaultFormat
       print(format("\(error)", .Error), terminator: "", to: &to)
       printUsage(&to)
