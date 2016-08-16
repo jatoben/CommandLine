@@ -31,7 +31,7 @@ internal extension String {
     if locale != nil {
       #if swift(>=3.0)
         if let decimalPoint = locale?.pointee.decimal_point {
-          return Character(UnicodeScalar(UInt32(decimalPoint.pointee)))
+          return Character(UnicodeScalar(UInt32(decimalPoint.pointee))!)
         }
       #else
         let decimalPoint = locale.memory.decimal_point

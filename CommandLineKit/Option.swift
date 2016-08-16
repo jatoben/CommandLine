@@ -44,7 +44,7 @@ public class Option {
     }
   }
 
-  private init(_ shortFlag: String?, _ longFlag: String?, _ required: Bool, _ helpMessage: String) {
+  internal init(_ shortFlag: String?, _ longFlag: String?, _ required: Bool, _ helpMessage: String) {
     if let sf = shortFlag {
       assert(sf.characters.count == 1, "Short flag must be a single character")
       assert(Int(sf) == nil && sf.toDouble() == nil, "Short flag cannot be a numeric value")
@@ -338,13 +338,15 @@ public class MultiStringOption: Option {
   #endif
 }
 
+#if swift(>=3.0)
+
 /** An option that represents an enum value. */
-public class EnumOption<T:RawRepresentable where T.RawValue == String>: Option {
+public class EnumOption<T:RawRepresentable>: Option where T.RawValue == String {
   private var _value: T?
   public var value: T? {
     return _value
   }
-  
+
   override public var wasSet: Bool {
     return _value != nil
   }
@@ -356,27 +358,25 @@ public class EnumOption<T:RawRepresentable where T.RawValue == String>: Option {
   /* Re-defining the intializers is necessary to make the Swift 2 compiler happy, as
    * of Xcode 7 beta 2.
    */
-  
-  private override init(_ shortFlag: String?, _ longFlag: String?, _ required: Bool, _ helpMessage: String) {
+
+  internal override init(_ shortFlag: String?, _ longFlag: String?, _ required: Bool, _ helpMessage: String) {
     super.init(shortFlag, longFlag, required, helpMessage)
   }
-  
+
   /** Initializes a new Option that has both long and short flags. */
   public convenience init(shortFlag: String, longFlag: String, required: Bool = false, helpMessage: String) {
     self.init(shortFlag as String?, longFlag, required, helpMessage)
   }
-  
+
   /** Initializes a new Option that has only a short flag. */
   public convenience init(shortFlag: String, required: Bool = false, helpMessage: String) {
     self.init(shortFlag as String?, nil, required, helpMessage)
   }
-  
+
   /** Initializes a new Option that has only a long flag. */
   public convenience init(longFlag: String, required: Bool = false, helpMessage: String) {
     self.init(nil, longFlag as String?, required, helpMessage)
   }
-  
-  #if swift(>=3.0)
 
   override func setValue(_ values: [String]) -> Bool {
     if values.count == 0 {
@@ -391,7 +391,46 @@ public class EnumOption<T:RawRepresentable where T.RawValue == String>: Option {
     return false
   }
 
-  #else
+}
+
+#else
+
+public class EnumOption<T:RawRepresentable where T.RawValue == String>: Option {
+  private var _value: T?
+  public var value: T? {
+    return _value
+  }
+
+  override public var wasSet: Bool {
+    return _value != nil
+  }
+
+  override public var claimedValues: Int {
+    return _value != nil ? 1 : 0
+  }
+
+  /* Re-defining the intializers is necessary to make the Swift 2 compiler happy, as
+   * of Xcode 7 beta 2.
+   */
+
+  private override init(_ shortFlag: String?, _ longFlag: String?, _ required: Bool, _ helpMessage: String) {
+    super.init(shortFlag, longFlag, required, helpMessage)
+  }
+
+  /** Initializes a new Option that has both long and short flags. */
+  public convenience init(shortFlag: String, longFlag: String, required: Bool = false, helpMessage: String) {
+    self.init(shortFlag as String?, longFlag, required, helpMessage)
+  }
+
+  /** Initializes a new Option that has only a short flag. */
+  public convenience init(shortFlag: String, required: Bool = false, helpMessage: String) {
+    self.init(shortFlag as String?, nil, required, helpMessage)
+  }
+
+  /** Initializes a new Option that has only a long flag. */
+  public convenience init(longFlag: String, required: Bool = false, helpMessage: String) {
+    self.init(nil, longFlag as String?, required, helpMessage)
+  }
 
   override func setValue(values: [String]) -> Bool {
     if values.count == 0 {
@@ -406,5 +445,6 @@ public class EnumOption<T:RawRepresentable where T.RawValue == String>: Option {
     return false
   }
 
-  #endif
 }
+
+#endif
