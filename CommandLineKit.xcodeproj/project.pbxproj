@@ -75,17 +75,17 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		1968E1361C85926C00418122 /* LinuxMain.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LinuxMain.swift; path = Tests/LinuxMain.swift; sourceTree = "<group>"; };
+		1968E1361C85926C00418122 /* LinuxMain.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LinuxMain.swift; sourceTree = "<group>"; };
 		5D06884319674D7D00BBFAAC /* CommandLineKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = CommandLineKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		5D06884719674D7D00BBFAAC /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		5D06884E19674D7D00BBFAAC /* CommandLineKitTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CommandLineKitTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		5D06885419674D7D00BBFAAC /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		5D06885519674D7D00BBFAAC /* CommandLineTests.swift */ = {isa = PBXFileReference; indentWidth = 2; lastKnownFileType = sourcecode.swift; path = CommandLineTests.swift; sourceTree = "<group>"; tabWidth = 2; usesTabs = 0; };
+		5D06885419674D7D00BBFAAC /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; name = Info.plist; path = Tests/CommandLineKitTests/Info.plist; sourceTree = "<group>"; };
+		5D06885519674D7D00BBFAAC /* CommandLineTests.swift */ = {isa = PBXFileReference; indentWidth = 2; lastKnownFileType = sourcecode.swift; name = CommandLineTests.swift; path = Tests/CommandLineKitTests/CommandLineTests.swift; sourceTree = "<group>"; tabWidth = 2; usesTabs = 0; };
 		5D06885F19674DA600BBFAAC /* CommandLine.swift */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 2; lastKnownFileType = sourcecode.swift; path = CommandLine.swift; sourceTree = "<group>"; tabWidth = 2; usesTabs = 0; };
 		5D068866196A212A00BBFAAC /* Option.swift */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 2; lastKnownFileType = sourcecode.swift; path = Option.swift; sourceTree = "<group>"; tabWidth = 2; usesTabs = 0; };
 		5D449A17198B015E00F9A8A6 /* StringExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 2; lastKnownFileType = sourcecode.swift; path = StringExtensions.swift; sourceTree = "<group>"; tabWidth = 2; usesTabs = 0; };
 		5D449B63198B412E00F9A8A6 /* ReadMe.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = ReadMe.md; sourceTree = "<group>"; };
-		5D8DC808198D8BA0007CD61B /* StringExtensionTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 2; lastKnownFileType = sourcecode.swift; path = StringExtensionTests.swift; sourceTree = "<group>"; tabWidth = 2; usesTabs = 0; };
+		5D8DC808198D8BA0007CD61B /* StringExtensionTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 2; lastKnownFileType = sourcecode.swift; name = StringExtensionTests.swift; path = Tests/CommandLineKitTests/StringExtensionTests.swift; sourceTree = "<group>"; tabWidth = 2; usesTabs = 0; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -111,9 +111,9 @@
 			isa = PBXGroup;
 			children = (
 				1968E1361C85926C00418122 /* LinuxMain.swift */,
-				5D06885219674D7D00BBFAAC /* CommandLineKit */,
+				5D06885219674D7D00BBFAAC /* CommandLineKitTests */,
 			);
-			name = Tests;
+			path = Tests;
 			sourceTree = "<group>";
 		};
 		5D06883919674D7D00BBFAAC = {
@@ -154,15 +154,15 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
-		5D06885219674D7D00BBFAAC /* CommandLineKit */ = {
+		5D06885219674D7D00BBFAAC /* CommandLineKitTests */ = {
 			isa = PBXGroup;
 			children = (
 				5D06885519674D7D00BBFAAC /* CommandLineTests.swift */,
 				5D8DC808198D8BA0007CD61B /* StringExtensionTests.swift */,
 				5D06885319674D7D00BBFAAC /* Supporting Files */,
 			);
-			name = CommandLineKit;
-			path = Tests/CommandLineKit;
+			name = CommandLineKitTests;
+			path = Tests/CommandLineKitTests;
 			sourceTree = "<group>";
 		};
 		5D06885319674D7D00BBFAAC /* Supporting Files */ = {
