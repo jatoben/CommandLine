@@ -19,13 +19,11 @@ import Foundation
 /* Required for setlocale(3) */
 #if os(OSX)
   import Darwin
-  
-  private let process = ProcessInfo.processInfo
 #elseif os(Linux)
   import Glibc
-  
-  private let process = ProcessInfo.processInfo()
 #endif
+
+private let process = ProcessInfo.processInfo
 
 let ShortOptionPrefix = "-"
 let LongOptionPrefix = "--"
