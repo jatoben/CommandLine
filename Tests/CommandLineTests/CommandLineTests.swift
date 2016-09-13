@@ -140,12 +140,15 @@ internal class CommandLineTests: XCTestCase {
     do {
       try cli.parse()
       XCTFail("Parsed invalid int option")
-    } catch let CommandLine.ParseError.InvalidValueForOption(opt, vals) {
-      XCTAssert(opt === e, "Incorrect option in ParseError: \(opt.longFlag)")
-      XCTAssertEqual(vals, ["bad"], "Incorrect values in ParseError: \(vals)")
-      XCTAssertNil(e.value, "Got non-nil value from invalid int")
     } catch {
-      XCTFail("Unexpected parse error: \(error)")
+        switch error {
+        case let CommandLine.ParseError.InvalidValueForOption(opt, vals):
+            XCTAssert(opt === e, "Incorrect option in ParseError: \(opt.longFlag)")
+            XCTAssertEqual(vals, ["bad"], "Incorrect values in ParseError: \(vals)")
+            XCTAssertNil(e.value, "Got non-nil value from invalid int")
+        default:
+            XCTFail("Unexpected parse error: \(error)")
+        }
     }
 
     /* No value */
@@ -155,7 +158,7 @@ internal class CommandLineTests: XCTestCase {
     do {
       try cli.parse()
       XCTFail("Parsed int option with no value")
-    } catch let CommandLine.ParseError.InvalidValueForOption(opt, vals) {
+    } catch CommandLine.ParseError.InvalidValueForOption(let opt, let vals) {
       XCTAssert(opt === f, "Incorrect option in ParseError: \(opt.longFlag)")
       XCTAssertEqual(vals, [], "Incorrect values in ParseError: \(vals)")
       XCTAssertNil(f.value, "Got non-nil value from no value int")
@@ -699,7 +702,7 @@ internal class CommandLineTests: XCTestCase {
 
     do {
       #if swift(>=3.0)
-        try cli.parse(strict: true)
+        try cli.parse(true)
       #else
         try cli.parse(true)
       #endif
