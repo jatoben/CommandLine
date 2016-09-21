@@ -16,6 +16,6 @@
  */
 
 import XCTest
-@testable import CommandLineTestSuite
+@testable import CommandLineKitTests
 
 XCTMain([testCase(CommandLineTests.allTests), testCase(StringExtensionTests.allTests)])

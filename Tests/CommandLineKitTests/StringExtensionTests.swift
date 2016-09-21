@@ -16,7 +16,7 @@
  */
 
 import XCTest
-@testable import CommandLine
+@testable import CommandLineKit
 #if os(OSX)
   import Darwin
 #elseif os(Linux)
@@ -33,40 +33,45 @@ class StringExtensionTests: XCTestCase {
     ]
   }
 
+  override func setUp() {
+    /* set locale to "C" to start with '.' as the decimal separator */
+    setlocale(LC_ALL, "C")
+  }
+
   func testToDouble() {
     /* Regular ol' double */
     let a = "3.14159".toDouble()
-    XCTAssertEqual(a!, 3.14159, "Failed to parse pi as double")
+    XCTAssertEqual(a, 3.14159, "Failed to parse pi as double")
 
     let b = "-98.23".toDouble()
-    XCTAssertEqual(b!, -98.23, "Failed to parse negative double")
+    XCTAssertEqual(b, -98.23, "Failed to parse negative double")
 
     /* Ints should be parsable as doubles */
     let c = "5".toDouble()
-    XCTAssertEqual(c!, 5, "Failed to parse int as double")
+    XCTAssertEqual(c, 5, "Failed to parse int as double")
 
     let d = "-2099".toDouble()
-    XCTAssertEqual(d!, -2099, "Failed to parse negative int as double")
+    XCTAssertEqual(d, -2099, "Failed to parse negative int as double")
 
 
     /* Zero handling */
     let e = "0.0".toDouble()
-    XCTAssertEqual(e!, 0, "Failed to parse zero double")
+    XCTAssertEqual(e, 0, "Failed to parse zero double")
 
     let f = "0".toDouble()
-    XCTAssertEqual(f!, 0, "Failed to parse zero int as double")
+    XCTAssertEqual(f, 0, "Failed to parse zero int as double")
 
     let g = "0.0000000000000000".toDouble()
-    XCTAssertEqual(g!, 0, "Failed to parse very long zero double")
+    XCTAssertEqual(g, 0, "Failed to parse very long zero double")
 
     let h = "-0.0".toDouble()
-    XCTAssertEqual(h!, 0, "Failed to parse negative zero double")
+    XCTAssertEqual(h, 0, "Failed to parse negative zero double")
 
     let i = "-0".toDouble()
-    XCTAssertEqual(i!, 0, "Failed to parse negative zero int as double")
+    XCTAssertEqual(i, 0, "Failed to parse negative zero int as double")
 
     let j = "-0.000000000000000".toDouble()
-    XCTAssertEqual(j!, 0, "Failed to parse very long negative zero double")
+    XCTAssertEqual(j, 0, "Failed to parse very long negative zero double")
 
 
     /* Various extraneous chars */
