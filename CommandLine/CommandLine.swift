@@ -545,18 +545,26 @@ public class CommandLine {
    * on inout protocol function parameters in Xcode 7 beta 1 (rdar://21372694).
    */
 
-  /**
-   * Prints a usage message.
-   * 
-   * - parameter to: An OutputStreamType to write the error message to.
-   */
+    
+    /// If set, will print this out after Usage: name [options]
+    /// Useful to inform user of any command you might support after the options.
+    public var suplementalHelp: String?
+    
+    
+    /**
+     * Prints a usage message.
+     *
+     * - parameter to: An OutputStreamType to write the error message to.
+     */
+    
+    
   #if swift(>=3.0)
     public func printUsage<TargetStream: OutputStream>(_ to: inout TargetStream) {
       /* Nil coalescing operator (??) doesn't work on closures :( */
       let format = formatOutput != nil ? formatOutput! : defaultFormat
 
       let name = _arguments[0]
-      print(format("Usage: \(name) [options]", .About), terminator: "", to: &to)
+      print(format("Usage: \(name) [options]" + self.suplementalHelp ?? "", .About), terminator: "", to: &to)
 
       for opt in _options {
         print(format(opt.flagDescription, .OptionFlag), terminator: "", to: &to)
@@ -569,7 +577,7 @@ public class CommandLine {
       let format = formatOutput != nil ? formatOutput! : defaultFormat
 
       let name = _arguments[0]
-      print(format("Usage: \(name) [options]", .About), terminator: "", toStream: &to)
+      print(format("Usage: \(name) [options]" + (self.suplementalHelp ?? ""), .About), terminator: "", toStream: &to)
 
       for opt in _options {
         print(format(opt.flagDescription, .OptionFlag), terminator: "", toStream: &to)
