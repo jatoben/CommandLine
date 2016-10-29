@@ -244,11 +244,11 @@
 				TargetAttributes = {
 					5D06884219674D7D00BBFAAC = {
 						CreatedOnToolsVersion = 6.0;
-						LastSwiftMigration = 0800;
+						LastSwiftMigration = 0810;
 					};
 					5D06884D19674D7D00BBFAAC = {
 						CreatedOnToolsVersion = 6.0;
-						LastSwiftMigration = 0800;
+						LastSwiftMigration = 0810;
 						TestTargetID = 5D06884219674D7D00BBFAAC;
 					};
 				};

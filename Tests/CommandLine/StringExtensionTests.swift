@@ -126,7 +126,7 @@ class StringExtensionTests: XCTestCase {
     #if swift(>=3.0)
       let lastBCharIndex = b.index(before: b.endIndex)
 		#else
-      let lastBCharIndex = b.endIndex.advancedBy(-1)
+      let lastBCharIndex = b.characters.index(b.endIndex, offsetBy: -1)
 		#endif
     XCTAssertEqual(b[lastBCharIndex], " " as Character, "Failed to pad with default character")
 
@@ -134,7 +134,7 @@ class StringExtensionTests: XCTestCase {
     #if swift(>=3.0)
       let lastCCharIndex = c.index(before: b.endIndex)
     #else
-      let lastCCharIndex = c.endIndex.advancedBy(-1)
+      let lastCCharIndex = c.characters.index(c.endIndex, offsetBy: -1)
     #endif
     XCTAssertEqual(c[lastCCharIndex], "+" as Character, "Failed to pad with specified character")
   }
