@@ -699,7 +699,7 @@ internal class CommandLineTests: XCTestCase {
 
     do {
       #if swift(>=3.0)
-        try cli.parse(strict: true)
+        try cli.parse(true)
       #else
         try cli.parse(true)
       #endif
@@ -743,7 +743,7 @@ internal class CommandLineTests: XCTestCase {
       cli.addOptions(o1, o2, o3, o4, o5, o6, o7)
 
       #if swift(>=3.0)
-        try cli.parse(strict: true)
+        try cli.parse(true)
       #else
         try cli.parse(true)
       #endif
@@ -857,13 +857,13 @@ internal class CommandLineTests: XCTestCase {
     let cli = CommandLine(arguments: [ "CommandLineTests" ])
     cli.formatOutput = { s, type in
       switch type {
-      case .About:
+      case .about:
         return "[ABOUT]\(s)\n"
-      case .Error:
+      case .error:
         return "[ERROR]\(s)\n"
-      case .OptionFlag:
+      case .optionFlag:
         return "[FLAG]\(s)\n"
-      case .OptionHelp:
+      case .optionHelp:
         return "[HELP]\(s)\n"
       }
     }
@@ -897,7 +897,7 @@ internal class CommandLineTests: XCTestCase {
       #if swift(>=3.0)
         let range = stride(from: 2, to: opts.count, by: 2)
       #else
-        let range = 2.stride(to: opts.count, by: 2)
+        let range = stride(from: 2, to: opts.count, by: 2)
       #endif
       for i in range {
         XCTAssertTrue(o[i].hasPrefix("[FLAG]"))
