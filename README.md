@@ -119,10 +119,10 @@ $ LC_NUMERIC=sv_SE.UTF-8 ./example2 --float 3,1419
 
 ```swift
 enum Operation: String {
-  case Create  = "c"
-  case Extract = "x"
-  case List    = "l"
-  case Verify  = "v"
+  case create  = "c"
+  case extract = "x"
+  case list    = "l"
+  case verify  = "v"
 }
 
 let cli = CommandLineKit.CommandLine()

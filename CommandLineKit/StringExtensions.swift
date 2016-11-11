@@ -29,16 +29,9 @@ internal extension String {
   private func _localDecimalPoint() -> Character {
     let locale = localeconv()
     if locale != nil {
-      #if swift(>=3.0)
-        if let decimalPoint = locale?.pointee.decimal_point {
-          return Character(UnicodeScalar(UInt32(decimalPoint.pointee))!)
-        }
-      #else
-        let decimalPoint = locale.memory.decimal_point
-        if decimalPoint != nil {
-          return Character(UnicodeScalar(UInt32(decimalPoint.memory)))
-        }
-      #endif
+      if let decimalPoint = locale?.pointee.decimal_point {
+        return Character(UnicodeScalar(UInt32(decimalPoint.pointee))!)
+      }
     }
 
     return "."
@@ -56,11 +49,7 @@ internal extension String {
     var isNegative: Bool = false
     let decimalPoint = self._localDecimalPoint()
 
-    #if swift(>=3.0)
-      let charactersEnumerator = self.characters.enumerated()
-    #else
-      let charactersEnumerator = self.characters.enumerate()
-    #endif
+    let charactersEnumerator = self.characters.enumerated()
     for (i, c) in charactersEnumerator {
       if i == 0 && c == "-" {
         isNegative = true
@@ -90,7 +79,6 @@ internal extension String {
       (isNegative ? -1 : 1)
   }
 
-  #if swift(>=3.0)
   /**
    * Splits a string into an array of string components.
    *
@@ -119,39 +107,6 @@ internal extension String {
 
     return s
   }
-
-  #else
-
-  /**
-   * Splits a string into an array of string components.
-   *
-   * - parameter by:        The character to split on.
-   * - parameter maxSplits: The maximum number of splits to perform. If 0, all possible splits are made.
-   *
-   * - returns: An array of string components.
-   */
-  func split(by by: Character, maxSplits: Int = 0) -> [String] {
-    var s = [String]()
-    var numSplits = 0
-
-    var curIdx = self.startIndex
-    for i in self.characters.indices {
-      let c = self[i]
-      if c == by && (maxSplits == 0 || numSplits < maxSplits) {
-        s.append(self[curIdx..<i])
-        curIdx = i.successor()
-        numSplits += 1
-      }
-    }
-
-    if curIdx != self.endIndex {
-      s.append(self[curIdx..<self.endIndex])
-    }
-
-    return s
-  }
-
-  #endif
 
   /**
    * Pads a string to the specified width.

@@ -128,19 +128,11 @@ class StringExtensionTests: XCTestCase {
                    a.characters.count, "Bad padding with negative pad width")
 
     let b = a.padded(toWidth: 80)
-    #if swift(>=3.0)
-      let lastBCharIndex = b.index(before: b.endIndex)
-		#else
-      let lastBCharIndex = b.endIndex.advancedBy(-1)
-		#endif
+    let lastBCharIndex = b.index(before: b.endIndex)
     XCTAssertEqual(b[lastBCharIndex], " " as Character, "Failed to pad with default character")
 
     let c = a.padded(toWidth: 80, with: "+")
-    #if swift(>=3.0)
-      let lastCCharIndex = c.index(before: b.endIndex)
-    #else
-      let lastCCharIndex = c.endIndex.advancedBy(-1)
-    #endif
+    let lastCCharIndex = c.index(before: b.endIndex)
     XCTAssertEqual(c[lastCCharIndex], "+" as Character, "Failed to pad with specified character")
   }
 
