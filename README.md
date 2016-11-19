@@ -2,7 +2,7 @@
 
 A pure Swift library for creating command-line interfaces.
 
-*Note: CommandLineKit `master` requires Xcode 7.3 / Swift 2.2, and aims to support the latest 2.2-dev snapshot on Linux (although not all tests pass yet). If you're using older versions of Swift, please check out the [earlier releases](https://github.com/jatoben/CommandLine/releases).*
+*Note: CommandLineKit `master` requires Xcode 8 / Swift 3.0. If you're using older versions of Swift, please check out the [earlier releases](https://github.com/jatoben/CommandLine/releases).*
 
 ## Usage
 
