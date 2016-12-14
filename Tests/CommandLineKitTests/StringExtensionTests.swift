@@ -91,7 +91,7 @@ class StringExtensionTests: XCTestCase {
     setlocale(LC_NUMERIC, "sv_SE.UTF-8")
 
     let o = "888,8".toDouble()
-    XCTAssertEqual(o!, 888.8, "Failed to parse double in alternate locale")
+    XCTAssert(o == 888.8, "Failed to parse double in alternate locale")
 
     let p = "888.8".toDouble()
     XCTAssertNil(p, "Parsed double in alternate locale with wrong decimal point")
