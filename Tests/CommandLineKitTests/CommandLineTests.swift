@@ -15,14 +15,9 @@
  * limitations under the License.
  */
 
-import XCTest
 import Foundation
+import XCTest
 @testable import CommandLineKit
-#if os(OSX)
-  import Darwin
-#elseif os(Linux)
-  import Glibc
-#endif
 
 internal class CommandLineTests: XCTestCase {
   static var allTests : [(String, (CommandLineTests) -> () throws -> Void)] {

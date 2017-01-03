@@ -16,12 +16,6 @@
  */
 
 import Foundation
-/* Required for setlocale(3) */
-#if os(OSX)
-  import Darwin
-#elseif os(Linux)
-  import Glibc
-#endif
 
 let shortOptionPrefix = "-"
 let longOptionPrefix = "--"
