@@ -15,13 +15,9 @@
  * limitations under the License.
  */
 
+import Foundation
 import XCTest
 @testable import CommandLineKit
-#if os(OSX)
-  import Darwin
-#elseif os(Linux)
-  import Glibc
-#endif
 
 class StringExtensionTests: XCTestCase {
   static var allTests : [(String, (StringExtensionTests) -> () throws -> Void)] {
