@@ -7,13 +7,10 @@ matrix:
       script: xcodebuild -scheme CommandLine test
       osx_image: xcode8.2
     - os: linux
-      sudo: required
       dist: trusty
+      sudo: false
+      services: docker
       before_install:
-        - sudo apt-get install -y clang libicu-dev
-        - sudo locale-gen sv_SE.UTF-8 # for alternate-locale tests
-        - ./install-linux-swift.sh
-        - export PATH="/swift/usr/bin:${PATH}"
+        - docker pull swiftdocker/swift:latest
       script:
-        - swift build -v
-        - swift test
+        - docker run -v "$(pwd):/src" swiftdocker/swift:latest /src/script/test
