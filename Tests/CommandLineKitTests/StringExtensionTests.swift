@@ -71,8 +71,8 @@ class StringExtensionTests: XCTestCase {
 
 
     /* Various extraneous chars */
-    let k = "+42.3".toDouble()
-    XCTAssertNil(k, "Parsed double with extraneous +")
+    let k = "+42.3".toDouble()      // 4 Jan 2017: leading + is valid language syntax
+    XCTAssertEqual(k, 42.3, "Failed to parse double with leading +")
 
     let l = " 827.2".toDouble()
     XCTAssertNil(l, "Parsed double with extraneous space")
