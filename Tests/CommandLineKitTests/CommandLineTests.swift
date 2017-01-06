@@ -113,9 +113,9 @@ internal class CommandLineTests: XCTestCase {
 
     do {
       try cli.parse()
-      XCTAssertEqual(a.value!, 1, "Failed to get correct value from short int")
-      XCTAssertEqual(b.value!, 2, "Failed to get correct value from long int")
-      XCTAssertEqual(c.value!, 4, "Failed to get correct value from multi-flagged int")
+      XCTAssertEqual(a.value, 1, "Failed to get correct value from short int")
+      XCTAssertEqual(b.value, 2, "Failed to get correct value from long int")
+      XCTAssertEqual(c.value, 4, "Failed to get correct value from multi-flagged int")
     } catch {
       XCTFail("Failed to parse int options: \(error)")
     }
@@ -169,7 +169,7 @@ internal class CommandLineTests: XCTestCase {
 
     do {
       try cli.parse()
-      XCTAssertEqual(g.value!, -5, "Failed to get correct value from int option with negative value")
+      XCTAssertEqual(g.value, -5, "Failed to get correct value from int option with negative value")
     } catch {
       XCTFail("Failed to parse int option with negative value: \(error)")
     }
@@ -240,11 +240,11 @@ internal class CommandLineTests: XCTestCase {
 
     do {
       try cli.parse()
-      XCTAssertEqual(a.value!, 1.4, "Failed to get correct value from short double")
-      XCTAssertEqual(b.value!, 2.5, "Failed to get correct value from long double")
-      XCTAssertEqual(c.value!, 5.2, "Failed to get correct value from multi-flagged short double")
-      XCTAssertEqual(d.value!, 8.8, "Failed to get correct value from multi-flagged long double")
-      XCTAssertEqual(e.value!, 95.0, "Failed to get correct double value from integer argument")
+      XCTAssertEqual(a.value, 1.4, "Failed to get correct value from short double")
+      XCTAssertEqual(b.value, 2.5, "Failed to get correct value from long double")
+      XCTAssertEqual(c.value, 5.2, "Failed to get correct value from multi-flagged short double")
+      XCTAssertEqual(d.value, 8.8, "Failed to get correct value from multi-flagged long double")
+      XCTAssertEqual(e.value, 95.0, "Failed to get correct double value from integer argument")
     } catch {
       XCTFail("Failed to parse double options: \(error)")
     }
@@ -286,7 +286,7 @@ internal class CommandLineTests: XCTestCase {
 
     do {
       try cli.parse()
-      XCTAssertEqual(h.value!, -3.14159, "Failed to get correct value from double with negative value")
+      XCTAssertEqual(h.value, -3.14159, "Failed to get correct value from double with negative value")
     } catch {
       XCTFail("Failed to parse double option with negative value: \(error)")
     }
@@ -302,7 +302,7 @@ internal class CommandLineTests: XCTestCase {
 
     do {
       try cli.parse()
-      XCTAssertEqual(a.value!, 3.14159, "Failed to get correct value from double in alternate locale")
+      XCTAssertEqual(a.value, 3.14159, "Failed to get correct value from double in alternate locale")
     } catch {
       XCTFail("Failed to parse double options in alternate locale: \(error)")
     }
@@ -328,10 +328,10 @@ internal class CommandLineTests: XCTestCase {
 
     do {
       try cli.parse()
-      XCTAssertEqual(a.value!, "one", "Failed to get correct value from short string")
-      XCTAssertEqual(b.value!, "two", "Failed to get correct value from long string")
-      XCTAssertEqual(c.value!, "xx", "Failed to get correct value from multi-flagged short string")
-      XCTAssertEqual(d.value!, "yy", "Failed to get correct value from multi-flagged long string")
+      XCTAssertEqual(a.value, "one", "Failed to get correct value from short string")
+      XCTAssertEqual(b.value, "two", "Failed to get correct value from long string")
+      XCTAssertEqual(c.value, "xx", "Failed to get correct value from multi-flagged short string")
+      XCTAssertEqual(d.value, "yy", "Failed to get correct value from multi-flagged long string")
     } catch {
       XCTFail("Failed to parse string options: \(error)")
     }
@@ -368,16 +368,16 @@ internal class CommandLineTests: XCTestCase {
 
     do {
       try cli.parse()
-      XCTAssertEqual(a.value!.count, 1, "Failed to get correct number of values from single short multistring")
-      XCTAssertEqual(a.value![0], "one", "Filed to get correct value from single short multistring")
-      XCTAssertEqual(b.value!.count, 2, "Failed to get correct number of values from multi short multistring")
-      XCTAssertEqual(b.value![0], "two", "Failed to get correct first value from multi short multistring")
-      XCTAssertEqual(b.value![1], "2wo", "Failed to get correct second value from multi short multistring")
-      XCTAssertEqual(c.value!.count, 1, "Failed to get correct number of values from single long multistring")
-      XCTAssertEqual(c.value![0], "three", "Filed to get correct value from single long multistring")
-      XCTAssertEqual(d.value!.count, 2, "Failed to get correct number of values from multi long multistring")
-      XCTAssertEqual(d.value![0], "four", "Failed to get correct first value from multi long multistring")
-      XCTAssertEqual(d.value![1], "4our", "Failed to get correct second value from multi long multistring")
+      XCTAssertEqual(a.value?.count, 1, "Failed to get correct number of values from single short multistring")
+      XCTAssertEqual(a.value?[0], "one", "Filed to get correct value from single short multistring")
+      XCTAssertEqual(b.value?.count, 2, "Failed to get correct number of values from multi short multistring")
+      XCTAssertEqual(b.value?[0], "two", "Failed to get correct first value from multi short multistring")
+      XCTAssertEqual(b.value?[1], "2wo", "Failed to get correct second value from multi short multistring")
+      XCTAssertEqual(c.value?.count, 1, "Failed to get correct number of values from single long multistring")
+      XCTAssertEqual(c.value?[0], "three", "Filed to get correct value from single long multistring")
+      XCTAssertEqual(d.value?.count, 2, "Failed to get correct number of values from multi long multistring")
+      XCTAssertEqual(d.value?[0], "four", "Failed to get correct first value from multi long multistring")
+      XCTAssertEqual(d.value?[1], "4our", "Failed to get correct second value from multi long multistring")
     } catch {
       XCTFail("Failed to parse multi string options: \(error)")
     }
@@ -411,9 +411,9 @@ internal class CommandLineTests: XCTestCase {
       try cli.parse()
       XCTAssertTrue(x.value as Bool, "Failed to get true value from concat flags with value")
       XCTAssertEqual(v.value, 1, "Failed to get correct value from concat flags with value")
-      XCTAssertEqual(f.value!.count, 2, "Failed to get values from concat flags with value")
-      XCTAssertEqual(f.value![0], "file1", "Failed to get first value from concat flags with value")
-      XCTAssertEqual(f.value![1], "file2", "Failed to get second value from concat flags with value")
+      XCTAssertEqual(f.value?.count, 2, "Failed to get values from concat flags with value")
+      XCTAssertEqual(f.value?[0], "file1", "Failed to get first value from concat flags with value")
+      XCTAssertEqual(f.value?[1], "file2", "Failed to get second value from concat flags with value")
     } catch {
       XCTFail("Failed to parse concat flags with value: \(error)")
     }
@@ -446,8 +446,8 @@ internal class CommandLineTests: XCTestCase {
 
     do {
       try cli.parse()
-      XCTAssertEqual(a.value!, 5, "Failed to get correct int attached value")
-      XCTAssertEqual(b.value!, "klaxon", "Failed to get correct string attached value")
+      XCTAssertEqual(a.value, 5, "Failed to get correct int attached value")
+      XCTAssertEqual(b.value, "klaxon", "Failed to get correct string attached value")
     } catch {
       XCTFail("Failed to parse attached argument values: \(error)")
     }
@@ -464,8 +464,8 @@ internal class CommandLineTests: XCTestCase {
 
     do {
       try cli.parse()
-      XCTAssertEqual(a.value!, 3)
-      XCTAssertEqual(b.value!, "☀️")
+      XCTAssertEqual(a.value, 3)
+      XCTAssertEqual(b.value, "☀️")
     } catch {
       XCTFail("Failed to parse emoji options: \(error)")
     }
@@ -486,7 +486,7 @@ internal class CommandLineTests: XCTestCase {
 
     do {
       try cli.parse()
-      XCTAssertEqual(op.value!, Operation.extract, "Failed to get correct value from enum option")
+      XCTAssertEqual(op.value, Operation.extract, "Failed to get correct value from enum option")
     } catch {
       XCTFail("Failed to parse enum options: \(error)")
     }
@@ -500,10 +500,10 @@ internal class CommandLineTests: XCTestCase {
 
     do {
       try cli.parse()
-      XCTAssertEqual(op.value!.count, 3, "Failed to get correct number of options with stopper")
-      XCTAssertEqual(op.value![0], "-value", "Failed to get correct value from options with stopper")
-      XCTAssertEqual(op.value![1], "--", "Failed to get correct value from options with stopper")
-      XCTAssertEqual(op.value![2], "-55", "Failed to get correct value from options with stopper")
+      XCTAssertEqual(op.value?.count, 3, "Failed to get correct number of options with stopper")
+      XCTAssertEqual(op.value?[0], "-value", "Failed to get correct value from options with stopper")
+      XCTAssertEqual(op.value?[1], "--", "Failed to get correct value from options with stopper")
+      XCTAssertEqual(op.value?[2], "-55", "Failed to get correct value from options with stopper")
     } catch {
       XCTFail("Failed to parse options with an argument stopper: \(error)")
     }
@@ -530,7 +530,7 @@ internal class CommandLineTests: XCTestCase {
         try cli.parse()
         XCTAssertEqual(extract.value, true, "Failed to parse extract value from arg line \(args)")
         XCTAssertEqual(verbosity.value, 1, "Failed to parse verbosity value from arg line \(args)")
-        XCTAssertEqual(filePath.value!, "/path/to/file", "Failed to parse file path value from arg line \(args)")
+        XCTAssertEqual(filePath.value, "/path/to/file", "Failed to parse file path value from arg line \(args)")
       } catch {
         XCTFail("Failed to parse arg line \(args): \(error)")
       }
@@ -611,10 +611,10 @@ internal class CommandLineTests: XCTestCase {
       try cli.parse()
       XCTAssertTrue(boolOpt.value, "Failed to get correct bool value from mixed command line")
       XCTAssertEqual(counterOpt.value, 3, "Failed to get correct counter value from mixed command line")
-      XCTAssertEqual(stringOpt.value!, "John Q. Public", "Failed to get correct string value from mixed command line")
-      XCTAssertEqual(intOpt.value!, 45, "Failed to get correct int value from mixed command line")
-      XCTAssertEqual(doubleOpt.value!, 0.05, "Failed to get correct double value from mixed command line")
-      XCTAssertEqual(extraOpt.value!.count  , 3, "Failed to get correct number of multistring options from mixed command line")
+      XCTAssertEqual(stringOpt.value, "John Q. Public", "Failed to get correct string value from mixed command line")
+      XCTAssertEqual(intOpt.value, 45, "Failed to get correct int value from mixed command line")
+      XCTAssertEqual(doubleOpt.value, 0.05, "Failed to get correct double value from mixed command line")
+      XCTAssertEqual(extraOpt.value?.count  , 3, "Failed to get correct number of multistring options from mixed command line")
     } catch {
       XCTFail("Failed to parse mixed command line: \(error)")
     }
@@ -669,7 +669,7 @@ internal class CommandLineTests: XCTestCase {
 
     do {
       try cli.parse()
-      XCTAssertEqual(o1.value!, "itchy", "Failed to get correct string value from short-flag-only option")
+      XCTAssertEqual(o1.value, "itchy", "Failed to get correct string value from short-flag-only option")
       XCTAssertNil(o2.value, "Incorrectly set value for short-flag-only option")
     } catch {
       XCTFail("Failed to parse short-flag-only command line: \(error)")
@@ -686,7 +686,7 @@ internal class CommandLineTests: XCTestCase {
     do {
       try cli.parse()
       XCTAssertNil(o1.value, "Incorrectly set value for long-flag-only option")
-      XCTAssertEqual(o2.value!, "scratchy", "Failed to get correct string value from long-flag-only option")
+      XCTAssertEqual(o2.value, "scratchy", "Failed to get correct string value from long-flag-only option")
     } catch {
       XCTFail("Failed to parse long-flag-only command line: \(error)")
     }
@@ -728,12 +728,12 @@ internal class CommandLineTests: XCTestCase {
     do {
       try cli.parse()
       XCTAssertTrue(o1.value, "Failed to set bool option with stray values")
-      XCTAssertEqual(o2.value!, "green", "Incorrect value for string option with stray values")
+      XCTAssertEqual(o2.value, "green", "Incorrect value for string option with stray values")
       XCTAssertTrue(o3.value, "Failed to set combined bool option with stray values")
       XCTAssertEqual(o4.value, 3, "Incorrect value for combined counter option with stray values")
-      XCTAssertEqual(o5.value!, 9, "Incorrect value for combined int option with stray values")
-      XCTAssertEqual(o6.value!, ["json", "xml", "binary"], "Incorrect value for attached multistring option with stray values")
-      XCTAssertEqual(o7.value!, "pdf", "Incorrect value for attached string option with stray values")
+      XCTAssertEqual(o5.value, 9, "Incorrect value for combined int option with stray values")
+      XCTAssertEqual(o6.value ?? [], ["json", "xml", "binary"], "Incorrect value for attached multistring option with stray values")
+      XCTAssertEqual(o7.value, "pdf", "Incorrect value for attached string option with stray values")
       XCTAssertEqual(cli.unparsedArguments, ["onefish", "twofish", "redfish", "blue", "-w", "--who", "fish", "woo!"], "Incorrect unparsed values")
     } catch {
       XCTFail("Unexpected parse error: \(error)")
@@ -746,12 +746,12 @@ internal class CommandLineTests: XCTestCase {
 
       try cli.parse(strict: true)
       XCTAssertTrue(o1.value, "Failed to set bool option with stray values")
-      XCTAssertEqual(o2.value!, "green", "Incorrect value for string option with stray values")
+      XCTAssertEqual(o2.value, "green", "Incorrect value for string option with stray values")
       XCTAssertTrue(o3.value, "Failed to set combined bool option with stray values")
       XCTAssertEqual(o4.value, 3, "Incorrect value for combined counter option with stray values")
-      XCTAssertEqual(o5.value!, 9, "Incorrect value for combined int option with stray values")
-      XCTAssertEqual(o6.value!, ["json", "xml", "binary"], "Incorrect value for attached multistring option with stray values")
-      XCTAssertEqual(o7.value!, "pdf", "Incorrect value for attached string option with stray values")
+      XCTAssertEqual(o5.value, 9, "Incorrect value for combined int option with stray values")
+      XCTAssertEqual(o6.value ?? [], ["json", "xml", "binary"], "Incorrect value for attached multistring option with stray values")
+      XCTAssertEqual(o7.value, "pdf", "Incorrect value for attached string option with stray values")
       XCTAssertEqual(cli.unparsedArguments, ["onefish", "twofish", "redfish", "blue", "fish", "woo!"], "Incorrect unparsed values")
     } catch {
       XCTFail("Stray values should not cause a throw in strict mode")
