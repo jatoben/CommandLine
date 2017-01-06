@@ -28,10 +28,8 @@ internal extension String {
    */
   private func _localDecimalPoint() -> Character {
     let locale = localeconv()
-    if locale != nil {
-      if let decimalPoint = locale?.pointee.decimal_point {
-        return Character(UnicodeScalar(UInt32(decimalPoint.pointee))!)
-      }
+    if let decimalPoint = locale?.pointee.decimal_point {
+      return Character(UnicodeScalar(UInt8(bitPattern: decimalPoint.pointee)))
     }
 
     return "."
