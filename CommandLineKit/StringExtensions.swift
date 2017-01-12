@@ -27,11 +27,11 @@ internal extension String {
    * using localeconv(3).
    */
   private func _localDecimalPoint() -> Character {
-    guard let locale = localeconv() else {
+    guard let locale = localeconv(), let decimalPoint = locale.pointee.decimal_point else {
       return "."
     }
 
-    return Character(UnicodeScalar(UInt8(bitPattern: locale.pointee.decimal_point.pointee)))
+    return Character(UnicodeScalar(UInt8(bitPattern: decimalPoint.pointee)))
   }
 
   /**
