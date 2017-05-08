@@ -18,20 +18,20 @@
 /**
  * The base class for a command-line option.
  */
-public class Option {
+open class Option {
   public let shortFlag: String?
   public let longFlag: String?
   public let required: Bool
   public let helpMessage: String
 
   /** True if the option was set when parsing command-line arguments */
-  public var wasSet: Bool {
+  open var wasSet: Bool {
     return false
   }
 
-  public var claimedValues: Int { return 0 }
+  open var claimedValues: Int { return 0 }
 
-  public var flagDescription: String {
+  open var flagDescription: String {
     switch (shortFlag, longFlag) {
     case let (sf?, lf?):
       return "\(shortOptionPrefix)\(sf), \(longOptionPrefix)\(lf)"
@@ -44,7 +44,7 @@ public class Option {
     }
   }
 
-  internal init(_ shortFlag: String?, _ longFlag: String?, _ required: Bool, _ helpMessage: String) {
+  public init(_ shortFlag: String?, _ longFlag: String?, _ required: Bool, _ helpMessage: String) {
     if let sf = shortFlag {
       assert(sf.characters.count == 1, "Short flag must be a single character")
       assert(Int(sf) == nil && sf.toDouble() == nil, "Short flag cannot be a numeric value")
@@ -79,11 +79,11 @@ public class Option {
     self.init(nil, longFlag as String?, required, helpMessage)
   }
 
-  func flagMatch(_ flag: String) -> Bool {
+  open func flagMatch(_ flag: String) -> Bool {
     return flag == shortFlag || flag == longFlag
   }
 
-  func setValue(_ values: [String]) -> Bool {
+  open func setValue(_ values: [String]) -> Bool {
     return false
   }
 }
@@ -103,7 +103,7 @@ public class BoolOption: Option {
     return _value
   }
 
-  override func setValue(_ values: [String]) -> Bool {
+  override public func setValue(_ values: [String]) -> Bool {
     _value = true
     return true
   }
@@ -125,7 +125,7 @@ public class IntOption: Option {
     return _value != nil ? 1 : 0
   }
 
-  override func setValue(_ values: [String]) -> Bool {
+  override public func setValue(_ values: [String]) -> Bool {
     if values.count == 0 {
       return false
     }
@@ -158,7 +158,7 @@ public class CounterOption: Option {
     _value = 0
   }
 
-  override func setValue(_ values: [String]) -> Bool {
+  override public func setValue(_ values: [String]) -> Bool {
     _value += 1
     return true
   }
@@ -180,7 +180,7 @@ public class DoubleOption: Option {
     return _value != nil ? 1 : 0
   }
 
-  override func setValue(_ values: [String]) -> Bool {
+  override public func setValue(_ values: [String]) -> Bool {
     if values.count == 0 {
       return false
     }
@@ -210,7 +210,7 @@ public class StringOption: Option {
     return _value != nil ? 1 : 0
   }
 
-  override func setValue(_ values: [String]) -> Bool {
+  override public func setValue(_ values: [String]) -> Bool {
     if values.count == 0 {
       return false
     }
@@ -240,7 +240,7 @@ public class MultiStringOption: Option {
     return 0
   }
 
-  override func setValue(_ values: [String]) -> Bool {
+  override public func setValue(_ values: [String]) -> Bool {
     if values.count == 0 {
       return false
     }
@@ -288,7 +288,7 @@ public class EnumOption<T:RawRepresentable>: Option where T.RawValue == String {
     self.init(nil, longFlag as String?, required, helpMessage)
   }
 
-  override func setValue(_ values: [String]) -> Bool {
+  override public func setValue(_ values: [String]) -> Bool {
     if values.count == 0 {
       return false
     }
