@@ -18,20 +18,20 @@
 /**
  * The base class for a command-line option.
  */
-public class Option {
+open class Option {
   public let shortFlag: String?
   public let longFlag: String?
   public let required: Bool
   public let helpMessage: String
 
   /** True if the option was set when parsing command-line arguments */
-  public var wasSet: Bool {
+  open var wasSet: Bool {
     return false
   }
 
-  public var claimedValues: Int { return 0 }
+  open var claimedValues: Int { return 0 }
 
-  public var flagDescription: String {
+  open var flagDescription: String {
     switch (shortFlag, longFlag) {
     case let (sf?, lf?):
       return "\(shortOptionPrefix)\(sf), \(longOptionPrefix)\(lf)"
@@ -79,11 +79,11 @@ public class Option {
     self.init(nil, longFlag as String?, required, helpMessage)
   }
 
-  func flagMatch(_ flag: String) -> Bool {
+  open func flagMatch(_ flag: String) -> Bool {
     return flag == shortFlag || flag == longFlag
   }
 
-  func setValue(_ values: [String]) -> Bool {
+  open func setValue(_ values: [String]) -> Bool {
     return false
   }
 }
