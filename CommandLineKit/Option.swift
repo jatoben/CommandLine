@@ -103,7 +103,7 @@ public class BoolOption: Option {
     return _value
   }
 
-  override func setValue(_ values: [String]) -> Bool {
+  override public func setValue(_ values: [String]) -> Bool {
     _value = true
     return true
   }
@@ -125,7 +125,7 @@ public class IntOption: Option {
     return _value != nil ? 1 : 0
   }
 
-  override func setValue(_ values: [String]) -> Bool {
+  override public func setValue(_ values: [String]) -> Bool {
     if values.count == 0 {
       return false
     }
@@ -158,7 +158,7 @@ public class CounterOption: Option {
     _value = 0
   }
 
-  override func setValue(_ values: [String]) -> Bool {
+  override public func setValue(_ values: [String]) -> Bool {
     _value += 1
     return true
   }
@@ -180,7 +180,7 @@ public class DoubleOption: Option {
     return _value != nil ? 1 : 0
   }
 
-  override func setValue(_ values: [String]) -> Bool {
+  override public func setValue(_ values: [String]) -> Bool {
     if values.count == 0 {
       return false
     }
@@ -210,7 +210,7 @@ public class StringOption: Option {
     return _value != nil ? 1 : 0
   }
 
-  override func setValue(_ values: [String]) -> Bool {
+  override public func setValue(_ values: [String]) -> Bool {
     if values.count == 0 {
       return false
     }
@@ -240,7 +240,7 @@ public class MultiStringOption: Option {
     return 0
   }
 
-  override func setValue(_ values: [String]) -> Bool {
+  override public func setValue(_ values: [String]) -> Bool {
     if values.count == 0 {
       return false
     }
@@ -288,7 +288,7 @@ public class EnumOption<T:RawRepresentable>: Option where T.RawValue == String {
     self.init(nil, longFlag as String?, required, helpMessage)
   }
 
-  override func setValue(_ values: [String]) -> Bool {
+  override public func setValue(_ values: [String]) -> Bool {
     if values.count == 0 {
       return false
     }
