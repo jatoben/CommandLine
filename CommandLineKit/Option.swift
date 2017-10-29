@@ -18,7 +18,7 @@
 /**
  * The base class for a command-line option.
  */
-public class Option {
+open class Option {
   public let shortFlag: String?
   public let longFlag: String?
   public let required: Bool
@@ -92,7 +92,7 @@ public class Option {
  * A boolean option. The presence of either the short or long flag will set the value to true;
  * absence of the flag(s) is equivalent to false.
  */
-public class BoolOption: Option {
+open class BoolOption: Option {
   private var _value: Bool = false
 
   public var value: Bool {
@@ -110,7 +110,7 @@ public class BoolOption: Option {
 }
 
 /**  An option that accepts a positive or negative integer value. */
-public class IntOption: Option {
+open class IntOption: Option {
   private var _value: Int?
 
   public var value: Int? {
@@ -143,7 +143,7 @@ public class IntOption: Option {
  * An option that represents an integer counter. Each time the short or long flag is found
  * on the command-line, the counter will be incremented.
  */
-public class CounterOption: Option {
+open class CounterOption: Option {
   private var _value: Int = 0
 
   public var value: Int {
@@ -165,7 +165,7 @@ public class CounterOption: Option {
 }
 
 /**  An option that accepts a positive or negative floating-point value. */
-public class DoubleOption: Option {
+open class DoubleOption: Option {
   private var _value: Double?
 
   public var value: Double? {
@@ -195,7 +195,7 @@ public class DoubleOption: Option {
 }
 
 /**  An option that accepts a string value. */
-public class StringOption: Option {
+open class StringOption: Option {
   private var _value: String? = nil
 
   public var value: String? {
@@ -221,7 +221,7 @@ public class StringOption: Option {
 }
 
 /**  An option that accepts one or more string values. */
-public class MultiStringOption: Option {
+open class MultiStringOption: Option {
   private var _value: [String]?
 
   public var value: [String]? {
@@ -251,7 +251,7 @@ public class MultiStringOption: Option {
 }
 
 /** An option that represents an enum value. */
-public class EnumOption<T:RawRepresentable>: Option where T.RawValue == String {
+open class EnumOption<T:RawRepresentable>: Option where T.RawValue == String {
   private var _value: T?
   public var value: T? {
     return _value
