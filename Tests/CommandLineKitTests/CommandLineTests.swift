@@ -804,7 +804,7 @@ internal class CommandLineTests: XCTestCase {
 
     var out = ""
     cli.printUsage(&out)
-    XCTAssertGreaterThan(out.characters.count, 0)
+    XCTAssertGreaterThan(out.count, 0)
 
     /* There should be at least 2 lines per option, plus the intro Usage statement */
     XCTAssertGreaterThanOrEqual(out.split(by: "\n").count, (opts.count * 2) + 1)
