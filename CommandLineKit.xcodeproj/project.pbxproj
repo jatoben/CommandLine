@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		491F9311205DE88C00FAC201 /* CommandLine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D06885F19674DA600BBFAAC /* CommandLine.swift */; };
+		491F9312205DE88C00FAC201 /* Option.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D068866196A212A00BBFAAC /* Option.swift */; };
+		491F9313205DE88C00FAC201 /* StringExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D449A17198B015E00F9A8A6 /* StringExtensions.swift */; };
 		5D06884F19674D7D00BBFAAC /* CommandLineKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5D06884319674D7D00BBFAAC /* CommandLineKit.framework */; };
 		5D06885619674D7D00BBFAAC /* CommandLineTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D06885519674D7D00BBFAAC /* CommandLineTests.swift */; };
 		5D06886019674DA600BBFAAC /* CommandLine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D06885F19674DA600BBFAAC /* CommandLine.swift */; };
@@ -76,6 +79,7 @@
 
 /* Begin PBXFileReference section */
 		1968E1361C85926C00418122 /* LinuxMain.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LinuxMain.swift; sourceTree = "<group>"; };
+		491F9308205DE87000FAC201 /* libCommandLineLib.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libCommandLineLib.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		5D06884319674D7D00BBFAAC /* CommandLineKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = CommandLineKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		5D06884719674D7D00BBFAAC /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		5D06884E19674D7D00BBFAAC /* CommandLineKitTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CommandLineKitTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -89,6 +93,13 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		491F9305205DE87000FAC201 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		5D06883F19674D7D00BBFAAC /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -116,12 +127,20 @@
 			path = Tests;
 			sourceTree = "<group>";
 		};
+		491F9309205DE87000FAC201 /* CommandLineLib */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = CommandLineLib;
+			sourceTree = "<group>";
+		};
 		5D06883919674D7D00BBFAAC = {
 			isa = PBXGroup;
 			children = (
 				5D449B63198B412E00F9A8A6 /* ReadMe.md */,
 				5D06884519674D7D00BBFAAC /* CommandLineKit */,
 				1968E1351C85922A00418122 /* Tests */,
+				491F9309205DE87000FAC201 /* CommandLineLib */,
 				5D06884419674D7D00BBFAAC /* Products */,
 			);
 			sourceTree = "<group>";
@@ -131,6 +150,7 @@
 			children = (
 				5D06884319674D7D00BBFAAC /* CommandLineKit.framework */,
 				5D06884E19674D7D00BBFAAC /* CommandLineKitTests.xctest */,
+				491F9308205DE87000FAC201 /* libCommandLineLib.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -176,6 +196,13 @@
 /* End PBXGroup section */
 
 /* Begin PBXHeadersBuildPhase section */
+		491F9306205DE87000FAC201 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		5D06884019674D7D00BBFAAC /* Headers */ = {
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
@@ -186,6 +213,23 @@
 /* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
+		491F9307205DE87000FAC201 /* CommandLineLib */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 491F9310205DE87000FAC201 /* Build configuration list for PBXNativeTarget "CommandLineLib" */;
+			buildPhases = (
+				491F9304205DE87000FAC201 /* Sources */,
+				491F9305205DE87000FAC201 /* Frameworks */,
+				491F9306205DE87000FAC201 /* Headers */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = CommandLineLib;
+			productName = CommandLineLib;
+			productReference = 491F9308205DE87000FAC201 /* libCommandLineLib.a */;
+			productType = "com.apple.product-type.library.static";
+		};
 		5D06884219674D7D00BBFAAC /* CommandLineKit */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 5D06885919674D7D00BBFAAC /* Build configuration list for PBXNativeTarget "CommandLineKit" */;
@@ -239,6 +283,11 @@
 				LastUpgradeCheck = 0920;
 				ORGANIZATIONNAME = "Ben Gollmer";
 				TargetAttributes = {
+					491F9307205DE87000FAC201 = {
+						CreatedOnToolsVersion = 9.2;
+						LastSwiftMigration = 0920;
+						ProvisioningStyle = Automatic;
+					};
 					5D06884219674D7D00BBFAAC = {
 						CreatedOnToolsVersion = 6.0;
 						LastSwiftMigration = 0920;
@@ -264,6 +313,7 @@
 			targets = (
 				5D06884219674D7D00BBFAAC /* CommandLineKit */,
 				5D06884D19674D7D00BBFAAC /* CommandLineKitTests */,
+				491F9307205DE87000FAC201 /* CommandLineLib */,
 			);
 		};
 /* End PBXProject section */
@@ -286,6 +336,16 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		491F9304205DE87000FAC201 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				491F9311205DE88C00FAC201 /* CommandLine.swift in Sources */,
+				491F9312205DE88C00FAC201 /* Option.swift in Sources */,
+				491F9313205DE88C00FAC201 /* StringExtensions.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		5D06883E19674D7D00BBFAAC /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -351,6 +411,46 @@
 /* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
+		491F930E205DE87000FAC201 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = NO;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_IDENTITY = "-";
+				CODE_SIGN_STYLE = Automatic;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				EXECUTABLE_PREFIX = lib;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_SWIFT3_OBJC_INFERENCE = On;
+				SWIFT_VERSION = 4.0;
+			};
+			name = Debug;
+		};
+		491F930F205DE87000FAC201 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = NO;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_IDENTITY = "-";
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				EXECUTABLE_PREFIX = lib;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_SWIFT3_OBJC_INFERENCE = On;
+				SWIFT_VERSION = 4.0;
+			};
+			name = Release;
+		};
 		5D06885719674D7D00BBFAAC /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -543,6 +643,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		491F9310205DE87000FAC201 /* Build configuration list for PBXNativeTarget "CommandLineLib" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				491F930E205DE87000FAC201 /* Debug */,
+				491F930F205DE87000FAC201 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		5D06883D19674D7D00BBFAAC /* Build configuration list for PBXProject "CommandLineKit" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
