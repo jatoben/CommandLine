@@ -62,14 +62,14 @@ internal extension String {
     for i in self.indices {
       let c = self[i]
       if c == by && (maxSplits == 0 || numSplits < maxSplits) {
-        s.append(self[curIdx..<i])
+        s.append(String(self[curIdx..<i]))
         curIdx = self.index(after: i)
         numSplits += 1
       }
     }
 
     if curIdx != self.endIndex {
-      s.append(self[curIdx..<self.endIndex])
+      s.append(String(self[curIdx..<self.endIndex]))
     }
 
     return s
