@@ -116,12 +116,12 @@ class StringExtensionTests: XCTestCase {
   func testPadded() {
     let a = "this is a test"
 
-    XCTAssertEqual(a.padded(toWidth: 80).characters.count,
+    XCTAssertEqual(a.padded(toWidth: 80).count,
                    80, "Failed to pad to correct width")
-    XCTAssertEqual(a.padded(toWidth: 5).characters.count,
-                   a.characters.count, "Bad padding when pad width is less than string width")
-    XCTAssertEqual(a.padded(toWidth: -2).characters.count,
-                   a.characters.count, "Bad padding with negative pad width")
+    XCTAssertEqual(a.padded(toWidth: 5).count,
+                   a.count, "Bad padding when pad width is less than string width")
+    XCTAssertEqual(a.padded(toWidth: -2).count,
+                   a.count, "Bad padding with negative pad width")
 
     let b = a.padded(toWidth: 80)
     let lastBCharIndex = b.index(before: b.endIndex)
@@ -135,7 +135,7 @@ class StringExtensionTests: XCTestCase {
   func testWrapped() {
     let lipsum = "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
     for line in lipsum.wrapped(atWidth: 80).split(by: "\n") {
-      XCTAssertLessThanOrEqual(line.characters.count, 80, "Failed to wrap long line: \(line)")
+      XCTAssertLessThanOrEqual(line.count, 80, "Failed to wrap long line: \(line)")
     }
 
     /* Words longer than the wrap width should not be split */
@@ -143,7 +143,7 @@ class StringExtensionTests: XCTestCase {
     let lines = longWords.wrapped(atWidth: 3).split(by: "\n")
     XCTAssertEqual(lines.count, 8, "Failed to wrap long words")
     for line in lines {
-      XCTAssertGreaterThan(line.characters.count, 3, "Bad long word wrapping on line: \(line)")
+      XCTAssertGreaterThan(line.count, 3, "Bad long word wrapping on line: \(line)")
     }
   }
 }
