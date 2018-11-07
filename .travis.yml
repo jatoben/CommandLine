@@ -5,7 +5,7 @@ matrix:
       xcode_project: CommandLine.xcodeproj
       xcode_scheme: CommandLine
       script: xcodebuild -scheme CommandLine test
-      osx_image: xcode8.2
+      osx_image: xcode10.1
     - os: linux
       dist: trusty
       sudo: false
