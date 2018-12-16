@@ -18,7 +18,7 @@ open class CommandBase: PrintDelegate {
     
     private static let _cli = CommandLine()
 
-    init(){
+    public required init(){
         CommandBase._cli.usesSubCommands = true
     }
     
