@@ -6,7 +6,7 @@
 //
 import Foundation
 
-protocol PrintDelegate {
+public protocol PrintDelegate {
     func printIfVerbose(_ message: Any)
     func printAlways(_ message: Any)
 }
